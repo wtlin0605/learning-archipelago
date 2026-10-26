@@ -31,6 +31,27 @@ footer{max-width:1100px;margin:auto;padding:16px 20px 28px;color:#84929a;font-si
 <section class="stage" aria-label="可互動的三維群島"><canvas id="world" aria-label="3D 學習群島，可拖曳旋轉、縮放及點選"></canvas><div class="hud"><span class="pill" id="counter">第 1 / 6 座島</span><span class="pill">拖曳旋轉 · 點島探索</span></div></section>
 <div class="controls"><button class="btn" id="minus" aria-label="縮小">－ 縮小</button><button class="btn" id="reset">回到全景</button><button class="btn" id="plus" aria-label="放大">＋ 放大</button><button class="btn" id="next">下一座島 →</button></div><div class="help">手機／平板：單指拖曳旋轉、雙指縮放、點選島嶼。也可用下方島嶼清單操作。</div>
 <div class="layout"><section class="panel"><h2>探索島嶼</h2><div class="muted">沿著橋梁依序前進；每座島都有三個代表經歷的開放式房間。</div><div class="islands" id="island-list"></div></section><section class="panel"><h2>島嶼紀錄</h2><div class="muted">選取島嶼，閱讀事件、因果與帶走的能力。</div><div class="detail" id="detail" aria-live="polite"></div><h2 style="margin-top:17px">能力協作線</h2><div class="muted">前一段學到的能力，如何成為下一段旅程的基礎？</div><div id="skills"></div></section></div>
+
+<section class="panel" id="choice-journey" style="margin-top:14px">
+  <div class="kicker">INTERACTIVE JOURNEY · 你的選擇會留下痕跡</div>
+  <h2 style="font-size:23px;margin:6px 0">六站互動：每一次選擇，都會影響「現在的我」</h2>
+  <p class="muted">依序走過前五段經歷。每一站選一個最接近你當下想法的回應；沒有標準答案，系統會依你的選擇，整理出第六站「現在的我」的成長輪廓。你可以隨時回頭改選。</p>
+  <div class="journey-progress"><div id="progress-fill"></div></div>
+  <div class="muted" id="progress-label">已完成 0 / 5 段經歷</div>
+  <div id="choice-stage"></div>
+  <div class="choice-nav"><button class="btn" id="prev-choice">← 上一段</button><button class="btn" id="next-choice">下一段 →</button><button class="btn" id="show-now">看看現在的我 ✨</button></div>
+  <div id="now-me" class="now-me" aria-live="polite">
+    <h2>第六站｜現在的我</h2>
+    <p class="muted">完成前五段經歷的選擇後，這裡會根據你的答案，呈現你的成長輪廓與下一步行動。</p>
+  </div>
+  <button class="btn" id="reset-journey" style="margin-top:10px">重新開始這趟旅程</button>
+</section>
+<style>
+.journey-progress{height:9px;background:#e7efec;border-radius:99px;overflow:hidden;margin:12px 0 5px}.journey-progress div{height:100%;width:0;background:linear-gradient(90deg,#58ae98,#edc36f);transition:width .25s}
+.choice-card{border:1px solid #dce9e5;background:#f8fcfa;border-radius:16px;padding:16px;margin-top:12px}.choice-card h3{margin:4px 0 8px;font-size:20px}.choice-option{display:flex;gap:10px;align-items:flex-start;border:1px solid #dce8e3;background:white;border-radius:12px;padding:12px;margin-top:8px;cursor:pointer;line-height:1.7;font-size:14px}.choice-option input{margin-top:5px;accent-color:#388b7c;flex:0 0 auto}.choice-option:has(input:checked){border:2px solid #48a18c;background:#edf8f2;padding:11px}.choice-note{font-size:12px;color:#698078;line-height:1.8;margin-top:10px}.choice-nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.now-me{display:none;background:linear-gradient(135deg,#e3f5e9,#fff2d4);border:1px solid #d5e9db;border-radius:16px;padding:16px;margin-top:14px}.now-me.visible{display:block}.now-me h2{margin:0 0 8px}.profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}.profile-item{background:#ffffffd9;border-radius:12px;padding:11px}.profile-item strong{display:block;font-size:13px}.profile-item span{font-size:12px;line-height:1.7;color:#536d77}.action-line{padding:12px;border-left:3px solid #d9b25f;background:#ffffffb8;border-radius:0 10px 10px 0;margin-top:9px;font-size:13px;line-height:1.8}
+@media(max-width:520px){.profile-grid{grid-template-columns:1fr}.choice-nav .btn{flex:1}}
+</style>
+
 <section class="closing"><div class="kicker">DESTINATION · 最後一座島</div><strong>氣球會洩氣，皇冠會裂開。<br>真正的成長，是把榮耀歸給上帝。</strong><div class="muted" style="margin-top:6px">現在的我，不必靠比較證明自己；我能在順境中謙卑，在受挫時不報復，並用所擁有的能力去愛人。</div><div class="timeline" id="timeline"></div></section>
 </main><footer>此互動網站將《氣球大頭症》單元內容整理成學習歷程示例。若用於個人學習檔案，請將房間內容替換成自己的真實作品、反思與成果。</footer>
 <script type="importmap">
@@ -93,5 +114,82 @@ document.querySelector('#minus').addEventListener('click',()=>{camera.position.s
 canvas.addEventListener('pointerup',e=>{if(e.pointerType==='touch'&&e.isPrimary===false)return;const r=canvas.getBoundingClientRect();pointer.x=((e.clientX-r.left)/r.width)*2-1;pointer.y=-((e.clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(pickables,false);if(hits.length)selectIsland(hits[0].object.userData.index,true)});
 document.querySelector('#timeline').innerHTML=data.map((d,i)=>`<div class="step"><div class="dot"></div>${d.short}</div>`).join('');
 selectIsland(0,false);
+
+const experiences = [
+ {title:'第 1 站｜起點島：我看見自己',scene:'佩佩拿到新衣、新鞋，也得到一百分。大家看著她時，你最可能怎麼想？',choices:[
+  {text:'我很棒！我想讓大家知道我比別人厲害。',scores:{humility:0,empathy:0,faith:0,awareness:0},feedback:'先誠實看見自己想被肯定的心情，是反思的起點。'},
+  {text:'我可以為自己的努力開心，也不必拿來比較。',scores:{humility:2,empathy:1,faith:1,awareness:2},feedback:'你開始把成就和自我價值分開，也留意別人的感受。'},
+  {text:'我想感謝幫助我的人，也記得能力是領受的禮物。',scores:{humility:3,empathy:1,faith:3,awareness:2},feedback:'你把感恩與謙卑放在成就之前。'}]},
+ {title:'第 2 站｜風雨島：受挫的選擇',scene:'你被別人比較、嘲笑，心裡很委屈。你會怎麼做？',choices:[
+  {text:'讓對方也難受一次，這樣才公平。',scores:{humility:0,empathy:0,faith:0,awareness:1},feedback:'報復的衝動很真實；下一步是看見它會帶來什麼後果。'},
+  {text:'先離開現場，等情緒平靜後再說。',scores:{humility:1,empathy:2,faith:1,awareness:3},feedback:'你選擇先停下來，讓情緒不替你做決定。'},
+  {text:'找可信任的人說出委屈，再用不傷人的方式表達。',scores:{humility:2,empathy:3,faith:1,awareness:3},feedback:'你同時照顧自己的感受，也避免把傷害傳給別人。'}]},
+ {title:'第 3 站｜軍裝島：另一種回應',scene:'有人炫耀成就，讓你覺得自己被比下去。你會如何回應？',choices:[
+  {text:'故意說出對方的缺點，讓他不要太得意。',scores:{humility:0,empathy:0,faith:0,awareness:0},feedback:'這種回應可能暫時讓你覺得扳回一城，卻會讓關係更遠。'},
+  {text:'先聽完，再溫和地說出我的感受。',scores:{humility:2,empathy:3,faith:1,awareness:2},feedback:'你練習用溫和與真實取代攻擊。'},
+  {text:'真心肯定對方，也提醒自己每個人都有不同的恩賜。',scores:{humility:3,empathy:3,faith:2,awareness:2},feedback:'你能欣賞別人，而不必貶低自己。'}]},
+ {title:'第 4 站｜皇冠島：分辨動機',scene:'如果你做了一件很厲害的事，你最希望得到什麼？',choices:[
+  {text:'所有人都稱讚我，讓我成為最受注目的人。',scores:{humility:0,empathy:0,faith:0,awareness:1},feedback:'想被看見是人的常見心情；可以再問自己：如果沒有人稱讚，我還願意做嗎？'},
+  {text:'希望努力被看見，也願意分享功勞。',scores:{humility:2,empathy:2,faith:1,awareness:2},feedback:'你開始兼顧肯定與分享，不把所有榮耀留給自己。'},
+  {text:'希望事情真正幫助到人，並把榮耀歸給上帝。',scores:{humility:3,empathy:3,faith:3,awareness:2},feedback:'你把焦點從個人掌聲轉向服事、感恩與信仰。'}]},
+ {title:'第 5 站｜真光島：把榮耀歸主',scene:'你發現自己曾經驕傲或做錯事。你接下來會怎麼做？',choices:[
+  {text:'假裝沒事，避免別人知道。',scores:{humility:0,empathy:0,faith:0,awareness:0},feedback:'逃避能暫時減少尷尬，但問題可能還在；你可以從承認一小步開始。'},
+  {text:'承認錯誤，向受影響的人道歉並改正。',scores:{humility:3,empathy:3,faith:2,awareness:3},feedback:'你願意承擔責任，讓反思變成實際改變。'},
+  {text:'向上帝禱告、省察動機，也找成熟可信的人一起面對。',scores:{humility:3,empathy:2,faith:3,awareness:3},feedback:'你把信仰省察與具體支持連結起來。'}]}
+];
+const chosen = Array(5).fill(null);
+let activeExperience = 0;
+const stageNode = document.querySelector('#choice-stage');
+function renderExperience(){
+ const e=experiences[activeExperience], answer=chosen[activeExperience];
+ stageNode.innerHTML=`<div class="choice-card"><div class="kicker">經歷 ${activeExperience+1} / 5</div><h3>${e.title}</h3><p style="line-height:1.8">${e.scene}</p>${e.choices.map((c,i)=>`<label class="choice-option"><input type="radio" name="experience-choice" value="${i}" ${answer===i?'checked':''}><span>${c.text}</span></label>`).join('')}${answer!==null?`<div class="choice-note">💡 反思：${e.choices[answer].feedback}</div>`:'<div class="choice-note">選擇最接近你當下的回應，系統就會把這個選擇納入「現在的我」。</div>'}</div>`;
+ stageNode.querySelectorAll('input').forEach(input=>input.addEventListener('change',()=>{chosen[activeExperience]=Number(input.value);renderExperience();updateProgress();renderNowMe(false)}));
+ document.querySelector('#prev-choice').disabled=activeExperience===0;
+ document.querySelector('#next-choice').textContent=activeExperience===4?'前往第六站 →':'下一段 →';
+}
+function updateProgress(){
+ const n=chosen.filter(v=>v!==null).length;
+ document.querySelector('#progress-fill').style.width=(n/5*100)+'%';
+ document.querySelector('#progress-label').textContent=`已完成 ${n} / 5 段經歷${n===5?' · 可以查看你的成長輪廓！':''}`;
+}
+function renderNowMe(show=true){
+ const panel=document.querySelector('#now-me');
+ if(show)panel.classList.add('visible');
+ const answered=chosen.filter(v=>v!==null).length;
+ if(!answered){panel.innerHTML='<h2>第六站｜現在的我</h2><p class="muted">先在前五段經歷中做出選擇，這裡才會出現依你答案整理的成長輪廓。</p>';return}
+ const totals={humility:0,empathy:0,faith:0,awareness:0};
+ chosen.forEach((a,i)=>{if(a!==null)Object.entries(experiences[i].choices[a].scores).forEach(([k,v])=>totals[k]+=v)});
+ const max=answered*3;
+ const level=v=>v>=answered*2.2?'已展現的優勢':v>=answered*1.2?'正在累積':'值得練習';
+ const profiles=[
+  ['謙卑與感恩','humility','在有成就時不把自己放在別人之上，記得恩賜與幫助從哪裡來。'],
+  ['同理與關係','empathy','看見別人的感受，欣賞別人的成功，避免把受傷變成新的傷害。'],
+  ['信仰與歸榮耀','faith','不只追求能力或掌聲，也思考如何感恩、服事並把榮耀歸給上帝。'],
+  ['自我覺察與停看聽','awareness','留意自己情緒與動機，在反應之前停一下，選擇更合宜的行動。']
+ ];
+ const allDone=answered===5;
+ const strongest=[...profiles].sort((a,b)=>totals[b[1]]-totals[a[1]])[0];
+ const needs=[...profiles].sort((a,b)=>totals[a[1]]-totals[b[1]])[0];
+ const actions={
+  humility:'下次被稱讚時，說出一個幫助過你的人，並把功勞分享出去。',
+  empathy:'下次覺得被比較時，先說「我現在有點受傷」，不要急著反擊。',
+  faith:'每天選一件你感恩的能力，想一想它可以怎樣幫助別人。',
+  awareness:'情緒上來時，先停十秒，問自己：「我真正想要的是什麼？這樣做會造成什麼結果？」'
+ };
+ panel.innerHTML=`<h2>第六站｜現在的我</h2><p style="line-height:1.85">${allDone?'你的五次選擇已經匯聚成一張成長地圖。':'你目前完成了 '+answered+' / 5 段經歷；以下是依照已選答案形成的暫時輪廓。完成全部五段後，輪廓會更完整。'}每個結果都不是給你貼標籤，而是幫助你看見已經在練習的能力，以及下一步可以成長的方向。</p>
+ <div class="profile-grid">${profiles.map(([name,key,desc])=>`<div class="profile-item"><strong>${name} · ${level(totals[key])}</strong><span>${desc}<br><b>目前累積：${totals[key]} 分</b></span></div>`).join('')}</div>
+ <div class="action-line"><b>🌟 目前較突出的成長方向：${strongest[0]}</b><br>${strongest[2]}</div>
+ <div class="action-line"><b>🌱 下一步可以特別練習：${needs[0]}</b><br>${actions[needs[1]]}</div>
+ <div class="action-line"><b>📌 我的成長宣言</b><br>我不需要靠比較證明自己。我願意在順境中謙卑，在受挫時停止報復，在選擇前省察動機，並用自己的能力幫助別人，把榮耀歸給上帝。</div>
+ <div class="choice-nav"><button class="btn" id="edit-choices">回去修改我的選擇</button><button class="btn" id="copy-reflection">複製我的成長反思</button></div>`;
+ document.querySelector('#edit-choices').addEventListener('click',()=>{panel.classList.remove('visible');activeExperience=0;renderExperience();document.querySelector('#choice-journey').scrollIntoView({behavior:'smooth',block:'start'})});
+ document.querySelector('#copy-reflection').addEventListener('click',()=>{const txt=`我的學習歷程反思\n完成經歷：${answered}/5\n${profiles.map(([name,key])=>`${name}：${level(totals[key])}（${totals[key]} 分）`).join('\n')}\n較突出的成長方向：${strongest[0]}\n下一步練習：${actions[needs[1]]}\n我不需要靠比較證明自己。我願意在順境中謙卑，在受挫時停止報復，在選擇前省察動機，並用自己的能力幫助別人，把榮耀歸給上帝。`;if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(()=>alert('已複製成長反思！')).catch(()=>prompt('請複製以下文字：',txt));else prompt('請複製以下文字：',txt)});
+}
+document.querySelector('#prev-choice').addEventListener('click',()=>{activeExperience=Math.max(0,activeExperience-1);renderExperience()});
+document.querySelector('#next-choice').addEventListener('click',()=>{if(activeExperience<4){activeExperience++;renderExperience()}else{renderNowMe(true);document.querySelector('#now-me').scrollIntoView({behavior:'smooth',block:'start'})}});
+document.querySelector('#show-now').addEventListener('click',()=>{renderNowMe(true);document.querySelector('#now-me').scrollIntoView({behavior:'smooth',block:'start'})});
+document.querySelector('#reset-journey').addEventListener('click',()=>{chosen.fill(null);activeExperience=0;renderExperience();updateProgress();renderNowMe(false);document.querySelector('#now-me').classList.remove('visible')});
+renderExperience();updateProgress();renderNowMe(false);
+
 </script>
 </body></html>
