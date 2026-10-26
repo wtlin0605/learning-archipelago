@@ -64,6 +64,23 @@ header:after{content:"✦   ✧      ✦";position:absolute;right:5%;top:18%;fon
 @media(max-width:720px){header:after{opacity:.35}.stage{border-radius:16px}.panel{border-radius:16px}.closing{padding:15px}}
 </style>
 
+
+<style>
+/* V4 polish and feedback */
+header{background:linear-gradient(120deg,#d5f6e8,#e8ecff 54%,#fff0d2);box-shadow:inset 0 -1px #ffffff}
+.stage{background:linear-gradient(180deg,#bce9e8,#8fcfda);border:2px solid #d4eee7}
+#world{filter:saturate(1.08)}
+.panel,.closing,#choice-journey{border-radius:22px}
+.btn{box-shadow:0 3px 0 #d9e7e1}
+.btn:active{box-shadow:0 1px 0 #d9e7e1}
+.reward-badge{transition:transform .2s,opacity .2s,box-shadow .2s}
+.reward-badge.earned{transform:translateY(-2px)}
+.challenge-box{position:relative;overflow:hidden}
+.challenge-box:after{content:"✦";position:absolute;right:15px;top:5px;font-size:50px;color:#ffffffaa;pointer-events:none}
+#complete-challenge:disabled{cursor:default;transform:none;box-shadow:none}
+.choice-option{cursor:pointer}
+@media(prefers-reduced-motion:reduce){.reward-badge,.btn,.room,.panel{transition:none!important}}
+</style>
 </head>
 <body>
 <header><div class="kicker">MY LEARNING JOURNEY · 學習歷程探索</div><h1>把故事走成自己的成長地圖</h1><p>從追求掌聲，到學會謙卑；從受挫與報復，到以愛和真理回應。選一座島，探索每段經歷如何累積成現在的自己。</p></header>
@@ -88,7 +105,7 @@ header:after{content:"✦   ✧      ✦";position:absolute;right:5%;top:18%;fon
 </div>
 <div class="challenge-box">
   <div class="kicker">DAILY MINI QUEST · 今日小任務</div>
-  <h3 id="challenge-title">🌿 把學習帶進生活</h3>
+  <div class="tag" id="challenge-kind">生活任務</div><h3 id="challenge-title">🌿 把學習帶進生活</h3>
   <p id="challenge-text" style="font-size:13px;line-height:1.8;margin:5px 0 10px">完成一個小小的善意行動，讓故事不只停在螢幕裡。</p>
   <button class="btn" id="new-challenge">換一個生活任務 ↻</button>
   <button class="btn" id="complete-challenge">我今天做到了 ✓</button>
@@ -107,6 +124,84 @@ header:after{content:"✦   ✧      ✦";position:absolute;right:5%;top:18%;fon
 .journey-progress{height:9px;background:#e7efec;border-radius:99px;overflow:hidden;margin:12px 0 5px}.journey-progress div{height:100%;width:0;background:linear-gradient(90deg,#58ae98,#edc36f);transition:width .25s}
 .choice-card{border:1px solid #dce9e5;background:#f8fcfa;border-radius:16px;padding:16px;margin-top:12px}.choice-card h3{margin:4px 0 8px;font-size:20px}.choice-option{display:flex;gap:10px;align-items:flex-start;border:1px solid #dce8e3;background:white;border-radius:12px;padding:12px;margin-top:8px;cursor:pointer;line-height:1.7;font-size:14px}.choice-option input{margin-top:5px;accent-color:#388b7c;flex:0 0 auto}.choice-option:has(input:checked){border:2px solid #48a18c;background:#edf8f2;padding:11px}.choice-note{font-size:12px;color:#698078;line-height:1.8;margin-top:10px}.choice-nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.now-me{display:none;background:linear-gradient(135deg,#e3f5e9,#fff2d4);border:1px solid #d5e9db;border-radius:16px;padding:16px;margin-top:14px}.now-me.visible{display:block}.now-me h2{margin:0 0 8px}.profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}.profile-item{background:#ffffffd9;border-radius:12px;padding:11px}.profile-item strong{display:block;font-size:13px}.profile-item span{font-size:12px;line-height:1.7;color:#536d77}.action-line{padding:12px;border-left:3px solid #d9b25f;background:#ffffffb8;border-radius:0 10px 10px 0;margin-top:9px;font-size:13px;line-height:1.8}
 @media(max-width:520px){.profile-grid{grid-template-columns:1fr}.choice-nav .btn{flex:1}}
+</style>
+
+
+<section class="panel" id="story-game" style="margin-top:14px">
+  <div class="kicker">PLAY THE STORY · 把故事變成選擇</div>
+  <h2 style="font-size:24px;margin:6px 0">故事互動實驗室</h2>
+  <p class="muted">動手試試看：你的操作會改變氣球、阿德的回應與西門的皇冠。最後把這些選擇整理成一張專屬的成長角色卡。</p>
+  <div class="game-grid">
+    <article class="game-card balloon-game">
+      <div class="game-number">01 · 佩佩的氣球</div>
+      <h3>掌聲越多，氣球越大？</h3>
+      <p>點擊「再多一點掌聲」，觀察氣球如何膨脹。再按「感恩與分享」，讓氣球慢慢回到合宜的大小。</p>
+      <div class="balloon-stage" aria-label="可互動氣球">
+        <div class="balloon-string"></div><div id="interactive-balloon" class="interactive-balloon"><span>我最棒！</span></div>
+        <div class="balloon-shadow"></div>
+      </div>
+      <div class="meter"><span id="balloon-meter" style="width:25%"></span></div>
+      <p class="game-feedback" id="balloon-feedback" aria-live="polite">目前氣球大小：25%。成就可以值得開心，但不需要拿來比較。</p>
+      <div class="game-actions"><button class="btn" id="inflate-balloon">🎈 再多一點掌聲</button><button class="btn" id="deflate-balloon">🌱 感恩與分享</button></div>
+    </article>
+    <article class="game-card response-game">
+      <div class="game-number">02 · 阿德的回應</div>
+      <h3>受傷時，我可以怎麼選？</h3>
+      <p>佩佩又拿成績比較你。選一個你想嘗試的回應，看看它可能帶來什麼結果。</p>
+      <div class="scene-bubble"><span class="character-face">🧒🏻</span><span>「你看！我又比你厲害了！」</span></div>
+      <div class="response-options">
+        <button class="response-option" data-response="revenge"><span>💥</span><b>報復回去</b><small>讓對方也難受</small></button>
+        <button class="response-option" data-response="pause"><span>🛡️</span><b>先停下來</b><small>整理自己的情緒</small></button>
+        <button class="response-option" data-response="kind"><span>💬</span><b>溫和說真話</b><small>表達感受，不攻擊人</small></button>
+      </div>
+      <div class="response-result" id="response-result" aria-live="polite">選擇一個回應，看看故事接下來可能如何發展。</div>
+    </article>
+    <article class="game-card crown-game">
+      <div class="game-number">03 · 西門的皇冠</div>
+      <h3>我做這件事，最想得到什麼？</h3>
+      <p>選擇你的動機，看看皇冠會如何變化。這不是給人貼標籤，而是練習誠實省察。</p>
+      <div class="crown-stage"><div id="interactive-crown" class="interactive-crown">👑</div><div class="crown-crack" id="crown-crack">✦</div></div>
+      <div class="crown-meter"><span id="crown-meter" style="width:25%"></span></div>
+      <div class="response-options crown-options">
+        <button class="response-option" data-motive="applause"><span>👏</span><b>想被稱讚</b><small>希望大家都看見我</small></button>
+        <button class="response-option" data-motive="share"><span>🤝</span><b>分享功勞</b><small>願意肯定別人的付出</small></button>
+        <button class="response-option" data-motive="serve"><span>🙏</span><b>幫助別人</b><small>感恩並把榮耀歸主</small></button>
+      </div>
+      <div class="game-feedback" id="crown-feedback" aria-live="polite">選擇一種動機，觀察皇冠的變化。</div>
+    </article>
+    <article class="game-card growth-game">
+      <div class="game-number">04 · 我的成長角色卡</div>
+      <h3>把選擇變成下一步</h3>
+      <p>完成上面三個互動，產生你的角色卡。你也可以把前五站的學習選擇一起納入。</p>
+      <div class="character-card" id="character-card">
+        <div class="character-spark">✦ ✧ ✦</div><div class="character-avatar" id="character-avatar">🌱</div>
+        <div class="character-label">MY GROWTH CARD</div><h3 id="character-title">正在成長的旅人</h3>
+        <p id="character-description">每一次選擇，都能成為成長的起點。</p>
+        <div class="character-stats" id="character-stats"><span>謙卑　待探索</span><span>同理　待探索</span><span>省察　待探索</span></div>
+      </div>
+      <div class="game-actions"><button class="btn" id="make-character">✨ 生成我的角色卡</button><button class="btn" id="download-character">⬇ 下載角色卡</button></div>
+      <p class="game-feedback" id="character-feedback">角色卡會依據你的互動選擇產生，可下載為圖片。</p>
+    </article>
+  </div>
+</section>
+<style>
+.game-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:15px}
+.game-card{min-width:0;border:1px solid #dce9e5;border-radius:18px;padding:15px;background:linear-gradient(145deg,#fff,#f7fbf9);box-shadow:0 8px 24px #456a6410}
+.game-number{font-size:10px;letter-spacing:1.7px;font-weight:900;color:#498779}.game-card h3{font-size:18px;margin:6px 0}.game-card>p{font-size:12px;line-height:1.8;color:#637783}
+.balloon-stage{height:190px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(ellipse at 50% 75%,#dff3e8,#f5fbff 70%);border-radius:14px;margin:12px 0}
+.interactive-balloon{--balloon-size:80px;width:var(--balloon-size);height:calc(var(--balloon-size)*1.15);border-radius:52% 48% 48% 52%/45% 45% 55% 55%;background:radial-gradient(circle at 30% 25%,#fff8 0 5%,transparent 25%),radial-gradient(circle at 35% 25%,#ffcfdb,#ef789e 65%,#d64d7a);display:flex;align-items:center;justify-content:center;position:absolute;top:22px;z-index:2;box-shadow:inset -8px -9px 14px #9b31552b,0 9px 20px #dc769933;transition:width .4s,height .4s,transform .4s}
+.interactive-balloon:after{content:"";position:absolute;bottom:-8px;left:calc(50% - 7px);border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid #d95b83}
+.interactive-balloon span{font-size:10px;font-weight:900;color:#873a58;text-align:center;max-width:80%;line-height:1.3}
+.balloon-string{position:absolute;top:115px;height:62px;border-left:1px solid #b47a89;z-index:1}.balloon-shadow{position:absolute;bottom:15px;width:80px;height:12px;background:#9acbbd66;border-radius:50%;filter:blur(4px)}
+.meter,.crown-meter{height:8px;background:#e6eeeb;border-radius:99px;overflow:hidden;margin:10px 0}.meter span{display:block;height:100%;background:linear-gradient(90deg,#83c9aa,#ef8fae);border-radius:99px;transition:width .35s}.game-feedback{font-size:12px;line-height:1.8;color:#526d77;min-height:40px}
+.game-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}.game-actions .btn{flex:1;font-size:12px;padding:9px}
+.scene-bubble{display:flex;align-items:center;gap:9px;background:#f1f7ff;border:1px solid #e0e9f7;border-radius:14px;padding:12px;font-size:13px;line-height:1.6;margin:12px 0}.character-face{font-size:28px}
+.response-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.response-option{border:1px solid #dfe9e5;background:white;border-radius:13px;padding:10px 6px;cursor:pointer;color:#304b58;display:flex;flex-direction:column;align-items:center;gap:5px;transition:transform .18s,border .18s,background .18s;min-width:0}.response-option:hover{transform:translateY(-2px);border-color:#9acdbb}.response-option:focus-visible{outline:3px solid #e7c46f}.response-option span{font-size:23px}.response-option b{font-size:11px}.response-option small{font-size:10px;line-height:1.4;color:#75858d;text-align:center}.response-option.chosen{border:2px solid #56a88f;background:#effaf3;padding:9px 5px}
+.response-result{margin-top:10px;padding:11px;border-radius:12px;background:#f4f8f6;font-size:12px;line-height:1.8;color:#526d77;min-height:64px}
+.crown-stage{height:135px;display:flex;align-items:center;justify-content:center;position:relative;background:radial-gradient(ellipse,#fff2c7,#fbf8ff 70%);border-radius:14px;margin:12px 0}.interactive-crown{font-size:72px;filter:drop-shadow(0 8px 4px #8c743533);transition:transform .35s,filter .35s}.crown-crack{position:absolute;right:32%;top:35%;font-size:28px;color:#c85f59;opacity:0;transform:scale(.3) rotate(-20deg);transition:all .3s}.crown-meter span{display:block;height:100%;background:linear-gradient(90deg,#f1c86d,#c8a0dc);transition:width .35s}.crown-options{margin-top:8px}
+.character-card{position:relative;overflow:hidden;min-height:240px;border-radius:18px;padding:17px;text-align:center;background:radial-gradient(circle at 50% 0,#fff6d9,transparent 48%),linear-gradient(145deg,#dff5e9,#e8e9ff);border:1px solid #d4e6df}
+.character-spark{letter-spacing:12px;color:#d5a84c}.character-avatar{font-size:54px;margin:3px auto;filter:drop-shadow(0 6px 5px #3f796b22)}.character-label{font-size:9px;letter-spacing:2px;font-weight:900;color:#588b7b}.character-card h3{font-size:21px;margin:5px 0;color:#2b6256}.character-card p{font-size:12px;line-height:1.8;color:#526c75}.character-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:12px}.character-stats span{font-size:10px;font-weight:800;border-radius:99px;padding:6px 9px;background:#ffffffb8;color:#52766b}
+@media(max-width:760px){.game-grid{grid-template-columns:1fr}.game-card{padding:13px}.response-options{gap:5px}.response-option{padding:9px 4px}.response-option b{font-size:10px}.balloon-stage{height:175px}}
 </style>
 
 <section class="closing"><div class="kicker">DESTINATION · 最後一座島</div><strong>氣球會洩氣，皇冠會裂開。<br>真正的成長，是把榮耀歸給上帝。</strong><div class="muted" style="margin-top:6px">現在的我，不必靠比較證明自己；我能在順境中謙卑，在受挫時不報復，並用所擁有的能力去愛人。</div><div class="timeline" id="timeline"></div></section>
@@ -161,6 +256,36 @@ function makeIsland(d,i){
 }
 
 data.forEach(makeIsland);
+
+data.forEach(makeIsland);
+// Art direction: layered island cliffs, shoreline trim, stepping stones and tiny flowers.
+const artGroup=new THREE.Group();world.add(artGroup);
+const trimMat=new THREE.MeshStandardMaterial({color:0xf7e8bd,roughness:.55,metalness:.05});
+const pathMat=new THREE.MeshStandardMaterial({color:0xc9a77c,roughness:1});
+const flowerMats=[0xf4a7bc,0xffd66b,0xffffff,0xb5a4ef].map(c=>new THREE.MeshStandardMaterial({color:c,roughness:.7}));
+for(let i=0;i<islandGroups.length;i++){
+ const pos=islandGroups[i].position;
+ const shoreline=new THREE.Mesh(new THREE.TorusGeometry(1.84,.045,7,40),trimMat);
+ shoreline.rotation.x=Math.PI/2;shoreline.position.set(pos.x,.31,pos.z);artGroup.add(shoreline);
+ for(let j=0;j<5;j++){
+  const a=j*1.15+i*.4, x=pos.x+Math.cos(a)*1.35, z=pos.z+Math.sin(a)*1.35;
+  const pebble=new THREE.Mesh(new THREE.DodecahedronGeometry(.11,0),pathMat);
+  pebble.position.set(x,.39,z);pebble.scale.set(1,.45,.75);artGroup.add(pebble);
+ }
+ for(let j=0;j<7;j++){
+  const a=j*2.4+i, x=pos.x+Math.cos(a)*1.48, z=pos.z+Math.sin(a)*1.48;
+  const stem=new THREE.Mesh(new THREE.CylinderGeometry(.018,.025,.16,4),mat(0x568e63));
+  stem.position.set(x,.48,z);artGroup.add(stem);
+  const bloom=new THREE.Mesh(new THREE.SphereGeometry(.085,7,5),flowerMats[(i+j)%flowerMats.length]);
+  bloom.position.set(x,.58,z);bloom.scale.set(1,.75,1);artGroup.add(bloom);
+ }
+ // Little flagpole with a color-matched pennant at the back of each island.
+ const pole=new THREE.Mesh(new THREE.CylinderGeometry(.025,.035,.75,5),mat(0x8c7258));
+ pole.position.set(pos.x+.2,1.22,pos.z-1.1);artGroup.add(pole);
+ const flag=new THREE.Mesh(new THREE.ConeGeometry(.24,.34,3),new THREE.MeshStandardMaterial({color:data[i].color,roughness:.6}));
+ flag.rotation.z=-Math.PI/2;flag.position.set(pos.x+.39,1.36,pos.z-1.1);artGroup.add(flag);
+}
+
 // A dreamy archipelago: floating crystals, tiny star beacons, clouds and a soft route glow.
 const glowMat=new THREE.MeshStandardMaterial({color:0xfff1b8,emissive:0xffd76a,emissiveIntensity:.55,roughness:.35});
 const crystalMat=new THREE.MeshStandardMaterial({color:0xa5d9f2,emissive:0x367eac,emissiveIntensity:.12,roughness:.28,metalness:.12,flatShading:true});
@@ -213,6 +338,13 @@ document.querySelector('#minus').addEventListener('click',()=>{camera.position.s
 
 const rayPointer=new THREE.Vector2();
 canvas.addEventListener('pointermove',e=>{if(e.buttons)return;const r=canvas.getBoundingClientRect();rayPointer.x=((e.clientX-r.left)/r.width)*2-1;rayPointer.y=-((e.clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(rayPointer,camera);const hits=raycaster.intersectObjects(pickables,false);canvas.style.cursor=hits.length?'pointer':'grab'});
+
+
+canvas.addEventListener('dblclick',e=>{
+ const r=canvas.getBoundingClientRect();pointer.x=((e.clientX-r.left)/r.width)*2-1;pointer.y=-((e.clientY-r.top)/r.height)*2+1;
+ raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(pickables,false);
+ if(hits.length){selectIsland(hits[0].object.userData.index,true);camera.position.sub(controls.target).multiplyScalar(.72).add(controls.target);toast('已靠近島嶼，點選房間深入探索 ✨')}
+});
 
 canvas.addEventListener('pointerup',e=>{if(e.pointerType==='touch'&&e.isPrimary===false)return;const r=canvas.getBoundingClientRect();pointer.x=((e.clientX-r.left)/r.width)*2-1;pointer.y=-((e.clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(pickables,false);if(hits.length)selectIsland(hits[0].object.userData.index,true)});
 document.querySelector('#timeline').innerHTML=data.map((d,i)=>`<div class="step"><div class="dot"></div>${d.short}</div>`).join('');
@@ -288,44 +420,183 @@ function renderNowMe(show=true){
  document.querySelector('#edit-choices').addEventListener('click',()=>{panel.classList.remove('visible');activeExperience=0;renderExperience();document.querySelector('#choice-journey').scrollIntoView({behavior:'smooth',block:'start'})});
  document.querySelector('#copy-reflection').addEventListener('click',()=>{const txt=`我的學習歷程反思\n完成經歷：${answered}/5\n${profiles.map(([name,key])=>`${name}：${level(totals[key])}（${totals[key]} 分）`).join('\n')}\n較突出的成長方向：${strongest[0]}\n下一步練習：${actions[needs[1]]}\n我不需要靠比較證明自己。我願意在順境中謙卑，在受挫時停止報復，在選擇前省察動機，並用自己的能力幫助別人，把榮耀歸給上帝。`;if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(()=>alert('已複製成長反思！')).catch(()=>prompt('請複製以下文字：',txt));else prompt('請複製以下文字：',txt)});
 }
-document.querySelector('#prev-choice').addEventListener('click',()=>{activeExperience=Math.max(0,activeExperience-1);renderExperience()});
-document.querySelector('#next-choice').addEventListener('click',()=>{if(activeExperience<4){activeExperience++;renderExperience()}else{renderNowMe(true);document.querySelector('#now-me').scrollIntoView({behavior:'smooth',block:'start'})}});
-document.querySelector('#show-now').addEventListener('click',()=>{renderNowMe(true);document.querySelector('#now-me').scrollIntoView({behavior:'smooth',block:'start'})});
-document.querySelector('#reset-journey').addEventListener('click',()=>{chosen.fill(null);activeExperience=0;renderExperience();updateProgress();renderNowMe(false);
-
-// Save choices on this device so learners can return to their journey.
-const STORAGE_KEY='learning-archipelago-v3';
-try{
- const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
- if(saved&&Array.isArray(saved.chosen)&&saved.chosen.length===5){
-  saved.chosen.forEach((v,i)=>{if(v===null||(Number.isInteger(v)&&v>=0&&v<3))chosen[i]=v});
-  activeExperience=chosen.findIndex(v=>v===null);if(activeExperience<0)activeExperience=4;
- }
-}catch(e){}
+const STORAGE_KEY='learning-archipelago-v4';
 const challengeList=[
- ['💬 溫柔說真話','今天練習用一句不傷人的話，表達自己的感受。'],
- ['🤝 為別人高興','真心稱讚一位同學的努力，不把話題拉回自己身上。'],
- ['🙏 感恩一件事','寫下今天一項領受的能力，並想想它能怎樣幫助別人。'],
- ['🛑 暫停十秒','遇到不順心時，先停十秒再回應，不急著反擊。'],
- ['🌱 默默幫助人','做一件不需要被稱讚的小事，留意自己的心情。'],
- ['🪞 檢查動機','做事前問自己：我想幫助人，還是只想被看見？']
+ ['💬 溫柔說真話','今天練習用一句不傷人的話，表達自己的感受。','對話任務'],
+ ['🤝 為別人高興','真心稱讚一位同學的努力，不把話題拉回自己身上。','關係任務'],
+ ['🙏 感恩一件事','寫下今天一項領受的能力，並想想它能怎樣幫助別人。','感恩任務'],
+ ['🛑 暫停十秒','遇到不順心時，先停十秒再回應，不急著反擊。','情緒任務'],
+ ['🌱 默默幫助人','做一件不需要被稱讚的小事，留意自己的心情。','行動任務'],
+ ['🪞 檢查動機','做事前問自己：我想幫助人，還是只想被看見？','省察任務']
 ];
-let challengeIndex=Math.floor(Math.random()*challengeList.length);
-function showChallenge(){document.querySelector('#challenge-title').textContent=challengeList[challengeIndex][0];document.querySelector('#challenge-text').textContent=challengeList[challengeIndex][1];}
+let challengeIndex=0, challengeCompleted=false;
+function toast(message){
+ let t=document.querySelector('.floating-toast');
+ if(!t){t=document.createElement('div');t.className='floating-toast';document.body.appendChild(t)}
+ t.textContent=message;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+function saveJourney(){
+ try{localStorage.setItem(STORAGE_KEY,JSON.stringify({chosen,activeExperience,challengeIndex,challengeCompleted,updatedAt:new Date().toISOString()}))}catch(e){}
+}
 function updateBadges(){
  const n=chosen.filter(v=>v!==null).length;
- const badge=(id,on)=>document.querySelector(`[data-badge="${id}"]`).classList.toggle('earned',on);
- badge('first',n>=1);badge('reflect',n>=2&&chosen.some((v,i)=>v!==null&&experiences[i].choices[v].scores.awareness>=2));
+ const badge=(id,on)=>{const el=document.querySelector(`[data-badge="${id}"]`);if(el)el.classList.toggle('earned',on)};
+ badge('first',n>=1);
+ badge('reflect',n>=2&&chosen.some((v,i)=>v!==null&&experiences[i].choices[v].scores.awareness>=2));
  badge('empathy',chosen.some((v,i)=>v!==null&&experiences[i].choices[v].scores.empathy>=2));
- badge('humble',chosen.some((v,i)=>v!==null&&experiences[i].choices[v].scores.humility>=2));badge('complete',n===5);
+ badge('humble',chosen.some((v,i)=>v!==null&&experiences[i].choices[v].scores.humility>=2));
+ badge('complete',n===5);
 }
-function saveJourney(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({chosen,activeExperience,updatedAt:new Date().toISOString()}))}catch(e){}}
-function toast(message){let t=document.querySelector('.floating-toast');if(!t){t=document.createElement('div');t.className='floating-toast';document.body.appendChild(t)}t.textContent=message;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1900)}
-document.querySelector('#new-challenge').addEventListener('click',()=>{challengeIndex=(challengeIndex+1+Math.floor(Math.random()*(challengeList.length-1)))%challengeList.length;showChallenge();document.querySelector('#challenge-status').textContent='';});
-document.querySelector('#complete-challenge').addEventListener('click',()=>{document.querySelector('#challenge-status').textContent='已完成！很棒，讓成長發生在生活中。';toast('🌟 任務完成！把善意帶進今天。')});
-showChallenge();
-document.querySelector('#now-me').classList.remove('visible')});
-renderExperience();updateProgress();renderNowMe(false);
+function showChallenge(){
+ const c=challengeList[challengeIndex];
+ document.querySelector('#challenge-title').textContent=c[0];
+ document.querySelector('#challenge-text').textContent=c[1];
+ document.querySelector('#challenge-status').textContent=challengeCompleted?'✓ 今日已完成':'';
+ document.querySelector('#complete-challenge').textContent=challengeCompleted?'✓ 已完成':'我今天做到了 ✓';
+ document.querySelector('#complete-challenge').disabled=challengeCompleted;
+ document.querySelector('#complete-challenge').style.opacity=challengeCompleted?'.65':'1';
+ const badge=document.querySelector('#challenge-kind');
+ if(badge)badge.textContent=c[2];
+}
+function loadJourney(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
+  if(saved&&Array.isArray(saved.chosen)&&saved.chosen.length===5){
+   saved.chosen.forEach((v,i)=>{if(v===null||(Number.isInteger(v)&&v>=0&&v<3))chosen[i]=v});
+   if(Number.isInteger(saved.activeExperience))activeExperience=Math.max(0,Math.min(4,saved.activeExperience));
+   if(Number.isInteger(saved.challengeIndex))challengeIndex=((saved.challengeIndex%challengeList.length)+challengeList.length)%challengeList.length;
+   challengeCompleted=!!saved.challengeCompleted;
+  }
+ }catch(e){}
+}
+document.querySelector('#reset-journey').addEventListener('click',()=>{
+ if(!confirm('確定要清除這台裝置上的學習選擇，重新開始嗎？'))return;
+ chosen.fill(null);activeExperience=0;challengeCompleted=false;
+ renderExperience();updateProgress();renderNowMe(false);document.querySelector('#now-me').classList.remove('visible');
+ updateBadges();showChallenge();saveJourney();toast('旅程已重新開始 🌱');
+});
+document.querySelector('#new-challenge').addEventListener('click',()=>{
+ challengeIndex=(challengeIndex+1+Math.floor(Math.random()*(challengeList.length-1)))%challengeList.length;
+ challengeCompleted=false;showChallenge();saveJourney();toast('換一個新任務，開始你的生活練習！');
+});
+document.querySelector('#complete-challenge').addEventListener('click',()=>{
+ if(challengeCompleted)return;
+ challengeCompleted=true;showChallenge();saveJourney();toast('🌟 任務完成！把善意帶進今天。');
+});
+/* Rebind choice events after restoring saved answers. */
+const originalRenderExperience=renderExperience;
+renderExperience=function(){
+ originalRenderExperience();
+ const card=stageNode.querySelector('.choice-card');
+ if(card){
+  const old=card.querySelector('.choice-note');
+  if(old && chosen[activeExperience]!==null) old.textContent='💡 反思：'+experiences[activeExperience].choices[chosen[activeExperience]].feedback;
+ }
+};
+loadJourney();
+renderExperience();updateProgress();renderNowMe(false);updateBadges();showChallenge();
+document.querySelector('#prev-choice').addEventListener('click',()=>{activeExperience=Math.max(0,activeExperience-1);renderExperience();saveJourney()});
+document.querySelector('#next-choice').addEventListener('click',()=>{
+ if(chosen[activeExperience]===null){toast('先選一個回應，再繼續探索喔！');return}
+ if(activeExperience<4){activeExperience++;renderExperience();saveJourney()}
+ else{renderNowMe(true);document.querySelector('#now-me').scrollIntoView({behavior:'smooth',block:'start'})}
+});
+document.querySelector('#show-now').addEventListener('click',()=>{renderNowMe(true);document.querySelector('#now-me').scrollIntoView({behavior:'smooth',block:'start'})});
+/* Fix original choice-change handler so each answer persists and refreshes badges. */
+stageNode.addEventListener('change',e=>{
+ if(e.target.matches('input[name="experience-choice"]')){
+  chosen[activeExperience]=Number(e.target.value);updateProgress();updateBadges();saveJourney();
+ }
+});
+
+
+// Story game: choices alter the balloon, relationship outcome, crown and personalized card.
+const storyState={balloon:25,response:null,motive:null};
+const balloon=document.querySelector('#interactive-balloon');
+function setBalloon(value){
+ storyState.balloon=Math.max(10,Math.min(100,value));
+ const px=52+storyState.balloon*1.15;
+ balloon.style.setProperty('--balloon-size',px+'px');
+ balloon.style.transform=`translateY(${(25-storyState.balloon)*.35}px) rotate(${(storyState.balloon-25)*.12}deg)`;
+ document.querySelector('#balloon-meter').style.width=storyState.balloon+'%';
+ document.querySelector('#balloon-feedback').textContent=storyState.balloon>=75?
+ '氣球已經很大了！當我一直想證明自己比別人強，可能會忽略別人的感受。試著用感恩與分享讓它回到合宜的大小。':
+ storyState.balloon<=25?'氣球回到合宜的大小。成就仍值得開心，但我不必靠比較證明自己。':
+ '氣球大小：'+storyState.balloon+'%。我可以欣賞自己的努力，也留意別人的感受。';
+}
+document.querySelector('#inflate-balloon').addEventListener('click',()=>{setBalloon(storyState.balloon+15);toast('氣球變大了！想想自己是否太在意掌聲。');});
+document.querySelector('#deflate-balloon').addEventListener('click',()=>{setBalloon(storyState.balloon-20);toast('感恩與分享，讓心回到合宜的位置。');});
+const responseFeedback={
+ revenge:{title:'💥 報復會讓泥水濺得更遠',text:'你可能短暫覺得扳回一城，但對方也會受傷，衝突可能加深。下一次可以先停一下，找更安全的方式說出委屈。',score:0,avatar:'😣'},
+ pause:{title:'🛡️ 暫停，讓情緒先降下來',text:'你沒有讓第一個衝動替你決定。等心情平靜後，再找合適的時間表達感受，會更容易被聽見。',score:2,avatar:'🛡️'},
+ kind:{title:'💬 溫和說真話，關係有機會修復',text:'你可以說：「你一直比較時，我覺得受傷。我希望我們可以互相鼓勵。」這既誠實，也沒有用羞辱回擊。',score:3,avatar:'🤝'}
+};
+document.querySelectorAll('[data-response]').forEach(btn=>btn.addEventListener('click',()=>{
+ document.querySelectorAll('[data-response]').forEach(b=>b.classList.toggle('chosen',b===btn));
+ storyState.response=btn.dataset.response;const r=responseFeedback[storyState.response];
+ document.querySelector('#response-result').innerHTML=`<b>${r.title}</b><br>${r.text}`;
+ toast('阿德的選擇已記錄，可以生成你的成長角色卡。');
+}));
+const motiveData={
+ applause:{score:0,scale:100,icon:'👑',title:'正在學習省察的旅人',text:'你注意到自己很希望被看見。這不是要責備自己，而是邀請你問：如果沒有人稱讚，我還願意做這件事嗎？'},
+ share:{score:2,scale:58,icon:'✨',title:'願意分享的同行者',text:'你希望努力被看見，也願意肯定別人的付出。下一步是練習分享功勞，讓團隊一起成長。'},
+ serve:{score:3,scale:28,icon:'🌟',title:'把光帶給別人的旅人',text:'你把焦點放在幫助人、感恩與歸榮耀給上帝。繼續用謙卑的態度運用自己的能力。'}
+};
+document.querySelectorAll('[data-motive]').forEach(btn=>btn.addEventListener('click',()=>{
+ document.querySelectorAll('[data-motive]').forEach(b=>b.classList.toggle('chosen',b===btn));
+ storyState.motive=btn.dataset.motive;const m=motiveData[storyState.motive];
+ document.querySelector('#interactive-crown').style.transform=`scale(${1+(m.scale/100)*.35}) rotate(${m.scale>70?-8:m.scale<40?4:0}deg)`;
+ document.querySelector('#interactive-crown').style.filter=m.scale>70?'drop-shadow(0 8px 5px #c75d5d66) saturate(1.4)':'drop-shadow(0 8px 4px #8c743533)';
+ document.querySelector('#crown-meter').style.width=m.scale+'%';
+ document.querySelector('#crown-crack').style.opacity=m.scale>70?'1':'0';
+ document.querySelector('#crown-crack').style.transform=m.scale>70?'scale(1) rotate(0deg)':'scale(.3) rotate(-20deg)';
+ document.querySelector('#crown-feedback').textContent=m.text;
+ toast('動機已記錄。誠實省察是成長的開始。');
+}));
+function makeGrowthCard(){
+ const choices=chosen.filter(v=>v!==null).length;
+ const response=responseFeedback[storyState.response||'pause'];
+ const motive=motiveData[storyState.motive||'share'];
+ const humility=(storyState.balloon<=35?2:0)+response.score+motive.score;
+ let title,avatar,desc;
+ if(storyState.balloon>=70||storyState.response==='revenge'||storyState.motive==='applause'){
+  title='勇敢省察的旅人';avatar='🌱';desc='我正在學習不讓掌聲或受傷替我做決定。我願意停下來，重新選擇。';
+ }else if(response.score>=3&&motive.score>=3&&storyState.balloon<=35){
+  title='謙卑同行的旅人';avatar='🌟';desc='我願意欣賞別人、溫和說真話，並把能力用來幫助人，把榮耀歸給上帝。';
+ }else{
+  title='正在成長的旅人';avatar='🧭';desc='我可以為自己的努力感到開心，也練習理解別人、檢視動機，讓下一個選擇更有愛。';
+ }
+ const stats=[
+  `謙卑 ${storyState.balloon<=35?'正在練習':'值得留意'}`,
+  `同理 ${response.score>=2?'正在展現':'可以加強'}`,
+  `省察 ${motive.score>=2?'正在展現':'可以練習'}`,
+  `歷程 ${choices}/5 站`
+ ];
+ document.querySelector('#character-avatar').textContent=avatar;
+ document.querySelector('#character-title').textContent=title;
+ document.querySelector('#character-description').textContent=desc;
+ document.querySelector('#character-stats').innerHTML=stats.map(s=>`<span>${s}</span>`).join('');
+ document.querySelector('#character-feedback').textContent='角色卡已更新。這不是對你的評分，而是提醒你下一步可以練習什麼。';
+ document.querySelector('#character-card').classList.add('card-ready');
+}
+document.querySelector('#make-character').addEventListener('click',()=>{makeGrowthCard();toast('你的成長角色卡已生成！');});
+document.querySelector('#download-character').addEventListener('click',()=>{
+ makeGrowthCard();
+ const card=document.querySelector('#character-card');
+ const textLines=[
+  '我的成長角色卡',
+  document.querySelector('#character-title').textContent,
+  document.querySelector('#character-description').textContent,
+  ...[...document.querySelectorAll('#character-stats span')].map(s=>s.textContent),
+  `氣球狀態：${storyState.balloon}%`,
+  `阿德的回應：${storyState.response?responseFeedback[storyState.response].title:'尚未選擇'}`,
+  `西門的動機：${storyState.motive?motiveData[storyState.motive].title:'尚未選擇'}`,
+  '我願意在順境中謙卑，在受挫時不報復，並用能力幫助別人。'
+ ];
+ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1100" viewBox="0 0 900 1100"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dff5e9"/><stop offset="1" stop-color="#e8e9ff"/></linearGradient></defs><rect width="900" height="1100" rx="48" fill="url(#bg)"/><circle cx="450" cy="210" r="130" fill="#fff6d9" opacity=".8"/><text x="450" y="90" text-anchor="middle" font-size="25" font-family="sans-serif" fill="#588b7b" letter-spacing="5">MY GROWTH CARD</text><text x="450" y="255" text-anchor="middle" font-size="110">${document.querySelector('#character-avatar').textContent}</text><text x="450" y="360" text-anchor="middle" font-size="43" font-weight="bold" font-family="sans-serif" fill="#2b6256">${escapeXml(textLines[1])}</text><foreignObject x="100" y="405" width="700" height="150"><div xmlns="http://www.w3.org/1999/xhtml" style="font:26px/1.8 sans-serif;color:#526c75;text-align:center">${escapeXml(textLines[2])}</div></foreignObject>${textLines.slice(3).map((t,i)=>`<text x="115" y="${610+i*62}" font-size="25" font-family="sans-serif" fill="#365b56">${escapeXml(t)}</text>`).join('')}<text x="450" y="1030" text-anchor="middle" font-size="24" font-family="sans-serif" fill="#588b7b">在順境中謙卑，在受挫時選擇愛</text></svg>`;
+ const blob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='我的成長角色卡.svg';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);toast('已下載成長角色卡 SVG！');
+});
+function escapeXml(s){return String(s).replace(/[<>&'"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;',"'":'&apos;','"':'&quot;'}[c]));}
 
 </script>
 </body></html>
