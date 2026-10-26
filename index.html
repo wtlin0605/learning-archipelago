@@ -24,6 +24,46 @@ footer{max-width:1100px;margin:auto;padding:16px 20px 28px;color:#84929a;font-si
 @media(max-width:720px){main{padding:9px}.layout{grid-template-columns:1fr}.panel{padding:13px}#world{height:390px;min-height:330px}.islands{grid-template-columns:repeat(2,minmax(0,1fr))}.rooms{gap:5px}.room{padding:7px}.room strong{font-size:11px}.room span{font-size:10px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
+
+<style>
+/* V3: polished island journey */
+:root{--ink:#243c4c;--mint:#dff4ed;--paper:#fffdf6;--teal:#388b7c;--line:#dce9e5}
+body{background:radial-gradient(ellipse at 12% 8%,#e8f7f2 0,transparent 34%),radial-gradient(ellipse at 92% 26%,#fff0d9 0,transparent 28%),#f4f9fb}
+header{position:relative;overflow:hidden;background:linear-gradient(125deg,#d8f4e9 0%,#e7edff 52%,#fff0d5 100%);border-bottom:1px solid #d9e9e3}
+header:after{content:"✦   ✧      ✦";position:absolute;right:5%;top:18%;font-size:clamp(24px,5vw,58px);letter-spacing:18px;color:#ffffffa8;transform:rotate(-8deg);pointer-events:none}
+.kicker{letter-spacing:2.5px}
+.stage{border:1px solid #c8e7e0;box-shadow:0 18px 50px #416d6c22, inset 0 1px #ffffff90}
+#world{cursor:grab}#world:active{cursor:grabbing}
+.panel{box-shadow:0 8px 24px #426d6a0b;transition:transform .2s,box-shadow .2s}
+.panel:hover{box-shadow:0 12px 30px #426d6a12}
+.island{transition:transform .18s,border-color .18s,box-shadow .18s}
+.island:hover{transform:translateY(-2px);box-shadow:0 8px 18px #4d89751c}
+.btn{transition:transform .15s,box-shadow .15s,background .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 5px 12px #416b5b18;background:#f5fbf8}
+.btn:active{transform:translateY(1px)}
+.room{transition:transform .2s,border-color .2s,box-shadow .2s;cursor:pointer}
+.room:hover{transform:translateY(-3px);border-color:#91cdb9;box-shadow:0 8px 18px #376d5c14}
+.room.selected-room{border:2px solid #54a990;background:#effaf4;padding:8px}
+.room-detail{background:#fff;border:1px solid #d8eae2;border-radius:12px;padding:12px;margin-top:9px;font-size:13px;line-height:1.8}
+#choice-journey{box-shadow:0 12px 32px #426d6a12}
+.choice-card{background:linear-gradient(145deg,#f9fffb,#f5f8ff);box-shadow:0 8px 22px #456a6410}
+.choice-option{transition:transform .15s,border-color .15s}
+.choice-option:hover{transform:translateX(2px);border-color:#8bc9b4}
+.choice-option:has(input:checked){box-shadow:0 5px 15px #4d9c7b14}
+.journey-progress{height:11px;background:#e5efec;box-shadow:inset 0 1px 2px #00000008}
+.journey-progress div{background:linear-gradient(90deg,#53b59b,#8dcf9b,#f0c66e);box-shadow:0 0 12px #64bd9b80}
+.closing{position:relative;overflow:hidden;border:1px solid #e9e4c8;box-shadow:0 12px 30px #987d3a12}
+.closing:after{content:"✧";position:absolute;right:20px;top:10px;font-size:70px;color:#ffffffb0;pointer-events:none}
+.badge-shelf{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.reward-badge{display:flex;gap:7px;align-items:center;border:1px solid #e1eae6;background:#fff;border-radius:999px;padding:7px 10px;font-size:12px;color:#81918e;opacity:.62}
+.reward-badge.earned{opacity:1;background:#fff8df;border-color:#e7ce7c;color:#856525;box-shadow:0 3px 12px #e9cf7d24}
+.challenge-box{background:linear-gradient(120deg,#f1eaff,#fff7df);border:1px solid #e6d9f5;border-radius:15px;padding:14px;margin-top:12px}
+.challenge-box h3{margin:4px 0 6px}
+.floating-toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:99;background:#244b45;color:#fff;padding:11px 16px;border-radius:999px;box-shadow:0 8px 25px #1d4d4533;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s}
+.floating-toast.show{opacity:1}
+@media(max-width:720px){header:after{opacity:.35}.stage{border-radius:16px}.panel{border-radius:16px}.closing{padding:15px}}
+</style>
+
 </head>
 <body>
 <header><div class="kicker">MY LEARNING JOURNEY · 學習歷程探索</div><h1>把故事走成自己的成長地圖</h1><p>從追求掌聲，到學會謙卑；從受挫與報復，到以愛和真理回應。選一座島，探索每段經歷如何累積成現在的自己。</p></header>
@@ -38,7 +78,24 @@ footer{max-width:1100px;margin:auto;padding:16px 20px 28px;color:#84929a;font-si
   <p class="muted">依序走過前五段經歷。每一站選一個最接近你當下想法的回應；沒有標準答案，系統會依你的選擇，整理出第六站「現在的我」的成長輪廓。你可以隨時回頭改選。</p>
   <div class="journey-progress"><div id="progress-fill"></div></div>
   <div class="muted" id="progress-label">已完成 0 / 5 段經歷</div>
-  <div id="choice-stage"></div>
+  
+<div class="badge-shelf" id="badge-shelf">
+  <div class="reward-badge" data-badge="first">🌱 初次探索</div>
+  <div class="reward-badge" data-badge="reflect">🪞 誠實省察</div>
+  <div class="reward-badge" data-badge="empathy">💗 同理之心</div>
+  <div class="reward-badge" data-badge="humble">✨ 謙卑前行</div>
+  <div class="reward-badge" data-badge="complete">🏝️ 群島旅人</div>
+</div>
+<div class="challenge-box">
+  <div class="kicker">DAILY MINI QUEST · 今日小任務</div>
+  <h3 id="challenge-title">🌿 把學習帶進生活</h3>
+  <p id="challenge-text" style="font-size:13px;line-height:1.8;margin:5px 0 10px">完成一個小小的善意行動，讓故事不只停在螢幕裡。</p>
+  <button class="btn" id="new-challenge">換一個生活任務 ↻</button>
+  <button class="btn" id="complete-challenge">我今天做到了 ✓</button>
+  <span class="muted" id="challenge-status" style="margin-left:6px"></span>
+</div>
+
+<div id="choice-stage"></div>
   <div class="choice-nav"><button class="btn" id="prev-choice">← 上一段</button><button class="btn" id="next-choice">下一段 →</button><button class="btn" id="show-now">看看現在的我 ✨</button></div>
   <div id="now-me" class="now-me" aria-live="polite">
     <h2>第六站｜現在的我</h2>
@@ -102,15 +159,61 @@ function makeIsland(d,i){
  const hit=addMesh(g,new THREE.CylinderGeometry(2.1,2.1,.3,8),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}),0,.35,0,false);hit.userData.index=i;pickables.push(hit);
  islandGroups.push(g);return g;
 }
+
 data.forEach(makeIsland);
+// A dreamy archipelago: floating crystals, tiny star beacons, clouds and a soft route glow.
+const glowMat=new THREE.MeshStandardMaterial({color:0xfff1b8,emissive:0xffd76a,emissiveIntensity:.55,roughness:.35});
+const crystalMat=new THREE.MeshStandardMaterial({color:0xa5d9f2,emissive:0x367eac,emissiveIntensity:.12,roughness:.28,metalness:.12,flatShading:true});
+const deco=new THREE.Group();world.add(deco);
+for(let i=0;i<6;i++){
+ const g=islandGroups[i],pos=g.position;
+ const ring=new THREE.Mesh(new THREE.TorusGeometry(2.15,.025,6,48),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.58}));
+ ring.rotation.x=Math.PI/2;ring.position.set(pos.x,.42,pos.z);deco.add(ring);
+ const crystal=addMesh(deco,new THREE.OctahedronGeometry(.22,0),crystalMat,pos.x+((i%2)?1.7:-1.7),.35+((i%3)*.16),pos.z+.4);
+ crystal.rotation.set(.4,.7,.2);
+ const star=addMesh(deco,new THREE.OctahedronGeometry(.14,0),glowMat,pos.x+.1,2.15,pos.z+.2,false);
+ star.userData.floatSeed=i*1.7;
+}
+// Small clouds make the sky feel layered without blocking the islands.
+const cloudMat=new THREE.MeshStandardMaterial({color:0xffffff,roughness:1,transparent:true,opacity:.82});
+for(let i=0;i<9;i++){
+ const cloud=new THREE.Group();cloud.position.set(-13+i*3.3,3.2+(i%3)*.55,-4-(i%2)*2);
+ for(let j=0;j<3;j++){const puff=new THREE.Mesh(new THREE.SphereGeometry(.38+(j===1?.12:0),8,6),cloudMat);puff.position.set((j-1)*.38, j===1?.12:0,0);puff.scale.y=.7;cloud.add(puff)}
+ deco.add(cloud);cloud.userData.cloud=true;cloud.userData.speed=.00025+(i%3)*.00008;
+}
+
 for(let i=0;i<islandGroups.length-1;i++){const a=islandGroups[i].position,b=islandGroups[i+1].position;const mid=new THREE.Vector3((a.x+b.x)/2,-.2,(a.z+b.z)/2);const bridge=addMesh(world,new THREE.BoxGeometry(1.9,.08,.24),mat(0xd9b47c),mid.x,mid.y,mid.z,false);bridge.rotation.y=Math.atan2(b.z-a.z,b.x-a.x)}
 const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();let selected=0,focusTarget=null,pinchStart=null;
 function resize(){const r=stage.getBoundingClientRect();renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();renderer.setPixelRatio(Math.min(devicePixelRatio,2))}
 new ResizeObserver(resize).observe(stage);resize();
-function render(){requestAnimationFrame(render);controls.update();if(focusTarget){controls.target.lerp(focusTarget,.09);camera.position.lerp(new THREE.Vector3(focusTarget.x,focusTarget.y+5.5,focusTarget.z+7),.075);if(camera.position.distanceTo(new THREE.Vector3(focusTarget.x,focusTarget.y+5.5,focusTarget.z+7))<.12)focusTarget=null}renderer.render(scene,camera)}render();
+function render(){requestAnimationFrame(render);const t=performance.now();deco.children.forEach((o,i)=>{if(o.userData.floatSeed!==undefined){o.position.y=2.15+Math.sin(t*.0015+o.userData.floatSeed)*.16;o.rotation.y+=.008;o.rotation.x+=.004}else if(o.userData.cloud){o.position.x+=o.userData.speed;if(o.position.x>17)o.position.x=-17}});controls.update();if(focusTarget){controls.target.lerp(focusTarget,.09);camera.position.lerp(new THREE.Vector3(focusTarget.x,focusTarget.y+5.5,focusTarget.z+7),.075);if(camera.position.distanceTo(new THREE.Vector3(focusTarget.x,focusTarget.y+5.5,focusTarget.z+7))<.12)focusTarget=null}renderer.render(scene,camera)}render();
 function selectIsland(i,fly=true){selected=(i+data.length)%data.length;document.querySelector('#counter').textContent=`第 ${selected+1} / ${data.length} 座島`;document.querySelectorAll('.island').forEach((b,j)=>b.setAttribute('aria-pressed',String(j===selected)));const d=data[selected];document.querySelector('#detail').innerHTML=`<div class="kicker" style="font-size:10px;color:#498779">學習歷程 · 第 ${selected+1} 站</div><h3>${d.name}</h3><p>${d.summary}</p><div class="causal"><b>事件因果</b><br>${d.cause}</div><div class="rooms">${d.rooms.map(r=>`<div class="room"><div class="emoji">${r[0]}</div><strong>${r[1]}</strong><span>${r[2]}</span></div>`).join('')}</div><div style="font-size:12px;font-weight:900;margin-top:13px">帶走的能力</div><div>${d.skills.map(s=>`<span class="tag">${s}</span>`).join('')}</div><div class="causal"><b>能力協作線 → 下一段</b><br>${d.carry}</div>`;document.querySelector('#skills').innerHTML=d.skills.map(s=>`<span class="tag">${s}</span>`).join('')+`<span class="tag">→ 下一段經歷</span>`;if(fly){const p=islandGroups[selected].getWorldPosition(new THREE.Vector3());focusTarget=p} }
+
+// Room details are interactive: tap a room card to expand its reflection prompt.
+document.querySelector('#detail').addEventListener('click',e=>{
+ const room=e.target.closest('.room'); if(!room)return;
+ document.querySelectorAll('#detail .room').forEach(x=>x.classList.remove('selected-room'));
+ room.classList.add('selected-room');
+ const rooms=[...document.querySelectorAll('#detail .room')],idx=rooms.indexOf(room),d=data[selected],r=d.rooms[idx];
+ let detail=document.querySelector('#room-detail');
+ if(!detail){detail=document.createElement('div');detail.id='room-detail';detail.className='room-detail';document.querySelector('#detail .rooms').after(detail)}
+ const prompts=[
+  ['我有哪些時候很想被看見？','我可以怎麼表達感謝，而不是比較？'],
+  ['我被比較時，身體和心情有什麼反應？','我能用什麼方式安全地說出委屈？'],
+  ['如果我選擇不報復，下一句話可以怎麼說？','我能怎麼肯定別人，又不貶低自己？'],
+  ['我做這件事，是為了幫助人還是得到掌聲？','如果沒有人稱讚，我還會做嗎？'],
+  ['我需要向誰承認錯誤或尋求幫助？','我能採取哪一個具體改變？'],
+  ['我今天能用什麼能力幫助一個人？','我想把哪一個選擇練習成習慣？']
+ ];
+ detail.innerHTML=`<b>${r[0]} ${r[1]}｜深入想一想</b><p style="margin:6px 0">${r[2]}</p><ul style="margin:4px 0;padding-left:20px"><li>${prompts[selected][0]}</li><li>${prompts[selected][1]}</li></ul>`;
+});
+
 const list=document.querySelector('#island-list');data.forEach((d,i)=>{const b=document.createElement('button');b.className='island';b.setAttribute('aria-pressed',String(i===0));b.innerHTML=`<small>0${i+1} · ${i===5?'現在':`經歷 ${i+1}`}</small><strong>${d.name}</strong><span>${d.short} ↗</span>`;b.addEventListener('click',()=>selectIsland(i,true));list.appendChild(b)});
 document.querySelector('#minus').addEventListener('click',()=>{camera.position.sub(controls.target).multiplyScalar(1.12).add(controls.target)});document.querySelector('#plus').addEventListener('click',()=>{camera.position.sub(controls.target).multiplyScalar(.88).add(controls.target)});document.querySelector('#reset').addEventListener('click',()=>{controls.target.set(0,0,0);camera.position.set(0,10,17);controls.update();focusTarget=null;selectIsland(0,false)});document.querySelector('#next').addEventListener('click',()=>selectIsland((selected+1)%data.length,true));
+
+const rayPointer=new THREE.Vector2();
+canvas.addEventListener('pointermove',e=>{if(e.buttons)return;const r=canvas.getBoundingClientRect();rayPointer.x=((e.clientX-r.left)/r.width)*2-1;rayPointer.y=-((e.clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(rayPointer,camera);const hits=raycaster.intersectObjects(pickables,false);canvas.style.cursor=hits.length?'pointer':'grab'});
+
 canvas.addEventListener('pointerup',e=>{if(e.pointerType==='touch'&&e.isPrimary===false)return;const r=canvas.getBoundingClientRect();pointer.x=((e.clientX-r.left)/r.width)*2-1;pointer.y=-((e.clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(pickables,false);if(hits.length)selectIsland(hits[0].object.userData.index,true)});
 document.querySelector('#timeline').innerHTML=data.map((d,i)=>`<div class="step"><div class="dot"></div>${d.short}</div>`).join('');
 selectIsland(0,false);
@@ -143,7 +246,7 @@ const stageNode = document.querySelector('#choice-stage');
 function renderExperience(){
  const e=experiences[activeExperience], answer=chosen[activeExperience];
  stageNode.innerHTML=`<div class="choice-card"><div class="kicker">經歷 ${activeExperience+1} / 5</div><h3>${e.title}</h3><p style="line-height:1.8">${e.scene}</p>${e.choices.map((c,i)=>`<label class="choice-option"><input type="radio" name="experience-choice" value="${i}" ${answer===i?'checked':''}><span>${c.text}</span></label>`).join('')}${answer!==null?`<div class="choice-note">💡 反思：${e.choices[answer].feedback}</div>`:'<div class="choice-note">選擇最接近你當下的回應，系統就會把這個選擇納入「現在的我」。</div>'}</div>`;
- stageNode.querySelectorAll('input').forEach(input=>input.addEventListener('change',()=>{chosen[activeExperience]=Number(input.value);renderExperience();updateProgress();renderNowMe(false)}));
+ stageNode.querySelectorAll('input').forEach(input=>input.addEventListener('change',()=>{chosen[activeExperience]=Number(input.value);renderExperience();updateProgress();renderNowMe(false);updateBadges();saveJourney();toast('選擇已記錄，會影響「現在的我」');}));
  document.querySelector('#prev-choice').disabled=activeExperience===0;
  document.querySelector('#next-choice').textContent=activeExperience===4?'前往第六站 →':'下一段 →';
 }
@@ -188,7 +291,40 @@ function renderNowMe(show=true){
 document.querySelector('#prev-choice').addEventListener('click',()=>{activeExperience=Math.max(0,activeExperience-1);renderExperience()});
 document.querySelector('#next-choice').addEventListener('click',()=>{if(activeExperience<4){activeExperience++;renderExperience()}else{renderNowMe(true);document.querySelector('#now-me').scrollIntoView({behavior:'smooth',block:'start'})}});
 document.querySelector('#show-now').addEventListener('click',()=>{renderNowMe(true);document.querySelector('#now-me').scrollIntoView({behavior:'smooth',block:'start'})});
-document.querySelector('#reset-journey').addEventListener('click',()=>{chosen.fill(null);activeExperience=0;renderExperience();updateProgress();renderNowMe(false);document.querySelector('#now-me').classList.remove('visible')});
+document.querySelector('#reset-journey').addEventListener('click',()=>{chosen.fill(null);activeExperience=0;renderExperience();updateProgress();renderNowMe(false);
+
+// Save choices on this device so learners can return to their journey.
+const STORAGE_KEY='learning-archipelago-v3';
+try{
+ const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
+ if(saved&&Array.isArray(saved.chosen)&&saved.chosen.length===5){
+  saved.chosen.forEach((v,i)=>{if(v===null||(Number.isInteger(v)&&v>=0&&v<3))chosen[i]=v});
+  activeExperience=chosen.findIndex(v=>v===null);if(activeExperience<0)activeExperience=4;
+ }
+}catch(e){}
+const challengeList=[
+ ['💬 溫柔說真話','今天練習用一句不傷人的話，表達自己的感受。'],
+ ['🤝 為別人高興','真心稱讚一位同學的努力，不把話題拉回自己身上。'],
+ ['🙏 感恩一件事','寫下今天一項領受的能力，並想想它能怎樣幫助別人。'],
+ ['🛑 暫停十秒','遇到不順心時，先停十秒再回應，不急著反擊。'],
+ ['🌱 默默幫助人','做一件不需要被稱讚的小事，留意自己的心情。'],
+ ['🪞 檢查動機','做事前問自己：我想幫助人，還是只想被看見？']
+];
+let challengeIndex=Math.floor(Math.random()*challengeList.length);
+function showChallenge(){document.querySelector('#challenge-title').textContent=challengeList[challengeIndex][0];document.querySelector('#challenge-text').textContent=challengeList[challengeIndex][1];}
+function updateBadges(){
+ const n=chosen.filter(v=>v!==null).length;
+ const badge=(id,on)=>document.querySelector(`[data-badge="${id}"]`).classList.toggle('earned',on);
+ badge('first',n>=1);badge('reflect',n>=2&&chosen.some((v,i)=>v!==null&&experiences[i].choices[v].scores.awareness>=2));
+ badge('empathy',chosen.some((v,i)=>v!==null&&experiences[i].choices[v].scores.empathy>=2));
+ badge('humble',chosen.some((v,i)=>v!==null&&experiences[i].choices[v].scores.humility>=2));badge('complete',n===5);
+}
+function saveJourney(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({chosen,activeExperience,updatedAt:new Date().toISOString()}))}catch(e){}}
+function toast(message){let t=document.querySelector('.floating-toast');if(!t){t=document.createElement('div');t.className='floating-toast';document.body.appendChild(t)}t.textContent=message;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1900)}
+document.querySelector('#new-challenge').addEventListener('click',()=>{challengeIndex=(challengeIndex+1+Math.floor(Math.random()*(challengeList.length-1)))%challengeList.length;showChallenge();document.querySelector('#challenge-status').textContent='';});
+document.querySelector('#complete-challenge').addEventListener('click',()=>{document.querySelector('#challenge-status').textContent='已完成！很棒，讓成長發生在生活中。';toast('🌟 任務完成！把善意帶進今天。')});
+showChallenge();
+document.querySelector('#now-me').classList.remove('visible')});
 renderExperience();updateProgress();renderNowMe(false);
 
 </script>
