@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#dff4ef">
+<meta name="description" content="氣球大頭症：學習歷程群島互動探索">
+<title>學習歷程群島｜氣球大頭症</title>
+<style>
+:root{--ink:#243c4c;--mint:#dff4ed;--paper:#fffdf6;--teal:#388b7c;--line:#dce9e5}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;background:#f5faf8}
+header{padding:22px clamp(16px,4vw,40px);background:linear-gradient(125deg,#e1f4e9,#e7efff 65%,#fff0d7)}
+.kicker{font-size:11px;font-weight:900;letter-spacing:2px;color:#498779}h1{font-size:clamp(24px,4vw,38px);margin:7px 0;line-height:1.25}header p{margin:0;max-width:760px;font-size:14px;line-height:1.8;color:#5b7180}
+main{max-width:1100px;margin:auto;padding:14px}
+.stage{position:relative;border-radius:20px;overflow:hidden;background:#a9ded8;box-shadow:0 12px 34px #345e5e1c}
+#world{display:block;width:100%;height:min(62vh,560px);min-height:350px;touch-action:none}
+.hud{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}.pill{border-radius:999px;padding:7px 11px;background:#ffffffdf;font-size:12px;font-weight:800;backdrop-filter:blur(8px)}
+.controls{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:12px;background:#f0f7f4}.btn{border:1px solid #d6e4e0;background:white;color:#31566a;border-radius:12px;padding:10px 14px;font-weight:800;min-height:42px;cursor:pointer}.btn:focus-visible,.island:focus-visible{outline:3px solid #e8b85c;outline-offset:2px}.help{text-align:center;background:#f0f7f4;color:#72838d;font-size:12px;padding:0 10px 14px}
+.layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:14px;margin-top:14px}.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:16px;min-width:0}.panel h2{font-size:17px;margin:0 0 5px}.muted{font-size:12px;line-height:1.8;color:#71818c}
+.islands{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.island{border:1px solid #e0eae6;background:#fcfefc;text-align:left;padding:11px;border-radius:13px;cursor:pointer;color:inherit}.island[aria-pressed=true]{border:2px solid #48a18c;background:#eff9f4;padding:10px}.island small{font-size:10px;color:#598d80;font-weight:900}.island strong{display:block;font-size:13px;line-height:1.5;margin-top:4px}.island span{font-size:11px;color:#73828b}
+.detail{margin-top:12px;padding:15px;border-radius:16px;background:#f0f7f4;border:1px solid #deebe6}.detail h3{font-size:21px;margin:4px 0 8px}.detail p{font-size:13px;line-height:1.85;color:#536a79}.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:12px}.room{background:#fff;border:1px solid #e1eae6;border-radius:12px;padding:9px;min-width:0}.emoji{font-size:22px}.room strong{display:block;font-size:12px;margin:5px 0;line-height:1.5}.room span{font-size:11px;line-height:1.6;color:#70818c;display:block}.tag{display:inline-block;background:#dcefe8;color:#2c7767;border-radius:999px;font-size:11px;font-weight:800;padding:5px 8px;margin:3px 3px 0 0}.causal{border-left:3px solid #e6bd6b;padding:7px 0 7px 10px;font-size:12px;line-height:1.8;color:#566c79;margin-top:10px}
+.closing{margin-top:14px;background:linear-gradient(125deg,#e0f3e8,#fff0cf);border-radius:18px;padding:18px}.closing strong{font-size:19px;line-height:1.6;color:#245e51}.timeline{display:flex;overflow:auto;gap:14px;padding:12px 2px 3px}.step{min-width:82px;text-align:center;font-size:11px;color:#617986}.dot{height:13px;width:13px;background:#68b69f;border-radius:50%;margin:0 auto 7px;border:3px solid #d4ebe1}.step:last-child .dot{background:#edb95f}
+footer{max-width:1100px;margin:auto;padding:16px 20px 28px;color:#84929a;font-size:11px;line-height:1.8}
+@media(max-width:720px){main{padding:9px}.layout{grid-template-columns:1fr}.panel{padding:13px}#world{height:390px;min-height:330px}.islands{grid-template-columns:repeat(2,minmax(0,1fr))}.rooms{gap:5px}.room{padding:7px}.room strong{font-size:11px}.room span{font-size:10px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header><div class="kicker">MY LEARNING JOURNEY · 學習歷程探索</div><h1>把故事走成自己的成長地圖</h1><p>從追求掌聲，到學會謙卑；從受挫與報復，到以愛和真理回應。選一座島，探索每段經歷如何累積成現在的自己。</p></header>
+<main>
+<section class="stage" aria-label="可互動的三維群島"><canvas id="world" aria-label="3D 學習群島，可拖曳旋轉、縮放及點選"></canvas><div class="hud"><span class="pill" id="counter">第 1 / 6 座島</span><span class="pill">拖曳旋轉 · 點島探索</span></div></section>
+<div class="controls"><button class="btn" id="minus" aria-label="縮小">－ 縮小</button><button class="btn" id="reset">回到全景</button><button class="btn" id="plus" aria-label="放大">＋ 放大</button><button class="btn" id="next">下一座島 →</button></div><div class="help">手機／平板：單指拖曳旋轉、雙指縮放、點選島嶼。也可用下方島嶼清單操作。</div>
+<div class="layout"><section class="panel"><h2>探索島嶼</h2><div class="muted">沿著橋梁依序前進；每座島都有三個代表經歷的開放式房間。</div><div class="islands" id="island-list"></div></section><section class="panel"><h2>島嶼紀錄</h2><div class="muted">選取島嶼，閱讀事件、因果與帶走的能力。</div><div class="detail" id="detail" aria-live="polite"></div><h2 style="margin-top:17px">能力協作線</h2><div class="muted">前一段學到的能力，如何成為下一段旅程的基礎？</div><div id="skills"></div></section></div>
+<section class="closing"><div class="kicker">DESTINATION · 最後一座島</div><strong>氣球會洩氣，皇冠會裂開。<br>真正的成長，是把榮耀歸給上帝。</strong><div class="muted" style="margin-top:6px">現在的我，不必靠比較證明自己；我能在順境中謙卑，在受挫時不報復，並用所擁有的能力去愛人。</div><div class="timeline" id="timeline"></div></section>
+</main><footer>此互動網站將《氣球大頭症》單元內容整理成學習歷程示例。若用於個人學習檔案，請將房間內容替換成自己的真實作品、反思與成果。</footer>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.166.1/build/three.module.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.166.1/examples/jsm/controls/OrbitControls.js';
+const data=[
+{name:'起點島｜我看見自己',short:'發現大頭症',color:0xe8c58b,summary:'佩佩拿新衣、新鞋、100 分與榮譽榜證明自己比別人強。恩慈老師用羅馬書十二章三節帶出核心問題：不要看自己過於所當看的。',rooms:[['👟','新衣新鞋','收到禮物，開始在意別人怎麼看。'],['💯','聽寫一百分','成績成為炫耀的工具。'],['🎈','氣球變大','越誇耀，氣球大頭越膨脹。']],skills:['自我覺察','理解經文','辨認驕傲'],cause:'成就被拿來抬高自己 → 忽略他人的感受 → 驕傲逐漸膨脹。',carry:'把觀察自己在乎什麼，帶往下一座島。'},
+{name:'風雨島｜受挫的選擇',short:'面對比較',color:0x9fd4ca,summary:'阿德沒有新衣與高分，長期被佩佩比較後感到委屈，最後故意踩進泥坑報復。受傷的感覺可以理解，但以牙還牙仍會傷害別人。',rooms:[['🎒','哥哥的舊衣','被比下去，覺得自己不如人。'],['✊','委屈累積','情緒沒有被好好說出來。'],['💦','踩進泥坑','故意報復，泥水濺滿佩佩。']],skills:['辨認情緒','同理他人','承擔選擇'],cause:'受到比較 → 委屈累積 → 用報復討回面子 → 傷害加深。',carry:'從辨認受傷與報復，帶出更溫和的回應方式。'},
+{name:'軍裝島｜另一種回應',short:'練習謙卑',color:0xb5d8a2,summary:'想像中的阿德穿上上帝的全副軍裝，為佩佩的成就感到高興，並溫和提醒她：能力不是拿來自誇，而是上帝所賜。',rooms:[['🛡️','穿上軍裝','先停下衝動，選擇不報復。'],['💬','溫和提醒','用愛與真理表達想法。'],['🤝','為人高興','不因別人成功就貶低自己。']],skills:['情緒調節','溫和溝通','謙卑','同理心'],cause:'覺察情緒 → 停止報復 → 溫和說真理 → 修復關係。',carry:'把同理、溝通與謙卑帶進更深的價值判斷。'},
+{name:'皇冠島｜西門的選擇',short:'分辨動機',color:0xc1b3e2,summary:'西門因邪術受到眾人注目；腓利傳講耶穌、行出神蹟後，他仍只對能力感到驚奇，甚至想用錢買屬靈權柄。外表的跟隨不等於心已改變。',rooms:[['👑','群眾的掌聲','西門享受被稱為大能者。'],['✨','看見神蹟','著迷於厲害，忽略真正的信仰。'],['💰','想買權柄','誤以為上帝的恩賜可以交易。']],skills:['辨認動機','價值判斷','分辨真偽'],cause:'追求注目 → 只看重能力 → 想控制恩賜 → 被彼得責備。',carry:'從辨認「我想被看見」進一步檢視信念與行動是否一致。'},
+{name:'真光島｜把榮耀歸主',short:'學習真正的信仰',color:0xefd18a,summary:'腓利把神蹟的榮耀歸給上帝；彼得與約翰指出西門心中的問題。上帝的恩賜不能用金錢或表現換取，需要謙卑領受並省察內心。',rooms:[['☀️','腓利的榜樣','有能力，卻不把自己當主角。'],['📖','彼得的提醒','面對罪，承認錯誤並尋求赦免。'],['🙏','自我省察','思考信仰、罪、思想與行為。']],skills:['信仰省察','辨別真偽','責任感','謙卑'],cause:'看見榜樣 → 聽見提醒 → 省察內心 → 選擇悔改與改變。',carry:'把省察轉化為生活實踐，抵達現在的自己。'},
+{name:'現在的我｜成長之島',short:'帶著能力前行',color:0x9ed8ac,summary:'我可以擁有成績、能力與肯定，卻不必靠它們證明自己比別人強。我練習在順境中不自誇、在被比下去時不報復，願意為別人的成就高興，把能力用來幫助人，並把榮耀歸給上帝。',rooms:[['🪞','我看見自己','我最在乎的是被稱讚，還是做對的事？'],['🛡️','我如何回應','我能停止報復、溫和說真話嗎？'],['🌱','我接下來要做','用自己的能力幫助別人，持續成長。']],skills:['自我覺察','同理心','謙卑','溫和溝通','信仰實踐'],cause:'覺察 → 分辨 → 選擇 → 行動 → 持續反思。',carry:'這不是終點，而是把學到的能力帶進每天的新選擇。'}
+];
+const canvas=document.querySelector('#world'),stage=canvas.parentElement,renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setClearColor(0xa9ded8);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xa9ded8);scene.fog=new THREE.Fog(0xa9ded8,24,48);
+const camera=new THREE.PerspectiveCamera(42,1,.1,100);camera.position.set(0,10,17);
+const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.07;controls.minDistance=8;controls.maxDistance=28;controls.maxPolarAngle=Math.PI*.48;controls.target.set(0,0,0);
+scene.add(new THREE.HemisphereLight(0xffffff,0x6b9b8b,2.0));const sun=new THREE.DirectionalLight(0xfff2d7,3);sun.position.set(-8,15,8);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);scene.add(sun);
+const sea=new THREE.Mesh(new THREE.PlaneGeometry(200,200,1,1),new THREE.MeshStandardMaterial({color:0x8ed0d0,roughness:.9}));sea.rotation.x=-Math.PI/2;sea.position.y=-.7;scene.add(sea);
+const world=new THREE.Group();scene.add(world);const islandGroups=[],pickables=[];
+function mat(color,roughness=.88){return new THREE.MeshStandardMaterial({color,roughness,flatShading:true})}
+function addMesh(g,geo,m,x,y,z,cast=true){const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);o.castShadow=cast;o.receiveShadow=true;g.add(o);return o}
+function tree(g,x,z,s=1){addMesh(g,new THREE.CylinderGeometry(.07*s,.12*s,.55*s,5),mat(0x936b4e),x,.25*s,z);addMesh(g,new THREE.IcosahedronGeometry(.43*s,0),mat(0x559b76),x,.65*s,z);addMesh(g,new THREE.IcosahedronGeometry(.29*s,0),mat(0x82bd85),x,.94*s,z)}
+function house(g,x,z,s=1,wall=0xffe5bd,roof=0xd78d67){addMesh(g,new THREE.BoxGeometry(.8*s,.62*s,.68*s),mat(wall),x,.48*s,z);const r=addMesh(g,new THREE.ConeGeometry(.68*s,.5*s,4),mat(roof),x,.99*s,z);r.rotation.y=Math.PI/4;addMesh(g,new THREE.BoxGeometry(.15*s,.29*s,.04*s),mat(0x517b82),x+.16*s,.34*s,z+.36*s,false);addMesh(g,new THREE.BoxGeometry(.14*s,.16*s,.04*s),mat(0x87b8b0),x-.19*s,.54*s,z+.36*s,false)}
+function makeIsland(d,i){
+ const g=new THREE.Group();const x=(i-2.5)*4.6;g.position.set(x,0,Math.sin(i*.9)*1.2);g.userData.index=i;world.add(g);
+ addMesh(g,new THREE.CylinderGeometry(1.95,1.35,.65,7,1),mat(0x9a865e),0,-.12,0);
+ addMesh(g,new THREE.CylinderGeometry(1.9,1.7,.24,7,1),mat(d.color),0,.22,0);
+ const hill=addMesh(g,new THREE.ConeGeometry(1.2,.9,5),mat(d.color),0,.65,-.1);hill.rotation.y=.3;
+ tree(g,-1,-.25,.85);tree(g,1.15,-.2,.72);house(g,-.35,.45,.85,0xffebc8,0xd88e67);house(g,.55,-.65,.66,0xf7d8a4,0xb87961);
+ // Decorative landmark unique to each chapter
+ if(i===0){const ball=addMesh(g,new THREE.SphereGeometry(.33,8,6),mat(0xef9dbb),-.8,1.45,.4);ball.scale.set(1,1.2,1)}
+ if(i===1){for(let k=0;k<4;k++)addMesh(g,new THREE.ConeGeometry(.12,.25,5),mat(0x8b7055),-.6+k*.35,.55,.9)}
+ if(i===2){addMesh(g,new THREE.BoxGeometry(.35,.6,.2),mat(0x5d9fc4),0,1.1,.5)}
+ if(i===3){const c=addMesh(g,new THREE.TorusGeometry(.3,.08,5,8),mat(0xe5b94f),0,1.3,.35);c.rotation.x=.3}
+ if(i===4){addMesh(g,new THREE.BoxGeometry(.08,.7,.08),mat(0xfff3b1),0,1.25,.35);addMesh(g,new THREE.BoxGeometry(.42,.08,.08),mat(0xfff3b1),0,1.35,.35)}
+ if(i===5){addMesh(g,new THREE.IcosahedronGeometry(.4,0),mat(0xffedb0),0,1.25,.25)}
+ // click target and invisible hit pad
+ const hit=addMesh(g,new THREE.CylinderGeometry(2.1,2.1,.3,8),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}),0,.35,0,false);hit.userData.index=i;pickables.push(hit);
+ islandGroups.push(g);return g;
+}
+data.forEach(makeIsland);
+for(let i=0;i<islandGroups.length-1;i++){const a=islandGroups[i].position,b=islandGroups[i+1].position;const mid=new THREE.Vector3((a.x+b.x)/2,-.2,(a.z+b.z)/2);const bridge=addMesh(world,new THREE.BoxGeometry(1.9,.08,.24),mat(0xd9b47c),mid.x,mid.y,mid.z,false);bridge.rotation.y=Math.atan2(b.z-a.z,b.x-a.x)}
+const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();let selected=0,focusTarget=null,pinchStart=null;
+function resize(){const r=stage.getBoundingClientRect();renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();renderer.setPixelRatio(Math.min(devicePixelRatio,2))}
+new ResizeObserver(resize).observe(stage);resize();
+function render(){requestAnimationFrame(render);controls.update();if(focusTarget){controls.target.lerp(focusTarget,.09);camera.position.lerp(new THREE.Vector3(focusTarget.x,focusTarget.y+5.5,focusTarget.z+7),.075);if(camera.position.distanceTo(new THREE.Vector3(focusTarget.x,focusTarget.y+5.5,focusTarget.z+7))<.12)focusTarget=null}renderer.render(scene,camera)}render();
+function selectIsland(i,fly=true){selected=(i+data.length)%data.length;document.querySelector('#counter').textContent=`第 ${selected+1} / ${data.length} 座島`;document.querySelectorAll('.island').forEach((b,j)=>b.setAttribute('aria-pressed',String(j===selected)));const d=data[selected];document.querySelector('#detail').innerHTML=`<div class="kicker" style="font-size:10px;color:#498779">學習歷程 · 第 ${selected+1} 站</div><h3>${d.name}</h3><p>${d.summary}</p><div class="causal"><b>事件因果</b><br>${d.cause}</div><div class="rooms">${d.rooms.map(r=>`<div class="room"><div class="emoji">${r[0]}</div><strong>${r[1]}</strong><span>${r[2]}</span></div>`).join('')}</div><div style="font-size:12px;font-weight:900;margin-top:13px">帶走的能力</div><div>${d.skills.map(s=>`<span class="tag">${s}</span>`).join('')}</div><div class="causal"><b>能力協作線 → 下一段</b><br>${d.carry}</div>`;document.querySelector('#skills').innerHTML=d.skills.map(s=>`<span class="tag">${s}</span>`).join('')+`<span class="tag">→ 下一段經歷</span>`;if(fly){const p=islandGroups[selected].getWorldPosition(new THREE.Vector3());focusTarget=p} }
+const list=document.querySelector('#island-list');data.forEach((d,i)=>{const b=document.createElement('button');b.className='island';b.setAttribute('aria-pressed',String(i===0));b.innerHTML=`<small>0${i+1} · ${i===5?'現在':`經歷 ${i+1}`}</small><strong>${d.name}</strong><span>${d.short} ↗</span>`;b.addEventListener('click',()=>selectIsland(i,true));list.appendChild(b)});
+document.querySelector('#minus').addEventListener('click',()=>{camera.position.sub(controls.target).multiplyScalar(1.12).add(controls.target)});document.querySelector('#plus').addEventListener('click',()=>{camera.position.sub(controls.target).multiplyScalar(.88).add(controls.target)});document.querySelector('#reset').addEventListener('click',()=>{controls.target.set(0,0,0);camera.position.set(0,10,17);controls.update();focusTarget=null;selectIsland(0,false)});document.querySelector('#next').addEventListener('click',()=>selectIsland((selected+1)%data.length,true));
+canvas.addEventListener('pointerup',e=>{if(e.pointerType==='touch'&&e.isPrimary===false)return;const r=canvas.getBoundingClientRect();pointer.x=((e.clientX-r.left)/r.width)*2-1;pointer.y=-((e.clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(pickables,false);if(hits.length)selectIsland(hits[0].object.userData.index,true)});
+document.querySelector('#timeline').innerHTML=data.map((d,i)=>`<div class="step"><div class="dot"></div>${d.short}</div>`).join('');
+selectIsland(0,false);
+</script>
+</body></html>
