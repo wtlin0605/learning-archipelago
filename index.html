@@ -2,210 +2,870 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
 <meta name="theme-color" content="#dff4ef">
-<meta name="description" content="氣球大頭症：學習歷程群島互動探索">
-<title>學習歷程群島｜氣球大頭症</title>
-<style>
-:root{--ink:#243c4c;--mint:#dff4ed;--paper:#fffdf6;--teal:#388b7c;--line:#dce9e5}
-*{box-sizing:border-box}body{margin:0;color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;background:#f5faf8}
-header{padding:22px clamp(16px,4vw,40px);background:linear-gradient(125deg,#e1f4e9,#e7efff 65%,#fff0d7)}
-.kicker{font-size:11px;font-weight:900;letter-spacing:2px;color:#498779}h1{font-size:clamp(24px,4vw,38px);margin:7px 0;line-height:1.25}header p{margin:0;max-width:760px;font-size:14px;line-height:1.8;color:#5b7180}
-main{max-width:1100px;margin:auto;padding:14px}
-.stage{position:relative;border-radius:20px;overflow:hidden;background:#a9ded8;box-shadow:0 12px 34px #345e5e1c}
-#world{display:block;width:100%;height:min(62vh,560px);min-height:350px;touch-action:none}
-.hud{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}.pill{border-radius:999px;padding:7px 11px;background:#ffffffdf;font-size:12px;font-weight:800;backdrop-filter:blur(8px)}
-.controls{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:12px;background:#f0f7f4}.btn{border:1px solid #d6e4e0;background:white;color:#31566a;border-radius:12px;padding:10px 14px;font-weight:800;min-height:42px;cursor:pointer}.btn:focus-visible,.island:focus-visible{outline:3px solid #e8b85c;outline-offset:2px}.help{text-align:center;background:#f0f7f4;color:#72838d;font-size:12px;padding:0 10px 14px}
-.layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:14px;margin-top:14px}.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:16px;min-width:0}.panel h2{font-size:17px;margin:0 0 5px}.muted{font-size:12px;line-height:1.8;color:#71818c}
-.islands{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.island{border:1px solid #e0eae6;background:#fcfefc;text-align:left;padding:11px;border-radius:13px;cursor:pointer;color:inherit}.island[aria-pressed=true]{border:2px solid #48a18c;background:#eff9f4;padding:10px}.island small{font-size:10px;color:#598d80;font-weight:900}.island strong{display:block;font-size:13px;line-height:1.5;margin-top:4px}.island span{font-size:11px;color:#73828b}
-.detail{margin-top:12px;padding:15px;border-radius:16px;background:#f0f7f4;border:1px solid #deebe6}.detail h3{font-size:21px;margin:4px 0 8px}.detail p{font-size:13px;line-height:1.85;color:#536a79}.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:12px}.room{background:#fff;border:1px solid #e1eae6;border-radius:12px;padding:9px;min-width:0}.emoji{font-size:22px}.room strong{display:block;font-size:12px;margin:5px 0;line-height:1.5}.room span{font-size:11px;line-height:1.6;color:#70818c;display:block}.tag{display:inline-block;background:#dcefe8;color:#2c7767;border-radius:999px;font-size:11px;font-weight:800;padding:5px 8px;margin:3px 3px 0 0}.causal{border-left:3px solid #e6bd6b;padding:7px 0 7px 10px;font-size:12px;line-height:1.8;color:#566c79;margin-top:10px}
-.closing{margin-top:14px;background:linear-gradient(125deg,#e0f3e8,#fff0cf);border-radius:18px;padding:18px}.closing strong{font-size:19px;line-height:1.6;color:#245e51}.timeline{display:flex;overflow:auto;gap:14px;padding:12px 2px 3px}.step{min-width:82px;text-align:center;font-size:11px;color:#617986}.dot{height:13px;width:13px;background:#68b69f;border-radius:50%;margin:0 auto 7px;border:3px solid #d4ebe1}.step:last-child .dot{background:#edb95f}
-footer{max-width:1100px;margin:auto;padding:16px 20px 28px;color:#84929a;font-size:11px;line-height:1.8}
-@media(max-width:720px){main{padding:9px}.layout{grid-template-columns:1fr}.panel{padding:13px}#world{height:390px;min-height:330px}.islands{grid-template-columns:repeat(2,minmax(0,1fr))}.rooms{gap:5px}.room{padding:7px}.room strong{font-size:11px}.room span{font-size:10px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
-</style>
+<meta name="description" content="氣球大頭症：學習歷程群島 3D 沉浸探索、動態島嶼規模、海洋生態與成長角色卡">
+<title>學習歷程群島｜氣球大頭症（3D 沉浸探索版）</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 
 <style>
-/* V3: polished island journey */
-:root{--ink:#243c4c;--mint:#dff4ed;--paper:#fffdf6;--teal:#388b7c;--line:#dce9e5}
-body{background:radial-gradient(ellipse at 12% 8%,#e8f7f2 0,transparent 34%),radial-gradient(ellipse at 92% 26%,#fff0d9 0,transparent 28%),#f4f9fb}
-header{position:relative;overflow:hidden;background:linear-gradient(125deg,#d8f4e9 0%,#e7edff 52%,#fff0d5 100%);border-bottom:1px solid #d9e9e3}
-header:after{content:"✦   ✧      ✦";position:absolute;right:5%;top:18%;font-size:clamp(24px,5vw,58px);letter-spacing:18px;color:#ffffffa8;transform:rotate(-8deg);pointer-events:none}
-.kicker{letter-spacing:2.5px}
-.stage{border:1px solid #c8e7e0;box-shadow:0 18px 50px #416d6c22, inset 0 1px #ffffff90}
-#world{cursor:grab}#world:active{cursor:grabbing}
-.panel{box-shadow:0 8px 24px #426d6a0b;transition:transform .2s,box-shadow .2s}
-.panel:hover{box-shadow:0 12px 30px #426d6a12}
-.island{transition:transform .18s,border-color .18s,box-shadow .18s}
-.island:hover{transform:translateY(-2px);box-shadow:0 8px 18px #4d89751c}
-.btn{transition:transform .15s,box-shadow .15s,background .15s}
-.btn:hover{transform:translateY(-1px);box-shadow:0 5px 12px #416b5b18;background:#f5fbf8}
-.btn:active{transform:translateY(1px)}
-.room{transition:transform .2s,border-color .2s,box-shadow .2s;cursor:pointer}
-.room:hover{transform:translateY(-3px);border-color:#91cdb9;box-shadow:0 8px 18px #376d5c14}
-.room.selected-room{border:2px solid #54a990;background:#effaf4;padding:8px}
-.room-detail{background:#fff;border:1px solid #d8eae2;border-radius:12px;padding:12px;margin-top:9px;font-size:13px;line-height:1.8}
-#choice-journey{box-shadow:0 12px 32px #426d6a12}
-.choice-card{background:linear-gradient(145deg,#f9fffb,#f5f8ff);box-shadow:0 8px 22px #456a6410}
-.choice-option{transition:transform .15s,border-color .15s}
-.choice-option:hover{transform:translateX(2px);border-color:#8bc9b4}
-.choice-option:has(input:checked){box-shadow:0 5px 15px #4d9c7b14}
-.journey-progress{height:11px;background:#e5efec;box-shadow:inset 0 1px 2px #00000008}
-.journey-progress div{background:linear-gradient(90deg,#53b59b,#8dcf9b,#f0c66e);box-shadow:0 0 12px #64bd9b80}
-.closing{position:relative;overflow:hidden;border:1px solid #e9e4c8;box-shadow:0 12px 30px #987d3a12}
-.closing:after{content:"✧";position:absolute;right:20px;top:10px;font-size:70px;color:#ffffffb0;pointer-events:none}
-.badge-shelf{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
-.reward-badge{display:flex;gap:7px;align-items:center;border:1px solid #e1eae6;background:#fff;border-radius:999px;padding:7px 10px;font-size:12px;color:#81918e;opacity:.62}
-.reward-badge.earned{opacity:1;background:#fff8df;border-color:#e7ce7c;color:#856525;box-shadow:0 3px 12px #e9cf7d24}
-.challenge-box{background:linear-gradient(120deg,#f1eaff,#fff7df);border:1px solid #e6d9f5;border-radius:15px;padding:14px;margin-top:12px}
-.challenge-box h3{margin:4px 0 6px}
-.floating-toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:99;background:#244b45;color:#fff;padding:11px 16px;border-radius:999px;box-shadow:0 8px 25px #1d4d4533;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s}
-.floating-toast.show{opacity:1}
-@media(max-width:720px){header:after{opacity:.35}.stage{border-radius:16px}.panel{border-radius:16px}.closing{padding:15px}}
-</style>
+:root {
+  --ink: #1e3545;
+  --muted: #5c7280;
+  --mint: #dff4ed;
+  --teal: #2d8a78;
+  --teal-dark: #1f685a;
+  --gold: #e8b85c;
+  --line: #d6e8e2;
+}
 
+* { box-sizing: border-box; }
 
-<style>
-/* V4 polish and feedback */
-header{background:linear-gradient(120deg,#d5f6e8,#e8ecff 54%,#fff0d2);box-shadow:inset 0 -1px #ffffff}
-.stage{background:linear-gradient(180deg,#bce9e8,#8fcfda);border:2px solid #d4eee7}
-#world{filter:saturate(1.08)}
-.panel,.closing,#choice-journey{border-radius:22px}
-.btn{box-shadow:0 3px 0 #d9e7e1}
-.btn:active{box-shadow:0 1px 0 #d9e7e1}
-.reward-badge{transition:transform .2s,opacity .2s,box-shadow .2s}
-.reward-badge.earned{transform:translateY(-2px)}
-.challenge-box{position:relative;overflow:hidden}
-.challenge-box:after{content:"✦";position:absolute;right:15px;top:5px;font-size:50px;color:#ffffffaa;pointer-events:none}
-#complete-challenge:disabled{cursor:default;transform:none;box-shadow:none}
-.choice-option{cursor:pointer}
-@media(prefers-reduced-motion:reduce){.reward-badge,.btn,.room,.panel{transition:none!important}}
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Noto Sans TC", system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+  background: #8fcfda;
+}
+
+/* Fullscreen 3D Viewport */
+.app-shell {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top Floating Glass Header */
+.top-nav {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  z-index: 40;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(24, 62, 68, 0.12);
+  padding: 8px 14px;
+  pointer-events: auto;
+}
+
+.hud-chip {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #2c5263;
+  background: #eff8f5;
+  border: 1px solid #cce6dd;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.hud-chip:hover {
+  background: #def3ec;
+  border-color: #8fd0bc;
+  transform: translateY(-1px);
+}
+.hud-chip.active {
+  background: linear-gradient(135deg, #2d8a78, #43a893);
+  color: #fff;
+  border-color: #247060;
+  box-shadow: 0 4px 12px rgba(45, 138, 120, 0.28);
+}
+
+/* 3D Canvas Stage */
+.stage-wrap {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #bce9e8, #8fcfda);
+  overflow: hidden;
+}
+
+#world {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: grab;
+}
+#world:active { cursor: grabbing; }
+
+/* Projected 2D Labels on 3D Canvas */
+#island-markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 15;
+}
+.island-marker {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid #cde5de;
+  border-radius: 16px;
+  padding: 5px 11px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #1f4252;
+  box-shadow: 0 6px 18px rgba(20, 56, 52, 0.18);
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  user-select: none;
+}
+.island-marker:hover {
+  transform: translate(-50%, -106%) scale(1.05);
+  background: #ffffff;
+  border-color: #3a9c87;
+  box-shadow: 0 8px 22px rgba(45, 138, 120, 0.32);
+}
+.island-marker.active {
+  background: linear-gradient(135deg, #257c6b, #3fa38e);
+  color: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 8px 24px rgba(37, 124, 107, 0.5);
+}
+.island-marker .marker-top {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.island-marker .size-tag {
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 99px;
+  background: rgba(45, 138, 120, 0.12);
+  color: #2b7a69;
+}
+.island-marker.active .size-tag {
+  background: rgba(255, 255, 255, 0.24);
+  color: #fff;
+}
+.island-marker .check-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 9.5px;
+  background: #dff4ec;
+  color: #216e5e;
+}
+.island-marker.active .check-dot {
+  background: rgba(255, 255, 255, 0.28);
+  color: #fff;
+}
+
+/* Bottom Floating Controls & Island Dock */
+.bottom-dock {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  max-width: 96vw;
+  pointer-events: none;
+}
+
+.dock-row {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 28px rgba(22, 58, 64, 0.16);
+  overflow-x: auto;
+  max-width: 95vw;
+}
+
+.dock-island-btn {
+  border: 1.5px solid #d5e8e1;
+  background: #ffffff;
+  color: #274a5a;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+.dock-island-btn:hover {
+  border-color: #7cc4b0;
+  background: #f2fbf8;
+  transform: translateY(-1px);
+}
+.dock-island-btn.active {
+  background: linear-gradient(135deg, #2b8573, #42a690);
+  color: #fff;
+  border-color: #216b5c;
+  box-shadow: 0 4px 12px rgba(43, 133, 115, 0.3);
+}
+
+/* Slide-Over Island Interactive Drawer (Appears ONLY when an island is clicked) */
+.island-drawer {
+  position: absolute;
+  top: 76px;
+  right: 16px;
+  bottom: 84px;
+  width: min(560px, calc(100vw - 24px));
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  border-radius: 26px;
+  box-shadow: 0 24px 60px rgba(18, 52, 58, 0.26);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateX(110%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease;
+}
+.island-drawer.open {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer-header {
+  padding: 16px 20px 12px;
+  background: linear-gradient(135deg, #dff5ec 0%, #edf2ff 55%, #fff3d9 100%);
+  border-bottom: 1px solid #d5e8e1;
+}
+
+.drawer-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 8px 16px;
+  background: #f3faf7;
+  border-bottom: 1px solid #dcebe5;
+}
+.drawer-tab {
+  border: 1.5px solid #d4e6df;
+  background: #ffffff;
+  color: #3d5d6c;
+  border-radius: 12px;
+  padding: 8px 6px;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+.drawer-tab:hover {
+  background: #eaf7f2;
+  border-color: #8cc9b6;
+}
+.drawer-tab.active {
+  background: linear-gradient(135deg, #2d8a78, #43a691);
+  color: #ffffff;
+  border-color: #247061;
+  box-shadow: 0 4px 12px rgba(45, 138, 120, 0.24);
+}
+
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 20px 24px;
+}
+
+/* Reusable Buttons & UI Elements */
+.btn {
+  border: 1px solid #cfe2dc;
+  background: #ffffff;
+  color: #294c5e;
+  border-radius: 12px;
+  padding: 7px 13px;
+  font-size: 12.5px;
+  font-weight: 800;
+  min-height: 36px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  box-shadow: 0 2px 0 #d5e5df;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+  user-select: none;
+}
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: #f6fcfa;
+  border-color: #9fd0c0;
+}
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #2d8a78, #44a692);
+  color: #ffffff;
+  border-color: #257566;
+  box-shadow: 0 2px 0 #1c5c50;
+}
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #267969, #3b9885);
+  color: #ffffff;
+}
+
+.kicker {
+  font-size: 10.5px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #377d6e;
+  text-transform: uppercase;
+}
+
+/* Rooms & Reflection inside Drawer */
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+.room-card {
+  background: #ffffff;
+  border: 1.5px solid #dceae4;
+  border-radius: 14px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.room-card:hover {
+  transform: translateY(-2px);
+  border-color: #7ec4ae;
+}
+.room-card.selected-room {
+  border: 2px solid #359680;
+  background: #ecfaf3;
+}
+.room-card .emoji { font-size: 23px; }
+.room-card strong {
+  display: block;
+  font-size: 12.5px;
+  margin: 4px 0 2px;
+  color: #1f3c4c;
+}
+.room-card span {
+  font-size: 11px;
+  line-height: 1.5;
+  color: #677b86;
+  display: block;
+}
+.room-note-indicator {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  font-size: 9.5px;
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffe69c;
+  border-radius: 99px;
+  padding: 1px 5px;
+  font-weight: 800;
+}
+
+.room-detail-drawer {
+  background: #f8fcfb;
+  border: 1.5px solid #cbe3da;
+  border-radius: 15px;
+  padding: 13px;
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #daf0e8;
+  color: #21695a;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  margin: 4px 4px 0 0;
+}
+
+.causal-box {
+  border-left: 3.5px solid #e6b85c;
+  background: #f5fbf8;
+  padding: 8px 12px;
+  border-radius: 0 10px 10px 0;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: #465f6d;
+  margin-top: 10px;
+}
+
+/* Choice Option Styles */
+.choice-option {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  border: 1.5px solid #dbe8e3;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 12px;
+  margin-top: 8px;
+  cursor: pointer;
+  line-height: 1.65;
+  font-size: 13.5px;
+  transition: all 0.18s ease;
+}
+.choice-option:hover {
+  transform: translateX(3px);
+  border-color: #84c6b1;
+}
+.choice-option input {
+  margin-top: 4px;
+  accent-color: #2d8a78;
+  width: 16px;
+  height: 16px;
+}
+.choice-option:has(input:checked) {
+  border: 2px solid #359680;
+  background: #ecfaf3;
+}
+
+/* Lab Stages inside Drawer */
+.balloon-stage {
+  height: 195px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 78%, #daf2e6, #eff8ff 72%);
+  border: 1px solid #d8ece4;
+  border-radius: 16px;
+  margin: 8px 0 12px;
+}
+.interactive-balloon {
+  --balloon-size: 86px;
+  width: var(--balloon-size);
+  height: calc(var(--balloon-size) * 1.14);
+  border-radius: 52% 48% 48% 52% / 45% 45% 55% 55%;
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.75) 0 6%, transparent 26%),
+    radial-gradient(circle at 35% 25%, #ffd2df, #f0739c 62%, #d14474);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 18px;
+  z-index: 2;
+  box-shadow: inset -8px -10px 16px rgba(140, 35, 72, 0.22), 0 10px 24px rgba(215, 95, 135, 0.32);
+  transition: width 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), height 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.38s ease;
+}
+.interactive-balloon.danger-wobble {
+  animation: balloonShake 0.45s infinite alternate;
+}
+@keyframes balloonShake {
+  0% { transform: translateY(-14px) rotate(-4deg) scale(1.02); }
+  100% { transform: translateY(-18px) rotate(4deg) scale(1.05); }
+}
+.interactive-balloon::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: calc(50% - 7px);
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 10px solid #d14474;
+}
+.balloon-face { font-size: 20px; line-height: 1; margin-bottom: 2px; }
+.interactive-balloon span.balloon-label {
+  font-size: 10.5px;
+  font-weight: 900;
+  color: #6b1d39;
+  text-align: center;
+}
+.balloon-thought {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #d9e8e3;
+  border-radius: 12px;
+  padding: 4px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #3d5a68;
+  z-index: 3;
+}
+.balloon-string {
+  position: absolute;
+  top: 112px;
+  height: 65px;
+  border-left: 1.5px dashed #b47a89;
+  z-index: 1;
+}
+.balloon-shadow {
+  position: absolute;
+  bottom: 12px;
+  width: 84px;
+  height: 12px;
+  background: rgba(135, 190, 175, 0.45);
+  border-radius: 50%;
+  filter: blur(4px);
+}
+
+.meter {
+  height: 9px;
+  background: #e4eeeb;
+  border-radius: 99px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+.meter > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #5ec29f, #f0b865, #ea678d);
+  border-radius: 99px;
+  transition: width 0.35s ease;
+}
+
+.response-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.response-option {
+  border: 1.5px solid #dce8e4;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 10px 6px;
+  cursor: pointer;
+  color: #294654;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.18s ease;
+}
+.response-option:hover {
+  transform: translateY(-2px);
+  border-color: #82c5b0;
+}
+.response-option.chosen {
+  border: 2px solid #359680;
+  background: #ecfaf3;
+}
+.response-option span.icon { font-size: 24px; }
+.response-option b { font-size: 11.5px; }
+.response-option small { font-size: 10px; color: #6d8089; text-align: center; }
+
+.crown-stage {
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: radial-gradient(ellipse, #fff4cc, #f9f6ff 72%);
+  border: 1px solid #e8e2d5;
+  border-radius: 16px;
+  margin: 8px 0 10px;
+}
+.interactive-crown {
+  font-size: 64px;
+  filter: drop-shadow(0 8px 6px rgba(140, 116, 53, 0.25));
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
+}
+.crown-crack {
+  position: absolute;
+  right: 34%;
+  top: 24%;
+  font-size: 26px;
+  color: #d14949;
+  opacity: 0;
+  transition: all 0.35s ease;
+}
+
+/* Badges & Character Card */
+.badge-shelf {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 10px 0;
+}
+.reward-badge {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid #dce8e3;
+  background: #f9fbfa;
+  border-radius: 14px;
+  padding: 9px 11px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #7c8d96;
+  opacity: 0.65;
+  transition: all 0.25s ease;
+}
+.reward-badge.earned {
+  opacity: 1;
+  background: linear-gradient(135deg, #fff9e2, #fff1c2);
+  border-color: #e4c467;
+  color: #7a5818;
+  box-shadow: 0 4px 12px rgba(230, 195, 95, 0.25);
+}
+
+.character-card-wrap {
+  perspective: 900px;
+  margin: 8px 0 10px;
+}
+.character-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  padding: 16px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 0%, #fff7db, transparent 52%),
+    linear-gradient(145deg, #d9f4e6 0%, #e7ecff 58%, #fff2d6 100%);
+  border: 2px solid #c9e3d9;
+  box-shadow: 0 12px 28px rgba(42, 92, 82, 0.14);
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+}
+.character-avatar { font-size: 50px; margin: 2px auto; }
+.character-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+.character-stats span {
+  font-size: 10.5px;
+  font-weight: 800;
+  border-radius: 99px;
+  padding: 4px 9px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(190, 222, 210, 0.8);
+  color: #356357;
+}
+
+/* Floating Toast & Modal */
+.floating-toast {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  z-index: 100;
+  background: rgba(24, 62, 56, 0.95);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  box-shadow: 0 10px 28px rgba(20, 55, 50, 0.35);
+  font-size: 12.5px;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  max-width: 92vw;
+  text-align: center;
+}
+.floating-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: rgba(20, 42, 52, 0.45);
+  backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal-backdrop.open { display: flex; }
+.modal-card {
+  background: #ffffff;
+  border: 1px solid #d5e8e1;
+  border-radius: 22px;
+  max-width: 440px;
+  width: 100%;
+  padding: 22px;
+  box-shadow: 0 24px 60px rgba(20, 48, 58, 0.25);
+}
+
+@media (max-width: 680px) {
+  .island-drawer {
+    top: auto;
+    right: 8px;
+    left: 8px;
+    bottom: 74px;
+    width: auto;
+    height: 72vh;
+    transform: translateY(115%);
+  }
+  .island-drawer.open {
+    transform: translateY(0);
+  }
+  .rooms-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
-<header><div class="kicker">MY LEARNING JOURNEY · 學習歷程探索</div><h1>把故事走成自己的成長地圖</h1><p>從追求掌聲，到學會謙卑；從受挫與報復，到以愛和真理回應。選一座島，探索每段經歷如何累積成現在的自己。</p></header>
-<main>
-<section class="stage" aria-label="可互動的三維群島"><canvas id="world" aria-label="3D 學習群島，可拖曳旋轉、縮放及點選"></canvas><div class="hud"><span class="pill" id="counter">第 1 / 6 座島</span><span class="pill">拖曳旋轉 · 點島探索</span></div></section>
-<div class="controls"><button class="btn" id="minus" aria-label="縮小">－ 縮小</button><button class="btn" id="reset">回到全景</button><button class="btn" id="plus" aria-label="放大">＋ 放大</button><button class="btn" id="next">下一座島 →</button></div><div class="help">手機／平板：單指拖曳旋轉、雙指縮放、點選島嶼。也可用下方島嶼清單操作。</div>
-<div class="layout"><section class="panel"><h2>探索島嶼</h2><div class="muted">沿著橋梁依序前進；每座島都有三個代表經歷的開放式房間。</div><div class="islands" id="island-list"></div></section><section class="panel"><h2>島嶼紀錄</h2><div class="muted">選取島嶼，閱讀事件、因果與帶走的能力。</div><div class="detail" id="detail" aria-live="polite"></div><h2 style="margin-top:17px">能力協作線</h2><div class="muted">前一段學到的能力，如何成為下一段旅程的基礎？</div><div id="skills"></div></section></div>
 
-<section class="panel" id="choice-journey" style="margin-top:14px">
-  <div class="kicker">INTERACTIVE JOURNEY · 你的選擇會留下痕跡</div>
-  <h2 style="font-size:23px;margin:6px 0">六站互動：每一次選擇，都會影響「現在的我」</h2>
-  <p class="muted">依序走過前五段經歷。每一站選一個最接近你當下想法的回應；沒有標準答案，系統會依你的選擇，整理出第六站「現在的我」的成長輪廓。你可以隨時回頭改選。</p>
-  <div class="journey-progress"><div id="progress-fill"></div></div>
-  <div class="muted" id="progress-label">已完成 0 / 5 段經歷</div>
-  
-<div class="badge-shelf" id="badge-shelf">
-  <div class="reward-badge" data-badge="first">🌱 初次探索</div>
-  <div class="reward-badge" data-badge="reflect">🪞 誠實省察</div>
-  <div class="reward-badge" data-badge="empathy">💗 同理之心</div>
-  <div class="reward-badge" data-badge="humble">✨ 謙卑前行</div>
-  <div class="reward-badge" data-badge="complete">🏝️ 群島旅人</div>
-</div>
-<div class="challenge-box">
-  <div class="kicker">DAILY MINI QUEST · 今日小任務</div>
-  <div class="tag" id="challenge-kind">生活任務</div><h3 id="challenge-title">🌿 把學習帶進生活</h3>
-  <p id="challenge-text" style="font-size:13px;line-height:1.8;margin:5px 0 10px">完成一個小小的善意行動，讓故事不只停在螢幕裡。</p>
-  <button class="btn" id="new-challenge">換一個生活任務 ↻</button>
-  <button class="btn" id="complete-challenge">我今天做到了 ✓</button>
-  <span class="muted" id="challenge-status" style="margin-left:6px"></span>
-</div>
+<div class="app-shell">
+  <!-- Top Floating Bar -->
+  <header class="top-nav" aria-label="群島導覽與生態狀態列">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5">
+        <span class="text-lg">🏝️</span>
+        <div>
+          <h1 class="text-sm sm:text-base font-black text-slate-800 m-0 leading-tight">
+            學習歷程群島｜氣球大頭症
+          </h1>
+          <p class="text-[11px] text-slate-500 m-0 hidden md:block">
+            點選 3D 島嶼即可開啟該島專屬「故事房間、抉擇與互動實驗室」· 島嶼規模隨內容與探索成長
+          </p>
+        </div>
+      </div>
 
-<div id="choice-stage"></div>
-  <div class="choice-nav"><button class="btn" id="prev-choice">← 上一段</button><button class="btn" id="next-choice">下一段 →</button><button class="btn" id="show-now">看看現在的我 ✨</button></div>
-  <div id="now-me" class="now-me" aria-live="polite">
-    <h2>第六站｜現在的我</h2>
-    <p class="muted">完成前五段經歷的選擇後，這裡會根據你的答案，呈現你的成長輪廓與下一步行動。</p>
+      <div class="flex flex-wrap items-center gap-1.5">
+        <button class="hud-chip" id="quick-badges" title="前往第 5 島查看徽章館">🏅 徽章 <span id="badge-count-label">0/8</span></button>
+        <button class="hud-chip" id="quick-radar" title="前往第 6 島查看成長雷達圖">📊 成長雷達</button>
+        <button class="hud-chip" id="quick-card" title="前往第 6 島製作角色卡">🪪 角色卡</button>
+
+        <div class="inline-flex bg-slate-100 p-0.5 rounded-full border border-slate-200">
+          <button class="env-btn px-2 py-1 rounded-full text-[11px] font-extrabold bg-teal-700 text-white cursor-pointer border-0" data-env="day">☀️ 晨曦</button>
+          <button class="env-btn px-2 py-1 rounded-full text-[11px] font-extrabold text-slate-600 bg-transparent cursor-pointer border-0" data-env="sunset">🌅 黃昏</button>
+          <button class="env-btn px-2 py-1 rounded-full text-[11px] font-extrabold text-slate-600 bg-transparent cursor-pointer border-0" data-env="night">🌙 星夜</button>
+        </div>
+
+        <button id="sound-toggle" class="hud-chip" title="切換互動音效">🔊 音效</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Fullscreen 3D Archipelago Stage -->
+  <section class="stage-wrap" aria-label="3D 學習歷程群島與海洋生態">
+    <canvas id="world" aria-label="3D 學習群島，包含海鷗、鯨魚、海豚與大型郵輪"></canvas>
+    <div id="island-markers"></div>
+  </section>
+
+  <!-- Slide-over Island Interactive Drawer (Only opens when an island is selected) -->
+  <aside id="island-drawer" class="island-drawer" aria-live="polite">
+    <div class="drawer-header">
+      <div class="flex items-start justify-between gap-2">
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="kicker" id="drawer-kicker">ISLAND 01</span>
+            <span id="drawer-scale-pill" class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-teal-700 text-white">
+              📐 島嶼規模 Lv.1
+            </span>
+          </div>
+          <h2 id="drawer-title" class="text-xl font-black text-slate-800 mt-1 mb-0">起點島｜我看見自己</h2>
+        </div>
+        <button id="close-drawer" class="btn !px-2.5 !py-1 text-xs" title="關閉島嶼面板，返回 3D 全景">✕ 收合面板</button>
+      </div>
+      <p id="drawer-scale-desc" class="text-[11px] text-teal-800 font-bold mt-1.5 mb-0">
+        💡 本島包含 3 間故事房、1 站抉擇與「佩佩的氣球」實驗室。撰寫筆記與完成互動會讓島嶼規模擴大！
+      </p>
+    </div>
+
+    <!-- 3 Tabs per Island: 1. Story & Rooms, 2. Station Choice, 3. Island Exclusive Lab -->
+    <div class="drawer-tabs" role="tablist">
+      <button type="button" class="drawer-tab active" data-tab="story">📖 故事與房間</button>
+      <button type="button" class="drawer-tab" data-tab="choice" id="tab-btn-choice">🧭 本島抉擇</button>
+      <button type="button" class="drawer-tab" data-tab="lab" id="tab-btn-lab">🧪 互動實驗室</button>
+    </div>
+
+    <div class="drawer-body" id="drawer-body">
+      <!-- Dynamic Content Injected per Island & Tab -->
+    </div>
+
+    <div class="px-5 py-2.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-2">
+      <button class="btn text-xs" id="drawer-prev-island">← 上一座島</button>
+      <span class="text-[11px] font-bold text-slate-500" id="drawer-progress-hint">已探索 1/6 島 · 抉擇 0/5 站</span>
+      <button class="btn btn-primary text-xs" id="drawer-next-island">下一座島 →</button>
+    </div>
+  </aside>
+
+  <!-- Bottom Floating Dock: Island Quick Selector + Camera & Wildlife Controls -->
+  <div class="bottom-dock">
+    <div class="dock-row" id="island-dock" aria-label="六座島嶼快速航行導覽列"></div>
+    <div class="dock-row !py-1.5 !px-3 text-xs">
+      <button class="btn !min-h-[30px] !py-1 !px-2.5 text-xs" id="reset-cam">🗺️ 全景俯瞰</button>
+      <button class="btn !min-h-[30px] !py-1 !px-2.5 text-xs" id="focus-cruise">🛳️ 追蹤郵輪</button>
+      <button class="btn !min-h-[30px] !py-1 !px-2.5 text-xs" id="focus-whale">🐋 尋找鯨魚</button>
+      <button class="btn !min-h-[30px] !py-1 !px-2.5 text-xs" id="auto-tour">✈️ 環島導覽</button>
+      <button class="btn !min-h-[30px] !py-1 !px-2.5 text-xs text-rose-700" id="reset-journey">🔄 重置紀錄</button>
+    </div>
   </div>
-  <button class="btn" id="reset-journey" style="margin-top:10px">重新開始這趟旅程</button>
-</section>
-<style>
-.journey-progress{height:9px;background:#e7efec;border-radius:99px;overflow:hidden;margin:12px 0 5px}.journey-progress div{height:100%;width:0;background:linear-gradient(90deg,#58ae98,#edc36f);transition:width .25s}
-.choice-card{border:1px solid #dce9e5;background:#f8fcfa;border-radius:16px;padding:16px;margin-top:12px}.choice-card h3{margin:4px 0 8px;font-size:20px}.choice-option{display:flex;gap:10px;align-items:flex-start;border:1px solid #dce8e3;background:white;border-radius:12px;padding:12px;margin-top:8px;cursor:pointer;line-height:1.7;font-size:14px}.choice-option input{margin-top:5px;accent-color:#388b7c;flex:0 0 auto}.choice-option:has(input:checked){border:2px solid #48a18c;background:#edf8f2;padding:11px}.choice-note{font-size:12px;color:#698078;line-height:1.8;margin-top:10px}.choice-nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.now-me{display:none;background:linear-gradient(135deg,#e3f5e9,#fff2d4);border:1px solid #d5e9db;border-radius:16px;padding:16px;margin-top:14px}.now-me.visible{display:block}.now-me h2{margin:0 0 8px}.profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}.profile-item{background:#ffffffd9;border-radius:12px;padding:11px}.profile-item strong{display:block;font-size:13px}.profile-item span{font-size:12px;line-height:1.7;color:#536d77}.action-line{padding:12px;border-left:3px solid #d9b25f;background:#ffffffb8;border-radius:0 10px 10px 0;margin-top:9px;font-size:13px;line-height:1.8}
-@media(max-width:520px){.profile-grid{grid-template-columns:1fr}.choice-nav .btn{flex:1}}
-</style>
+</div>
 
-
-<section class="panel" id="story-game" style="margin-top:14px">
-  <div class="kicker">PLAY THE STORY · 把故事變成選擇</div>
-  <h2 style="font-size:24px;margin:6px 0">故事互動實驗室</h2>
-  <p class="muted">動手試試看：你的操作會改變氣球、阿德的回應與西門的皇冠。最後把這些選擇整理成一張專屬的成長角色卡。</p>
-  <div class="game-grid">
-    <article class="game-card balloon-game">
-      <div class="game-number">01 · 佩佩的氣球</div>
-      <h3>掌聲越多，氣球越大？</h3>
-      <p>點擊「再多一點掌聲」，觀察氣球如何膨脹。再按「感恩與分享」，讓氣球慢慢回到合宜的大小。</p>
-      <div class="balloon-stage" aria-label="可互動氣球">
-        <div class="balloon-string"></div><div id="interactive-balloon" class="interactive-balloon"><span>我最棒！</span></div>
-        <div class="balloon-shadow"></div>
-      </div>
-      <div class="meter"><span id="balloon-meter" style="width:25%"></span></div>
-      <p class="game-feedback" id="balloon-feedback" aria-live="polite">目前氣球大小：25%。成就可以值得開心，但不需要拿來比較。</p>
-      <div class="game-actions"><button class="btn" id="inflate-balloon">🎈 再多一點掌聲</button><button class="btn" id="deflate-balloon">🌱 感恩與分享</button></div>
-    </article>
-    <article class="game-card response-game">
-      <div class="game-number">02 · 阿德的回應</div>
-      <h3>受傷時，我可以怎麼選？</h3>
-      <p>佩佩又拿成績比較你。選一個你想嘗試的回應，看看它可能帶來什麼結果。</p>
-      <div class="scene-bubble"><span class="character-face">🧒🏻</span><span>「你看！我又比你厲害了！」</span></div>
-      <div class="response-options">
-        <button class="response-option" data-response="revenge"><span>💥</span><b>報復回去</b><small>讓對方也難受</small></button>
-        <button class="response-option" data-response="pause"><span>🛡️</span><b>先停下來</b><small>整理自己的情緒</small></button>
-        <button class="response-option" data-response="kind"><span>💬</span><b>溫和說真話</b><small>表達感受，不攻擊人</small></button>
-      </div>
-      <div class="response-result" id="response-result" aria-live="polite">選擇一個回應，看看故事接下來可能如何發展。</div>
-    </article>
-    <article class="game-card crown-game">
-      <div class="game-number">03 · 西門的皇冠</div>
-      <h3>我做這件事，最想得到什麼？</h3>
-      <p>選擇你的動機，看看皇冠會如何變化。這不是給人貼標籤，而是練習誠實省察。</p>
-      <div class="crown-stage"><div id="interactive-crown" class="interactive-crown">👑</div><div class="crown-crack" id="crown-crack">✦</div></div>
-      <div class="crown-meter"><span id="crown-meter" style="width:25%"></span></div>
-      <div class="response-options crown-options">
-        <button class="response-option" data-motive="applause"><span>👏</span><b>想被稱讚</b><small>希望大家都看見我</small></button>
-        <button class="response-option" data-motive="share"><span>🤝</span><b>分享功勞</b><small>願意肯定別人的付出</small></button>
-        <button class="response-option" data-motive="serve"><span>🙏</span><b>幫助別人</b><small>感恩並把榮耀歸主</small></button>
-      </div>
-      <div class="game-feedback" id="crown-feedback" aria-live="polite">選擇一種動機，觀察皇冠的變化。</div>
-    </article>
-    <article class="game-card growth-game">
-      <div class="game-number">04 · 我的成長角色卡</div>
-      <h3>把選擇變成下一步</h3>
-      <p>完成上面三個互動，產生你的角色卡。你也可以把前五站的學習選擇一起納入。</p>
-      <div class="character-card" id="character-card">
-        <div class="character-spark">✦ ✧ ✦</div><div class="character-avatar" id="character-avatar">🌱</div>
-        <div class="character-label">MY GROWTH CARD</div><h3 id="character-title">正在成長的旅人</h3>
-        <p id="character-description">每一次選擇，都能成為成長的起點。</p>
-        <div class="character-stats" id="character-stats"><span>謙卑　待探索</span><span>同理　待探索</span><span>省察　待探索</span></div>
-      </div>
-      <div class="game-actions"><button class="btn" id="make-character">✨ 生成我的角色卡</button><button class="btn" id="download-character">⬇ 下載角色卡</button></div>
-      <p class="game-feedback" id="character-feedback">角色卡會依據你的互動選擇產生，可下載為圖片。</p>
-    </article>
+<!-- Custom Confirmation Modal -->
+<div class="modal-backdrop" id="custom-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-card">
+    <h3 id="modal-title" class="text-lg font-black text-slate-800 m-0">確定要重新開始這趟旅程嗎？</h3>
+    <p id="modal-desc" class="text-xs sm:text-sm text-slate-600 leading-relaxed my-3">
+      這將會清除目前儲存在裝置上的五站選擇與房間省思筆記，讓島嶼規模與歷程回到初始狀態重新體驗。
+    </p>
+    <div class="flex justify-end gap-2 mt-4">
+      <button class="btn text-xs" id="modal-cancel">取消保留</button>
+      <button class="btn btn-primary text-xs !bg-rose-600 !border-rose-700" id="modal-confirm">確定重置</button>
+    </div>
   </div>
-</section>
-<style>
-.game-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:15px}
-.game-card{min-width:0;border:1px solid #dce9e5;border-radius:18px;padding:15px;background:linear-gradient(145deg,#fff,#f7fbf9);box-shadow:0 8px 24px #456a6410}
-.game-number{font-size:10px;letter-spacing:1.7px;font-weight:900;color:#498779}.game-card h3{font-size:18px;margin:6px 0}.game-card>p{font-size:12px;line-height:1.8;color:#637783}
-.balloon-stage{height:190px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(ellipse at 50% 75%,#dff3e8,#f5fbff 70%);border-radius:14px;margin:12px 0}
-.interactive-balloon{--balloon-size:80px;width:var(--balloon-size);height:calc(var(--balloon-size)*1.15);border-radius:52% 48% 48% 52%/45% 45% 55% 55%;background:radial-gradient(circle at 30% 25%,#fff8 0 5%,transparent 25%),radial-gradient(circle at 35% 25%,#ffcfdb,#ef789e 65%,#d64d7a);display:flex;align-items:center;justify-content:center;position:absolute;top:22px;z-index:2;box-shadow:inset -8px -9px 14px #9b31552b,0 9px 20px #dc769933;transition:width .4s,height .4s,transform .4s}
-.interactive-balloon:after{content:"";position:absolute;bottom:-8px;left:calc(50% - 7px);border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid #d95b83}
-.interactive-balloon span{font-size:10px;font-weight:900;color:#873a58;text-align:center;max-width:80%;line-height:1.3}
-.balloon-string{position:absolute;top:115px;height:62px;border-left:1px solid #b47a89;z-index:1}.balloon-shadow{position:absolute;bottom:15px;width:80px;height:12px;background:#9acbbd66;border-radius:50%;filter:blur(4px)}
-.meter,.crown-meter{height:8px;background:#e6eeeb;border-radius:99px;overflow:hidden;margin:10px 0}.meter span{display:block;height:100%;background:linear-gradient(90deg,#83c9aa,#ef8fae);border-radius:99px;transition:width .35s}.game-feedback{font-size:12px;line-height:1.8;color:#526d77;min-height:40px}
-.game-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}.game-actions .btn{flex:1;font-size:12px;padding:9px}
-.scene-bubble{display:flex;align-items:center;gap:9px;background:#f1f7ff;border:1px solid #e0e9f7;border-radius:14px;padding:12px;font-size:13px;line-height:1.6;margin:12px 0}.character-face{font-size:28px}
-.response-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.response-option{border:1px solid #dfe9e5;background:white;border-radius:13px;padding:10px 6px;cursor:pointer;color:#304b58;display:flex;flex-direction:column;align-items:center;gap:5px;transition:transform .18s,border .18s,background .18s;min-width:0}.response-option:hover{transform:translateY(-2px);border-color:#9acdbb}.response-option:focus-visible{outline:3px solid #e7c46f}.response-option span{font-size:23px}.response-option b{font-size:11px}.response-option small{font-size:10px;line-height:1.4;color:#75858d;text-align:center}.response-option.chosen{border:2px solid #56a88f;background:#effaf3;padding:9px 5px}
-.response-result{margin-top:10px;padding:11px;border-radius:12px;background:#f4f8f6;font-size:12px;line-height:1.8;color:#526d77;min-height:64px}
-.crown-stage{height:135px;display:flex;align-items:center;justify-content:center;position:relative;background:radial-gradient(ellipse,#fff2c7,#fbf8ff 70%);border-radius:14px;margin:12px 0}.interactive-crown{font-size:72px;filter:drop-shadow(0 8px 4px #8c743533);transition:transform .35s,filter .35s}.crown-crack{position:absolute;right:32%;top:35%;font-size:28px;color:#c85f59;opacity:0;transform:scale(.3) rotate(-20deg);transition:all .3s}.crown-meter span{display:block;height:100%;background:linear-gradient(90deg,#f1c86d,#c8a0dc);transition:width .35s}.crown-options{margin-top:8px}
-.character-card{position:relative;overflow:hidden;min-height:240px;border-radius:18px;padding:17px;text-align:center;background:radial-gradient(circle at 50% 0,#fff6d9,transparent 48%),linear-gradient(145deg,#dff5e9,#e8e9ff);border:1px solid #d4e6df}
-.character-spark{letter-spacing:12px;color:#d5a84c}.character-avatar{font-size:54px;margin:3px auto;filter:drop-shadow(0 6px 5px #3f796b22)}.character-label{font-size:9px;letter-spacing:2px;font-weight:900;color:#588b7b}.character-card h3{font-size:21px;margin:5px 0;color:#2b6256}.character-card p{font-size:12px;line-height:1.8;color:#526c75}.character-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:12px}.character-stats span{font-size:10px;font-weight:800;border-radius:99px;padding:6px 9px;background:#ffffffb8;color:#52766b}
-@media(max-width:760px){.game-grid{grid-template-columns:1fr}.game-card{padding:13px}.response-options{gap:5px}.response-option{padding:9px 4px}.response-option b{font-size:10px}.balloon-stage{height:175px}}
-</style>
+</div>
 
-<section class="closing"><div class="kicker">DESTINATION · 最後一座島</div><strong>氣球會洩氣，皇冠會裂開。<br>真正的成長，是把榮耀歸給上帝。</strong><div class="muted" style="margin-top:6px">現在的我，不必靠比較證明自己；我能在順境中謙卑，在受挫時不報復，並用所擁有的能力去愛人。</div><div class="timeline" id="timeline"></div></section>
-</main><footer>此互動網站將《氣球大頭症》單元內容整理成學習歷程示例。若用於個人學習檔案，請將房間內容替換成自己的真實作品、反思與成果。</footer>
 <script type="importmap">
 {
   "imports": {
@@ -214,388 +874,2293 @@ header{background:linear-gradient(120deg,#d5f6e8,#e8ecff 54%,#fff0d2);box-shadow
   }
 }
 </script>
+
 <script type="module">
 import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-const data=[
-{name:'起點島｜我看見自己',short:'發現大頭症',color:0xe8c58b,summary:'佩佩拿新衣、新鞋、100 分與榮譽榜證明自己比別人強。恩慈老師用羅馬書十二章三節帶出核心問題：不要看自己過於所當看的。',rooms:[['👟','新衣新鞋','收到禮物，開始在意別人怎麼看。'],['💯','聽寫一百分','成績成為炫耀的工具。'],['🎈','氣球變大','越誇耀，氣球大頭越膨脹。']],skills:['自我覺察','理解經文','辨認驕傲'],cause:'成就被拿來抬高自己 → 忽略他人的感受 → 驕傲逐漸膨脹。',carry:'把觀察自己在乎什麼，帶往下一座島。'},
-{name:'風雨島｜受挫的選擇',short:'面對比較',color:0x9fd4ca,summary:'阿德沒有新衣與高分，長期被佩佩比較後感到委屈，最後故意踩進泥坑報復。受傷的感覺可以理解，但以牙還牙仍會傷害別人。',rooms:[['🎒','哥哥的舊衣','被比下去，覺得自己不如人。'],['✊','委屈累積','情緒沒有被好好說出來。'],['💦','踩進泥坑','故意報復，泥水濺滿佩佩。']],skills:['辨認情緒','同理他人','承擔選擇'],cause:'受到比較 → 委屈累積 → 用報復討回面子 → 傷害加深。',carry:'從辨認受傷與報復，帶出更溫和的回應方式。'},
-{name:'軍裝島｜另一種回應',short:'練習謙卑',color:0xb5d8a2,summary:'想像中的阿德穿上上帝的全副軍裝，為佩佩的成就感到高興，並溫和提醒她：能力不是拿來自誇，而是上帝所賜。',rooms:[['🛡️','穿上軍裝','先停下衝動，選擇不報復。'],['💬','溫和提醒','用愛與真理表達想法。'],['🤝','為人高興','不因別人成功就貶低自己。']],skills:['情緒調節','溫和溝通','謙卑','同理心'],cause:'覺察情緒 → 停止報復 → 溫和說真理 → 修復關係。',carry:'把同理、溝通與謙卑帶進更深的價值判斷。'},
-{name:'皇冠島｜西門的選擇',short:'分辨動機',color:0xc1b3e2,summary:'西門因邪術受到眾人注目；腓利傳講耶穌、行出神蹟後，他仍只對能力感到驚奇，甚至想用錢買屬靈權柄。外表的跟隨不等於心已改變。',rooms:[['👑','群眾的掌聲','西門享受被稱為大能者。'],['✨','看見神蹟','著迷於厲害，忽略真正的信仰。'],['💰','想買權柄','誤以為上帝的恩賜可以交易。']],skills:['辨認動機','價值判斷','分辨真偽'],cause:'追求注目 → 只看重能力 → 想控制恩賜 → 被彼得責備。',carry:'從辨認「我想被看見」進一步檢視信念與行動是否一致。'},
-{name:'真光島｜把榮耀歸主',short:'學習真正的信仰',color:0xefd18a,summary:'腓利把神蹟的榮耀歸給上帝；彼得與約翰指出西門心中的問題。上帝的恩賜不能用金錢或表現換取，需要謙卑領受並省察內心。',rooms:[['☀️','腓利的榜樣','有能力，卻不把自己當主角。'],['📖','彼得的提醒','面對罪，承認錯誤並尋求赦免。'],['🙏','自我省察','思考信仰、罪、思想與行為。']],skills:['信仰省察','辨別真偽','責任感','謙卑'],cause:'看見榜樣 → 聽見提醒 → 省察內心 → 選擇悔改與改變。',carry:'把省察轉化為生活實踐，抵達現在的自己。'},
-{name:'現在的我｜成長之島',short:'帶著能力前行',color:0x9ed8ac,summary:'我可以擁有成績、能力與肯定，卻不必靠它們證明自己比別人強。我練習在順境中不自誇、在被比下去時不報復，願意為別人的成就高興，把能力用來幫助人，並把榮耀歸給上帝。',rooms:[['🪞','我看見自己','我最在乎的是被稱讚，還是做對的事？'],['🛡️','我如何回應','我能停止報復、溫和說真話嗎？'],['🌱','我接下來要做','用自己的能力幫助別人，持續成長。']],skills:['自我覺察','同理心','謙卑','溫和溝通','信仰實踐'],cause:'覺察 → 分辨 → 選擇 → 行動 → 持續反思。',carry:'這不是終點，而是把學到的能力帶進每天的新選擇。'}
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+/* ============================================================================
+   1. WEB AUDIO SYNTHESIZER
+============================================================================ */
+class SoundFX {
+  constructor() {
+    this.enabled = true;
+    this.ctx = null;
+  }
+  init() {
+    if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+  }
+  playTone(freq = 523.25, duration = 0.14, type = 'sine', gainVal = 0.08, slideFreq = null) {
+    if (!this.enabled) return;
+    try {
+      this.init();
+      if (!this.ctx) return;
+      const now = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, now);
+      if (slideFreq) osc.frequency.exponentialRampToValueAtTime(slideFreq, now + duration);
+      gain.gain.setValueAtTime(gainVal, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now);
+      osc.stop(now + duration);
+    } catch (e) {}
+  }
+  islandSelect(idx) {
+    const scale = [523.25, 587.33, 659.25, 698.46, 783.99, 880.0];
+    const base = scale[idx % scale.length];
+    this.playTone(base, 0.16, 'triangle', 0.09);
+    setTimeout(() => this.playTone(base * 1.25, 0.22, 'sine', 0.07), 70);
+  }
+  click() { this.playTone(660, 0.07, 'sine', 0.05, 880); }
+  inflate() { this.playTone(280, 0.22, 'sine', 0.09, 480); }
+  deflate() { this.playTone(520, 0.25, 'triangle', 0.08, 260); }
+  horn() {
+    this.playTone(146.83, 0.45, 'sawtooth', 0.06, 142);
+    setTimeout(() => this.playTone(185.0, 0.55, 'triangle', 0.06), 120);
+  }
+  fanfare() {
+    [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+      setTimeout(() => this.playTone(f, 0.22, 'triangle', 0.09), i * 85);
+    });
+  }
+}
+const sfx = new SoundFX();
+
+document.querySelector('#sound-toggle').addEventListener('click', (e) => {
+  sfx.enabled = !sfx.enabled;
+  e.currentTarget.textContent = sfx.enabled ? '🔊 音效' : '🔇 靜音';
+  if (sfx.enabled) sfx.click();
+});
+
+/* ============================================================================
+   2. ISLAND DATA & CONTENT-DRIVEN SCALE CONFIGURATION
+   Each island's baseScale is determined by the richness of its content/items!
+============================================================================ */
+const data = [
+  {
+    name: '起點島｜我看見自己',
+    short: '發現大頭症',
+    color: 0xe8c58b,
+    baseScale: 0.86, // 3 rooms + 3 skills + Balloon Lab
+    contentItemsCount: 8,
+    labTitle: '🎈 佩佩的氣球實驗室',
+    summary: '佩佩拿新衣、新鞋、100 分與榮譽榜證明自己比別人強。恩慈老師用羅馬書十二章三節帶出核心問題：不要看自己過於所當看的。',
+    rooms: [
+      ['👟', '新衣新鞋', '收到禮物，開始在意別人怎麼看。'],
+      ['💯', '聽寫一百分', '成績成為炫耀的工具。'],
+      ['🎈', '氣球變大', '越誇耀，氣球大頭越膨脹。']
+    ],
+    prompts: [
+      ['我有哪些時候很想被看見？', '我可以怎麼表達感謝，而不是比較？'],
+      ['當我考好成績或表現優秀時，心裡第一個念頭是什麼？', '怎麼做能讓成就帶來感謝，而不是讓別人覺得被比下去？'],
+      ['什麼時候我會覺得自己的「大頭氣球」正在變大？', '誰曾幫助我完成看似我自己做到的事？']
+    ],
+    skills: ['自我覺察', '理解經文', '辨認驕傲'],
+    cause: '成就被拿來抬高自己 → 忽略他人的感受 → 驕傲逐漸膨脹。',
+    carry: '把觀察自己在乎什麼，帶往下一座島。'
+  },
+  {
+    name: '風雨島｜受挫的選擇',
+    short: '面對比較',
+    color: 0x9fd4ca,
+    baseScale: 0.96, // 3 rooms + 3 skills + Storm/Mud + Response Simulator
+    contentItemsCount: 10,
+    labTitle: '🛡️ 阿德的回應模擬器',
+    summary: '阿德沒有新衣與高分，長期被佩佩比較後感到委屈，最後故意踩進泥坑報復。受傷的感覺可以理解，但以牙還牙仍會傷害別人。',
+    rooms: [
+      ['🎒', '哥哥的舊衣', '被比下去，覺得自己不如人。'],
+      ['✊', '委屈累積', '情緒沒有被好好說出來。'],
+      ['💦', '踩進泥坑', '故意報復，泥水濺滿佩佩。']
+    ],
+    prompts: [
+      ['我被比較時，身體和心情有什麼反應？', '我的價值真的只由新東西或分數決定嗎？'],
+      ['當委屈一直放在心裡不說時，會發生什麼事？', '我能用什麼方式安全地說出委屈？'],
+      ['報復別人之後，心裡真的會變得平安快樂嗎？', '下一次想反擊前，我可以給自己什麼暗號先停下來？']
+    ],
+    skills: ['辨認情緒', '同理他人', '承擔選擇'],
+    cause: '受到比較 → 委屈累積 → 用報復討回面子 → 傷害加深。',
+    carry: '從辨認受傷與報復，帶出更溫和的回應方式。'
+  },
+  {
+    name: '軍裝島｜另一種回應',
+    short: '練習謙卑',
+    color: 0xb5d8a2,
+    baseScale: 1.08, // 3 rooms + 4 skills + Armor + 6 Daily Mini Quests
+    contentItemsCount: 14,
+    labTitle: '🌿 屬靈軍裝與今日生活任務',
+    summary: '想像中的阿德穿上上帝的全副軍裝，為佩佩的成就感到高興，並溫和提醒她：能力不是拿來自誇，而是上帝所賜。',
+    rooms: [
+      ['🛡️', '穿上軍裝', '先停下衝動，選擇不報復。'],
+      ['💬', '溫和提醒', '用愛與真理表達想法。'],
+      ['🤝', '為人高興', '不因別人成功就貶低自己。']
+    ],
+    prompts: [
+      ['穿上「平安與公義的軍裝」對我來說代表什麼具體行動？', '如果我選擇不報復，情緒可以先去哪裡休息？'],
+      ['如果我選擇不報復，下一句話可以怎麼溫和地說？', '「用愛心說誠實話」跟「直接罵回去」有什麼不同？'],
+      ['我能怎麼肯定別人，又不貶低自己？', '最近有哪位同學的優點是我可以真心稱讚的？']
+    ],
+    skills: ['情緒調節', '溫和溝通', '謙卑', '同理心'],
+    cause: '覺察情緒 → 停止報復 → 溫和說真理 → 修復關係。',
+    carry: '把同理、溝通與謙卑帶進更深的價值判斷。'
+  },
+  {
+    name: '皇冠島｜西門的選擇',
+    short: '分辨動機',
+    color: 0xc1b3e2,
+    baseScale: 1.02, // 3 rooms + 3 skills + Simon's Crown Motive Lab
+    contentItemsCount: 11,
+    labTitle: '👑 西門的皇冠動機透視鏡',
+    summary: '西門因邪術受到眾人注目；腓利傳講耶穌、行出神蹟後，他仍只對能力感到驚奇，甚至想用錢買屬靈權柄。外表的跟隨不等於心已改變。',
+    rooms: [
+      ['👑', '群眾的掌聲', '西門享受被稱為大能者。'],
+      ['✨', '看見神蹟', '著迷於厲害，忽略真正的信仰。'],
+      ['💰', '想買權柄', '誤以為上帝的恩賜可以交易。']
+    ],
+    prompts: [
+      ['我做這件事，是為了幫助人還是得到掌聲？', '如果沒有人稱讚，我還會願意做嗎？'],
+      ['我比較羨慕別人「看起來很厲害」，還是欣賞別人「品格很良善」？', '外表的熱鬧跟內心的真誠有什麼差別？'],
+      ['有哪些寶貴的東西（如愛、恩賜、友誼）是不能用金錢或表現交換的？', '我要如何避免把信仰或做好事當成交換條件？']
+    ],
+    skills: ['辨認動機', '價值判斷', '分辨真偽'],
+    cause: '追求注目 → 只看重能力 → 想控制恩賜 → 被彼得責備。',
+    carry: '從辨認「我想被看見」進一步檢視信念與行動是否一致。'
+  },
+  {
+    name: '真光島｜把榮耀歸主',
+    short: '學習真正的信仰',
+    color: 0xefd18a,
+    baseScale: 1.15, // 3 rooms + 4 skills + 8 Achievement Badges Hall + Scripture
+    contentItemsCount: 16,
+    labTitle: '🏅 成長徽章館與金句省察',
+    summary: '腓利把神蹟的榮耀歸給上帝；彼得與約翰指出西門心中的問題。上帝的恩賜不能用金錢或表現換取，需要謙卑領受並省察內心。',
+    rooms: [
+      ['☀️', '腓利的榜樣', '有能力，卻不把自己當主角。'],
+      ['📖', '彼得的提醒', '面對罪，承認錯誤並尋求赦免。'],
+      ['🙏', '自我省察', '思考信仰、罪、思想與行為。']
+    ],
+    prompts: [
+      ['腓利很有能力卻不搶功勞，這給我什麼啟發？', '當別人誇獎我時，我可以怎麼回應來表達感恩？'],
+      ['當別人指出我的盲點或錯誤時，我通常會怎麼反應？', '我需要向誰承認錯誤或尋求幫助？'],
+      ['安靜下來想一想，我最近最想調整的一個想法或習慣是什麼？', '我能採取哪一個具體改變？']
+    ],
+    skills: ['信仰省察', '辨別真偽', '責任感', '謙卑'],
+    cause: '看見榜樣 → 聽見提醒 → 省察內心 → 選擇悔改與改變。',
+    carry: '把省察轉化為生活實踐，抵達現在的自己。'
+  },
+  {
+    name: '現在的我｜成長總島',
+    short: '雷達圖與角色卡',
+    color: 0x9ed8ac,
+    baseScale: 1.32, // Largest island! 3 rooms + 5 skills + 4D Radar Chart + 3D Character Card Maker + Full Report
+    contentItemsCount: 22,
+    labTitle: '🪪 專屬 3D 成長角色卡工坊',
+    summary: '我可以擁有成績、能力與肯定，卻不必靠它們證明自己比別人強。我練習在順境中不自誇、在被比下去時不報復，願意為別人的成就高興，把能力用來幫助人，並把榮耀歸給上帝。',
+    rooms: [
+      ['🪞', '我看見自己', '我最在乎的是被稱讚，還是做對的事？'],
+      ['🛡️', '我如何回應', '我能停止報復、溫和說真話嗎？'],
+      ['🌱', '我接下來要做', '用自己的能力幫助別人，持續成長。']
+    ],
+    prompts: [
+      ['走完前五座島，我對自己最大的發現是什麼？', '現在的我，怎麼看待自己的優點與不足？'],
+      ['下次再遇到愛比較的同學，我準備好的回應方式是什麼？', '我想要怎樣守護心裡的平安？'],
+      ['我今天能用什麼能力幫助一個人？', '我想把哪一個選擇練習成每天的習慣？']
+    ],
+    skills: ['自我覺察', '同理心', '謙卑', '溫和溝通', '信仰實踐'],
+    cause: '覺察 → 分辨 → 選擇 → 行動 → 持續反思。',
+    carry: '這不是終點，而是把學到的能力帶進每天的新選擇。'
+  }
 ];
-const canvas=document.querySelector('#world'),stage=canvas.parentElement,renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setClearColor(0xa9ded8);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-const scene=new THREE.Scene();scene.background=new THREE.Color(0xa9ded8);scene.fog=new THREE.Fog(0xa9ded8,24,48);
-const camera=new THREE.PerspectiveCamera(42,1,.1,100);camera.position.set(0,10,17);
-const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.07;controls.minDistance=8;controls.maxDistance=28;controls.maxPolarAngle=Math.PI*.48;controls.target.set(0,0,0);
-scene.add(new THREE.HemisphereLight(0xffffff,0x6b9b8b,2.0));const sun=new THREE.DirectionalLight(0xfff2d7,3);sun.position.set(-8,15,8);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);scene.add(sun);
-const sea=new THREE.Mesh(new THREE.PlaneGeometry(200,200,1,1),new THREE.MeshStandardMaterial({color:0x8ed0d0,roughness:.9}));sea.rotation.x=-Math.PI/2;sea.position.y=-.7;scene.add(sea);
-const world=new THREE.Group();scene.add(world);const islandGroups=[],pickables=[];
-function mat(color,roughness=.88){return new THREE.MeshStandardMaterial({color,roughness,flatShading:true})}
-function addMesh(g,geo,m,x,y,z,cast=true){const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);o.castShadow=cast;o.receiveShadow=true;g.add(o);return o}
-function tree(g,x,z,s=1){addMesh(g,new THREE.CylinderGeometry(.07*s,.12*s,.55*s,5),mat(0x936b4e),x,.25*s,z);addMesh(g,new THREE.IcosahedronGeometry(.43*s,0),mat(0x559b76),x,.65*s,z);addMesh(g,new THREE.IcosahedronGeometry(.29*s,0),mat(0x82bd85),x,.94*s,z)}
-function house(g,x,z,s=1,wall=0xffe5bd,roof=0xd78d67){addMesh(g,new THREE.BoxGeometry(.8*s,.62*s,.68*s),mat(wall),x,.48*s,z);const r=addMesh(g,new THREE.ConeGeometry(.68*s,.5*s,4),mat(roof),x,.99*s,z);r.rotation.y=Math.PI/4;addMesh(g,new THREE.BoxGeometry(.15*s,.29*s,.04*s),mat(0x517b82),x+.16*s,.34*s,z+.36*s,false);addMesh(g,new THREE.BoxGeometry(.14*s,.16*s,.04*s),mat(0x87b8b0),x-.19*s,.54*s,z+.36*s,false)}
-function makeIsland(d,i){
- const g=new THREE.Group();const x=(i-2.5)*4.6;g.position.set(x,0,Math.sin(i*.9)*1.2);g.userData.index=i;world.add(g);
- addMesh(g,new THREE.CylinderGeometry(1.95,1.35,.65,7,1),mat(0x9a865e),0,-.12,0);
- addMesh(g,new THREE.CylinderGeometry(1.9,1.7,.24,7,1),mat(d.color),0,.22,0);
- const hill=addMesh(g,new THREE.ConeGeometry(1.2,.9,5),mat(d.color),0,.65,-.1);hill.rotation.y=.3;
- tree(g,-1,-.25,.85);tree(g,1.15,-.2,.72);house(g,-.35,.45,.85,0xffebc8,0xd88e67);house(g,.55,-.65,.66,0xf7d8a4,0xb87961);
- // Decorative landmark unique to each chapter
- if(i===0){const ball=addMesh(g,new THREE.SphereGeometry(.33,8,6),mat(0xef9dbb),-.8,1.45,.4);ball.scale.set(1,1.2,1)}
- if(i===1){for(let k=0;k<4;k++)addMesh(g,new THREE.ConeGeometry(.12,.25,5),mat(0x8b7055),-.6+k*.35,.55,.9)}
- if(i===2){addMesh(g,new THREE.BoxGeometry(.35,.6,.2),mat(0x5d9fc4),0,1.1,.5)}
- if(i===3){const c=addMesh(g,new THREE.TorusGeometry(.3,.08,5,8),mat(0xe5b94f),0,1.3,.35);c.rotation.x=.3}
- if(i===4){addMesh(g,new THREE.BoxGeometry(.08,.7,.08),mat(0xfff3b1),0,1.25,.35);addMesh(g,new THREE.BoxGeometry(.42,.08,.08),mat(0xfff3b1),0,1.35,.35)}
- if(i===5){addMesh(g,new THREE.IcosahedronGeometry(.4,0),mat(0xffedb0),0,1.25,.25)}
- // click target and invisible hit pad
- const hit=addMesh(g,new THREE.CylinderGeometry(2.1,2.1,.3,8),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}),0,.35,0,false);hit.userData.index=i;pickables.push(hit);
- islandGroups.push(g);return g;
+
+const experiences = [
+  {
+    title: '第 1 站｜起點島：我看見自己',
+    scene: '佩佩拿到新衣、新鞋，也得到一百分。大家看著她時，你最可能怎麼想？',
+    choices: [
+      { text: '我很棒！我想讓大家知道我比別人厲害。', scores: { humility: 0, empathy: 0, faith: 0, awareness: 0 }, feedback: '先誠實看見自己想被肯定的心情，是反思的起點。' },
+      { text: '我可以為自己的努力開心，也不必拿來比較。', scores: { humility: 2, empathy: 1, faith: 1, awareness: 2 }, feedback: '你開始把成就和自我價值分開，也留意別人的感受。' },
+      { text: '我想感謝幫助我的人，也記得能力是領受的禮物。', scores: { humility: 3, empathy: 1, faith: 3, awareness: 2 }, feedback: '你把感恩與謙卑放在成就之前。' }
+    ]
+  },
+  {
+    title: '第 2 站｜風雨島：受挫的選擇',
+    scene: '你被別人比較、嘲笑，心裡很委屈。你會怎麼做？',
+    choices: [
+      { text: '讓對方也難受一次，這樣才公平。', scores: { humility: 0, empathy: 0, faith: 0, awareness: 1 }, feedback: '報復的衝動很真實；下一步是看見它會帶來什麼後果。' },
+      { text: '先離開現場，等情緒平靜後再說。', scores: { humility: 1, empathy: 2, faith: 1, awareness: 3 }, feedback: '你選擇先停下來，讓情緒不替你做決定。' },
+      { text: '找可信任的人說出委屈，再用不傷人的方式表達。', scores: { humility: 2, empathy: 3, faith: 1, awareness: 3 }, feedback: '你同時照顧自己的感受，也避免把傷害傳給別人。' }
+    ]
+  },
+  {
+    title: '第 3 站｜軍裝島：另一種回應',
+    scene: '有人炫耀成就，讓你覺得自己被比下去。你會如何回應？',
+    choices: [
+      { text: '故意說出對方的缺點，讓他不要太得意。', scores: { humility: 0, empathy: 0, faith: 0, awareness: 0 }, feedback: '這種回應可能暫時讓你覺得扳回一城，卻會讓關係更遠。' },
+      { text: '先聽完，再溫和地說出我的感受。', scores: { humility: 2, empathy: 3, faith: 1, awareness: 2 }, feedback: '你練習用溫和與真實取代攻擊。' },
+      { text: '真心肯定對方，也提醒自己每個人都有不同的恩賜。', scores: { humility: 3, empathy: 3, faith: 2, awareness: 2 }, feedback: '你能欣賞別人，而不必貶低自己。' }
+    ]
+  },
+  {
+    title: '第 4 站｜皇冠島：分辨動機',
+    scene: '如果你做了一件很厲害的事，你最希望得到什麼？',
+    choices: [
+      { text: '所有人都稱讚我，讓我成為最受注目的人。', scores: { humility: 0, empathy: 0, faith: 0, awareness: 1 }, feedback: '想被看見是人的常見心情；可以再問自己：如果沒有人稱讚，我還願意做嗎？' },
+      { text: '希望努力被看見，也願意分享功勞。', scores: { humility: 2, empathy: 2, faith: 1, awareness: 2 }, feedback: '你開始兼顧肯定與分享，不把所有榮耀留給自己。' },
+      { text: '希望事情真正幫助到人，並把榮耀歸給上帝。', scores: { humility: 3, empathy: 3, faith: 3, awareness: 2 }, feedback: '你把焦點從個人掌聲轉向服事、感恩與信仰。' }
+    ]
+  },
+  {
+    title: '第 5 站｜真光島：把榮耀歸主',
+    scene: '你發現自己曾經驕傲或做錯事。你接下來會怎麼做？',
+    choices: [
+      { text: '假裝沒事，避免別人知道。', scores: { humility: 0, empathy: 0, faith: 0, awareness: 0 }, feedback: '逃避能暫時減少尷尬，但問題可能還在；你可以從承認一小步開始。' },
+      { text: '承認錯誤，向受影響的人道歉並改正。', scores: { humility: 3, empathy: 3, faith: 2, awareness: 3 }, feedback: '你願意承擔責任，讓反思變成實際改變。' },
+      { text: '向上帝禱告、省察動機，也找成熟可信的人一起面對。', scores: { humility: 3, empathy: 2, faith: 3, awareness: 3 }, feedback: '你把信仰省察與具體支持連結起來。' }
+    ]
+  }
+];
+
+const challengeList = [
+  ['💬 溫柔說真話', '今天練習用一句不傷人的話，表達自己的真實感受。', '對話任務'],
+  ['🤝 為別人高興', '真心稱讚一位同學或家人的努力，不把話題拉回自己身上。', '關係任務'],
+  ['🙏 感恩一件事', '寫下今天一項領受的能力，並想想它能怎樣幫助別人。', '感恩任務'],
+  ['🛑 暫停十秒', '遇到不順心或想反擊時，先深呼吸停十秒再回應。', '情緒任務'],
+  ['🌱 默默幫助人', '做一件不需要被公開稱讚的小事，留意自己心裡的平安。', '行動任務'],
+  ['🪞 檢查動機', '做事前先問自己：我想幫助人，還是只想被看見？', '省察任務']
+];
+
+const responseFeedback = {
+  revenge: {
+    title: '💥 報復會讓泥水濺得更遠',
+    peace: 20,
+    peaceLabel: '20%（衝突升溫）',
+    deReply: '「哼！看我用力踩泥坑濺髒妳的新鞋子！」（泥水噴了佩佩一身）',
+    teacherReply: '👩🏻‍🏫 恩慈老師：「阿德，被比較確實很委屈，但用報復回應只會讓兩個人都受傷。我們一起來練習更好的表達方式好嗎？」',
+    score: 0,
+    avatar: '😣'
+  },
+  pause: {
+    title: '🛡️ 穿上屬靈軍裝，先停下衝動',
+    peace: 78,
+    peaceLabel: '78%（守住平安）',
+    deReply: '（深呼吸停下來，在心裡禱告穿戴平安的軍裝，沒有踩進泥坑報復）',
+    teacherReply: '👩🏻‍🏫 恩慈老師：「做得好！你沒有讓生氣的衝動替你做決定，先保護了自己的心，也避免了衝突。」',
+    score: 2,
+    avatar: '🛡️'
+  },
+  kind: {
+    title: '💬 用愛與真理溫和溝通，修復關係',
+    peace: 96,
+    peaceLabel: '96%（溫和雙贏）',
+    deReply: '「佩佩，恭喜妳考一百分！不過妳一直拿分數跟我們比較時，我心裡覺得有點受傷。我們擁有能力是上帝賞賜的禮物喔！」',
+    teacherReply: '👩🏻‍🏫 恩慈老師：「太棒了！阿德既能真心為別人高興，又能溫和誠實地說出感受，這就是真正的勇敢與謙卑！」',
+    score: 3,
+    avatar: '🤝'
+  }
+};
+
+const motiveData = {
+  applause: {
+    score: 0,
+    scale: 92,
+    icon: '👑',
+    pill: '⚡ 動機透視：渴望掌聲與控制權柄',
+    title: '正在學習省察的旅人',
+    text: '你誠實注意到自己很希望被大家注目。但當我們只追求掌聲，皇冠反而容易出現裂痕。試著問自己：如果沒有人稱讚，我還願意做嗎？'
+  },
+  share: {
+    score: 2,
+    scale: 50,
+    icon: '👑',
+    pill: '🤝 動機透視：樂於分享肯定與功勞',
+    title: '願意分享的同行者',
+    text: '你希望努力被看見，同時也願意肯定同伴與家人的付出。分享功勞能讓皇冠散發溫暖而穩定的光芒！'
+  },
+  serve: {
+    score: 3,
+    scale: 18,
+    icon: '🌟',
+    pill: '🙏 動機透視：像腓利一樣把榮耀歸給神',
+    title: '把光帶給別人的旅人',
+    text: '你把焦點從個人虛榮轉向「幫助人」與「歸榮耀給上帝」。這頂謙卑的冠冕不會裂開，反而成為祝福別人的真光！'
+  }
+};
+
+const quickTags = ['#誠實面對', '#換位思考', '#學會感恩', '#停看聽', '#溫和說真話', '#歸榮耀與神'];
+
+/* ============================================================================
+   3. STATE & STORAGE MANAGEMENT
+============================================================================ */
+const STORAGE_KEY = 'learning-archipelago-v8-immersive';
+const chosen = Array(5).fill(null);
+let selectedIsland = 0;
+let selectedRoomIdx = 0;
+let activeDrawerTab = 'story'; // 'story' | 'choice' | 'lab'
+let drawerOpen = false;
+let visitedIslands = new Set([0]);
+let roomNotes = {};
+let challengeIndex = 0;
+let challengeCompleted = false;
+let questCount = 0;
+let travelerName = '';
+let travelerMotto = '在順境中謙卑，在受挫時選擇愛';
+const storyState = {
+  balloon: 25,
+  balloonTouched: false,
+  response: null,
+  motive: null
+};
+
+function toast(message) {
+  let t = document.querySelector('.floating-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.className = 'floating-toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = message;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+function copyTextSafe(text, successMsg = '📋 已複製到剪貼簿！') {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    toast(successMsg);
+    sfx.fanfare();
+  } catch (e) {
+    toast('複製失敗，請手動選取複製');
+  }
+  ta.remove();
+}
+
+function saveJourney() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      chosen,
+      visitedIslands: [...visitedIslands],
+      roomNotes,
+      challengeIndex,
+      challengeCompleted,
+      questCount,
+      travelerName,
+      travelerMotto,
+      storyState,
+      updatedAt: new Date().toISOString()
+    }));
+  } catch (e) {}
+}
+
+function loadJourney() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('learning-archipelago-v7-flagship');
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (saved && Array.isArray(saved.chosen) && saved.chosen.length === 5) {
+      saved.chosen.forEach((v, i) => {
+        if (v === null || (Number.isInteger(v) && v >= 0 && v < 3)) chosen[i] = v;
+      });
+    }
+    if (Array.isArray(saved.visitedIslands)) {
+      saved.visitedIslands.forEach(idx => visitedIslands.add(idx));
+    }
+    if (saved.roomNotes && typeof saved.roomNotes === 'object') {
+      roomNotes = saved.roomNotes;
+    }
+    if (Number.isInteger(saved.challengeIndex)) {
+      challengeIndex = ((saved.challengeIndex % challengeList.length) + challengeList.length) % challengeList.length;
+    }
+    challengeCompleted = !!saved.challengeCompleted;
+    questCount = Number(saved.questCount) || (challengeCompleted ? 1 : 0);
+    if (typeof saved.travelerName === 'string') travelerName = saved.travelerName;
+    if (typeof saved.travelerMotto === 'string') travelerMotto = saved.travelerMotto;
+    if (saved.storyState && typeof saved.storyState === 'object') {
+      Object.assign(storyState, saved.storyState);
+    }
+  } catch (e) {}
+}
+
+// Calculate dynamic scale of each island based on base content + user's added content on that island!
+function getIslandDynamicScale(idx) {
+  const base = data[idx].baseScale;
+  let bonus = 0;
+  // Each room note on this island adds +0.04 scale
+  for (let r = 0; r < 3; r++) {
+    if (roomNotes[`${idx}-${r}`] && roomNotes[`${idx}-${r}`].trim()) {
+      bonus += 0.045;
+    }
+  }
+  // Completing this island's choice station adds +0.06 scale
+  if (idx < 5 && chosen[idx] !== null) bonus += 0.06;
+  if (idx === 5) {
+    const answeredCount = chosen.filter(v => v !== null).length;
+    bonus += answeredCount * 0.025;
+  }
+  // Completing this island's lab activity adds +0.05 scale
+  if (idx === 0 && storyState.balloonTouched) bonus += 0.05;
+  if (idx === 1 && storyState.response) bonus += 0.05;
+  if (idx === 2 && (challengeCompleted || questCount > 0)) bonus += 0.05;
+  if (idx === 3 && storyState.motive) bonus += 0.05;
+
+  return Number((base + bonus).toFixed(2));
+}
+
+function getIslandContentCount(idx) {
+  let count = data[idx].contentItemsCount;
+  for (let r = 0; r < 3; r++) {
+    if (roomNotes[`${idx}-${r}`] && roomNotes[`${idx}-${r}`].trim()) count += 1;
+  }
+  if (idx < 5 && chosen[idx] !== null) count += 1;
+  if (idx === 0 && storyState.balloonTouched) count += 1;
+  if (idx === 1 && storyState.response) count += 1;
+  if (idx === 2 && questCount > 0) count += questCount;
+  if (idx === 3 && storyState.motive) count += 1;
+  return count;
+}
+
+/* ============================================================================
+   4. 3D ARCHIPELAGO + MARINE & AERIAL ECOSYSTEM (Three.js)
+============================================================================ */
+const canvas = document.querySelector('#world');
+const stage = canvas.parentElement;
+const markersContainer = document.querySelector('#island-markers');
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0xa9ded8);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xa9ded8);
+scene.fog = new THREE.Fog(0xa9ded8, 30, 68);
+
+const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 160);
+camera.position.set(0, 12.5, 22);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.07;
+controls.minDistance = 5.5;
+controls.maxDistance = 38;
+controls.maxPolarAngle = Math.PI * 0.47;
+controls.target.set(0, 0, 0);
+
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0x6b9b8b, 2.0);
+scene.add(hemiLight);
+
+const sun = new THREE.DirectionalLight(0xfff2d7, 3.0);
+sun.position.set(-10, 18, 11);
+sun.castShadow = true;
+sun.shadow.mapSize.set(1024, 1024);
+scene.add(sun);
+
+// Animated Ocean Mesh
+const seaGeo = new THREE.PlaneGeometry(180, 180, 56, 56);
+const seaMat = new THREE.MeshStandardMaterial({
+  color: 0x7bc8cc,
+  roughness: 0.5,
+  metalness: 0.12,
+  flatShading: true
+});
+const sea = new THREE.Mesh(seaGeo, seaMat);
+sea.rotation.x = -Math.PI / 2;
+sea.position.y = -0.68;
+sea.receiveShadow = true;
+scene.add(sea);
+
+const world = new THREE.Group();
+scene.add(world);
+
+const islandGroups = [];
+const pickables = [];
+const markerNodes = [];
+let landmarkBalloonMesh = null;
+let landmarkCrownGroup = null;
+let landmarkShieldRing = null;
+const rainDrops = [];
+
+function mat(color, roughness = 0.85, emissive = 0x000000, emissiveIntensity = 0) {
+  return new THREE.MeshStandardMaterial({ color, roughness, flatShading: true, emissive, emissiveIntensity });
+}
+
+function addMesh(g, geo, m, x, y, z, cast = true) {
+  const o = new THREE.Mesh(geo, m);
+  o.position.set(x, y, z);
+  o.castShadow = cast;
+  o.receiveShadow = true;
+  g.add(o);
+  return o;
+}
+
+function tree(g, x, z, s = 1) {
+  addMesh(g, new THREE.CylinderGeometry(0.07 * s, 0.12 * s, 0.55 * s, 5), mat(0x936b4e), x, 0.25 * s, z);
+  addMesh(g, new THREE.IcosahedronGeometry(0.43 * s, 0), mat(0x559b76), x, 0.65 * s, z);
+  addMesh(g, new THREE.IcosahedronGeometry(0.29 * s, 0), mat(0x82bd85), x, 0.94 * s, z);
+}
+
+function house(g, x, z, s = 1, wall = 0xffe5bd, roof = 0xd78d67) {
+  addMesh(g, new THREE.BoxGeometry(0.8 * s, 0.62 * s, 0.68 * s), mat(wall), x, 0.48 * s, z);
+  const r = addMesh(g, new THREE.ConeGeometry(0.68 * s, 0.5 * s, 4), mat(roof), x, 0.99 * s, z);
+  r.rotation.y = Math.PI / 4;
+  addMesh(g, new THREE.BoxGeometry(0.15 * s, 0.29 * s, 0.04 * s), mat(0x517b82), x + 0.16 * s, 0.34 * s, z + 0.36 * s, false);
+  addMesh(g, new THREE.BoxGeometry(0.15 * s, 0.16 * s, 0.04 * s), mat(0xfff0b8, 0.4, 0xffca58, 0.45), x - 0.19 * s, 0.54 * s, z + 0.36 * s, false);
+}
+
+const trimMat = new THREE.MeshStandardMaterial({ color: 0xf7e8bd, roughness: 0.55, metalness: 0.05 });
+const pathMat = new THREE.MeshStandardMaterial({ color: 0xc9a77c, roughness: 1 });
+const flowerMats = [0xf4a7bc, 0xffd66b, 0xffffff, 0xb5a4ef].map(c => new THREE.MeshStandardMaterial({ color: c, roughness: 0.7 }));
+const glowMat = new THREE.MeshStandardMaterial({ color: 0xfff1b8, emissive: 0xffd76a, emissiveIntensity: 0.65, roughness: 0.3 });
+const crystalMat = new THREE.MeshStandardMaterial({ color: 0xa5d9f2, emissive: 0x367eac, emissiveIntensity: 0.18, roughness: 0.28, metalness: 0.12, flatShading: true });
+
+// Spacing islands out slightly more so larger content-rich islands have room to shine
+const islandXPositions = [-13.2, -8.2, -3.0, 2.5, 8.2, 14.5];
+
+function makeIsland(d, i) {
+  const g = new THREE.Group();
+  const x = islandXPositions[i];
+  const z = Math.sin(i * 0.95) * 1.65;
+  g.position.set(x, 0, z);
+  g.userData.index = i;
+  const initScale = getIslandDynamicScale(i);
+  g.scale.set(initScale, initScale, initScale);
+  g.userData.targetScale = initScale;
+  world.add(g);
+
+  // Island Base & Cliffs
+  addMesh(g, new THREE.CylinderGeometry(1.98, 1.32, 0.68, 7, 1), mat(0x9a865e), 0, -0.14, 0);
+  addMesh(g, new THREE.CylinderGeometry(1.92, 1.72, 0.25, 7, 1), mat(d.color), 0, 0.22, 0);
+  const hill = addMesh(g, new THREE.ConeGeometry(1.22, 0.92, 5), mat(d.color), 0, 0.65, -0.1);
+  hill.rotation.y = 0.3;
+
+  // Shoreline & Ring inside Island Group so it scales together!
+  const shoreline = new THREE.Mesh(new THREE.TorusGeometry(1.88, 0.048, 7, 42), trimMat);
+  shoreline.rotation.x = Math.PI / 2;
+  shoreline.position.set(0, 0.31, 0);
+  g.add(shoreline);
+
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(2.16, 0.025, 6, 48), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 }));
+  ring.rotation.x = Math.PI / 2;
+  ring.position.set(0, 0.38, 0);
+  g.add(ring);
+
+  // More trees/houses/flowers on islands with more content!
+  tree(g, -1.02, -0.25, 0.86);
+  tree(g, 1.15, -0.2, 0.74);
+  if (d.contentItemsCount >= 11) tree(g, -0.75, -0.95, 0.68);
+  if (d.contentItemsCount >= 15) tree(g, 0.85, 0.78, 0.72);
+
+  house(g, -0.35, 0.45, 0.85, 0xffebc8, 0xd88e67);
+  house(g, 0.55, -0.65, 0.66, 0xf7d8a4, 0xb87961);
+  if (d.contentItemsCount >= 14) {
+    house(g, -0.95, 0.55, 0.58, 0xe8f4ea, 0x5d9b84);
+  }
+
+  const numFlowers = 5 + Math.floor(d.contentItemsCount / 2);
+  for (let j = 0; j < numFlowers; j++) {
+    const a = (j / numFlowers) * Math.PI * 2 + i;
+    const fx = Math.cos(a) * 1.48;
+    const fz = Math.sin(a) * 1.48;
+    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.025, 0.16, 4), mat(0x568e63));
+    stem.position.set(fx, 0.48, fz);
+    g.add(stem);
+    const bloom = new THREE.Mesh(new THREE.SphereGeometry(0.085, 7, 5), flowerMats[(i + j) % flowerMats.length]);
+    bloom.position.set(fx, 0.58, fz);
+    bloom.scale.set(1, 0.75, 1);
+    g.add(bloom);
+  }
+
+  // Flagpole
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.035, 0.75, 5), mat(0x8c7258));
+  pole.position.set(0.2, 1.22, -1.1);
+  g.add(pole);
+  const flag = new THREE.Mesh(new THREE.ConeGeometry(0.24, 0.34, 3), new THREE.MeshStandardMaterial({ color: d.color, roughness: 0.6 }));
+  flag.rotation.z = -Math.PI / 2;
+  flag.position.set(0.39, 1.36, -1.1);
+  g.add(flag);
+
+  // Crystal
+  const crystal = addMesh(g, new THREE.OctahedronGeometry(0.22, 0), crystalMat, (i % 2) ? 1.65 : -1.65, 0.42, 0.4);
+  crystal.rotation.set(0.4, 0.7, 0.2);
+
+  // Island-Specific Landmarks
+  if (i === 0) {
+    const balloonGroup = new THREE.Group();
+    balloonGroup.position.set(-0.8, 1.5, 0.4);
+    const ball = addMesh(balloonGroup, new THREE.SphereGeometry(0.35, 12, 10), mat(0xef789e, 0.4, 0xd64d7a, 0.15), 0, 0, 0);
+    ball.scale.set(1, 1.18, 1);
+    addMesh(balloonGroup, new THREE.CylinderGeometry(0.012, 0.012, 0.7, 4), mat(0xffffff), 0, -0.55, 0, false);
+    g.add(balloonGroup);
+    landmarkBalloonMesh = ball;
+  }
+  if (i === 1) {
+    for (let k = 0; k < 4; k++) {
+      addMesh(g, new THREE.CylinderGeometry(0.22, 0.25, 0.04, 7), mat(0x6e5540, 0.3), -0.65 + k * 0.42, 0.35, 0.92);
+    }
+    const stormCloud = new THREE.Group();
+    stormCloud.position.set(-0.1, 2.25, 0.6);
+    for (let c = 0; c < 3; c++) {
+      addMesh(stormCloud, new THREE.SphereGeometry(0.28 + (c === 1 ? 0.08 : 0), 7, 6), mat(0x7c909e), (c - 1) * 0.26, c === 1 ? 0.08 : 0, 0);
+    }
+    g.add(stormCloud);
+    for (let r = 0; r < 6; r++) {
+      const drop = addMesh(g, new THREE.CylinderGeometry(0.015, 0.015, 0.16, 4), mat(0x63b8ee, 0.3, 0x63b8ee, 0.3), -0.35 + r * 0.14, 1.4 + (r % 3) * 0.25, 0.6, false);
+      drop.userData.rainSeed = r * 1.1;
+      rainDrops.push(drop);
+    }
+  }
+  if (i === 2) {
+    addMesh(g, new THREE.BoxGeometry(0.42, 0.65, 0.16), mat(0x4f93b8, 0.4, 0x2b6585, 0.2), 0, 1.18, 0.5);
+    addMesh(g, new THREE.BoxGeometry(0.12, 0.45, 0.19), mat(0xffdf80, 0.3, 0xffc83b, 0.4), 0, 1.18, 0.5);
+    addMesh(g, new THREE.BoxGeometry(0.3, 0.12, 0.19), mat(0xffdf80, 0.3, 0xffc83b, 0.4), 0, 1.24, 0.5);
+    landmarkShieldRing = addMesh(g, new THREE.TorusGeometry(0.55, 0.03, 6, 24), mat(0xffdf80, 0.3, 0xffc83b, 0.5), 0, 1.18, 0.5, false);
+  }
+  if (i === 3) {
+    landmarkCrownGroup = new THREE.Group();
+    landmarkCrownGroup.position.set(0, 1.42, 0.35);
+    const c = addMesh(landmarkCrownGroup, new THREE.TorusGeometry(0.32, 0.08, 6, 12), mat(0xf2c14e, 0.35, 0xd99b26, 0.25), 0, 0, 0);
+    c.rotation.x = Math.PI / 2;
+    for (let p = 0; p < 5; p++) {
+      const a = (p / 5) * Math.PI * 2;
+      addMesh(landmarkCrownGroup, new THREE.ConeGeometry(0.08, 0.22, 4), mat(0xffd966, 0.3, 0xe5a93c, 0.3), Math.cos(a) * 0.3, 0.14, Math.sin(a) * 0.3);
+    }
+    g.add(landmarkCrownGroup);
+  }
+  if (i === 4) {
+    addMesh(g, new THREE.BoxGeometry(0.11, 0.85, 0.11), mat(0xfff6b8, 0.2, 0xffdf5e, 0.75), 0, 1.35, 0.35);
+    addMesh(g, new THREE.BoxGeometry(0.52, 0.11, 0.11), mat(0xfff6b8, 0.2, 0xffdf5e, 0.75), 0, 1.48, 0.35);
+  }
+  if (i === 5) {
+    addMesh(g, new THREE.IcosahedronGeometry(0.5, 0), mat(0xffedb0, 0.25, 0xf7c948, 0.55), 0, 1.45, 0.25);
+    const halo = addMesh(g, new THREE.TorusGeometry(0.75, 0.025, 6, 32), mat(0xfff1b8, 0.2, 0xffd76a, 0.6), 0, 1.45, 0.25, false);
+    halo.rotation.x = Math.PI / 3;
+  }
+
+  // Click target hit cylinder
+  const hit = addMesh(g, new THREE.CylinderGeometry(2.2, 2.2, 1.8, 12), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }), 0, 0.7, 0, false);
+  hit.userData.index = i;
+  pickables.push(hit);
+
+  islandGroups.push(g);
+
+  // 2D Projected Marker with Scale / Content indicator
+  const marker = document.createElement('button');
+  marker.className = 'island-marker';
+  marker.type = 'button';
+  marker.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    selectIsland(i, true, true);
+  });
+  markersContainer.appendChild(marker);
+  markerNodes.push(marker);
+
+  return g;
 }
 
 data.forEach(makeIsland);
-// Art direction: layered island cliffs, shoreline trim, stepping stones and tiny flowers.
-const artGroup=new THREE.Group();world.add(artGroup);
-const trimMat=new THREE.MeshStandardMaterial({color:0xf7e8bd,roughness:.55,metalness:.05});
-const pathMat=new THREE.MeshStandardMaterial({color:0xc9a77c,roughness:1});
-const flowerMats=[0xf4a7bc,0xffd66b,0xffffff,0xb5a4ef].map(c=>new THREE.MeshStandardMaterial({color:c,roughness:.7}));
-for(let i=0;i<islandGroups.length;i++){
- const pos=islandGroups[i].position;
- const shoreline=new THREE.Mesh(new THREE.TorusGeometry(1.84,.045,7,40),trimMat);
- shoreline.rotation.x=Math.PI/2;shoreline.position.set(pos.x,.31,pos.z);artGroup.add(shoreline);
- for(let j=0;j<5;j++){
-  const a=j*1.15+i*.4, x=pos.x+Math.cos(a)*1.35, z=pos.z+Math.sin(a)*1.35;
-  const pebble=new THREE.Mesh(new THREE.DodecahedronGeometry(.11,0),pathMat);
-  pebble.position.set(x,.39,z);pebble.scale.set(1,.45,.75);artGroup.add(pebble);
- }
- for(let j=0;j<7;j++){
-  const a=j*2.4+i, x=pos.x+Math.cos(a)*1.48, z=pos.z+Math.sin(a)*1.48;
-  const stem=new THREE.Mesh(new THREE.CylinderGeometry(.018,.025,.16,4),mat(0x568e63));
-  stem.position.set(x,.48,z);artGroup.add(stem);
-  const bloom=new THREE.Mesh(new THREE.SphereGeometry(.085,7,5),flowerMats[(i+j)%flowerMats.length]);
-  bloom.position.set(x,.58,z);bloom.scale.set(1,.75,1);artGroup.add(bloom);
- }
- // Little flagpole with a color-matched pennant at the back of each island.
- const pole=new THREE.Mesh(new THREE.CylinderGeometry(.025,.035,.75,5),mat(0x8c7258));
- pole.position.set(pos.x+.2,1.22,pos.z-1.1);artGroup.add(pole);
- const flag=new THREE.Mesh(new THREE.ConeGeometry(.24,.34,3),new THREE.MeshStandardMaterial({color:data[i].color,roughness:.6}));
- flag.rotation.z=-Math.PI/2;flag.position.set(pos.x+.39,1.36,pos.z-1.1);artGroup.add(flag);
-}
 
-// A dreamy archipelago: floating crystals, tiny star beacons, clouds and a soft route glow.
-const glowMat=new THREE.MeshStandardMaterial({color:0xfff1b8,emissive:0xffd76a,emissiveIntensity:.55,roughness:.35});
-const crystalMat=new THREE.MeshStandardMaterial({color:0xa5d9f2,emissive:0x367eac,emissiveIntensity:.12,roughness:.28,metalness:.12,flatShading:true});
-const deco=new THREE.Group();world.add(deco);
-for(let i=0;i<6;i++){
- const g=islandGroups[i],pos=g.position;
- const ring=new THREE.Mesh(new THREE.TorusGeometry(2.15,.025,6,48),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.58}));
- ring.rotation.x=Math.PI/2;ring.position.set(pos.x,.42,pos.z);deco.add(ring);
- const crystal=addMesh(deco,new THREE.OctahedronGeometry(.22,0),crystalMat,pos.x+((i%2)?1.7:-1.7),.35+((i%3)*.16),pos.z+.4);
- crystal.rotation.set(.4,.7,.2);
- const star=addMesh(deco,new THREE.OctahedronGeometry(.14,0),glowMat,pos.x+.1,2.15,pos.z+.2,false);
- star.userData.floatSeed=i*1.7;
-}
-// Small clouds make the sky feel layered without blocking the islands.
-const cloudMat=new THREE.MeshStandardMaterial({color:0xffffff,roughness:1,transparent:true,opacity:.82});
-for(let i=0;i<9;i++){
- const cloud=new THREE.Group();cloud.position.set(-13+i*3.3,3.2+(i%3)*.55,-4-(i%2)*2);
- for(let j=0;j<3;j++){const puff=new THREE.Mesh(new THREE.SphereGeometry(.38+(j===1?.12:0),8,6),cloudMat);puff.position.set((j-1)*.38, j===1?.12:0,0);puff.scale.y=.7;cloud.add(puff)}
- deco.add(cloud);cloud.userData.cloud=true;cloud.userData.speed=.00025+(i%3)*.00008;
-}
-
-for(let i=0;i<islandGroups.length-1;i++){const a=islandGroups[i].position,b=islandGroups[i+1].position;const mid=new THREE.Vector3((a.x+b.x)/2,-.2,(a.z+b.z)/2);const bridge=addMesh(world,new THREE.BoxGeometry(1.9,.08,.24),mat(0xd9b47c),mid.x,mid.y,mid.z,false);bridge.rotation.y=Math.atan2(b.z-a.z,b.x-a.x)}
-const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();let selected=0,focusTarget=null,pinchStart=null;
-function resize(){const r=stage.getBoundingClientRect();renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();renderer.setPixelRatio(Math.min(devicePixelRatio,2))}
-new ResizeObserver(resize).observe(stage);resize();
-function render(){requestAnimationFrame(render);const t=performance.now();deco.children.forEach((o,i)=>{if(o.userData.floatSeed!==undefined){o.position.y=2.15+Math.sin(t*.0015+o.userData.floatSeed)*.16;o.rotation.y+=.008;o.rotation.x+=.004}else if(o.userData.cloud){o.position.x+=o.userData.speed;if(o.position.x>17)o.position.x=-17}});controls.update();if(focusTarget){controls.target.lerp(focusTarget,.09);camera.position.lerp(new THREE.Vector3(focusTarget.x,focusTarget.y+5.5,focusTarget.z+7),.075);if(camera.position.distanceTo(new THREE.Vector3(focusTarget.x,focusTarget.y+5.5,focusTarget.z+7))<.12)focusTarget=null}renderer.render(scene,camera)}render();
-function selectIsland(i,fly=true){selected=(i+data.length)%data.length;document.querySelector('#counter').textContent=`第 ${selected+1} / ${data.length} 座島`;document.querySelectorAll('.island').forEach((b,j)=>b.setAttribute('aria-pressed',String(j===selected)));const d=data[selected];document.querySelector('#detail').innerHTML=`<div class="kicker" style="font-size:10px;color:#498779">學習歷程 · 第 ${selected+1} 站</div><h3>${d.name}</h3><p>${d.summary}</p><div class="causal"><b>事件因果</b><br>${d.cause}</div><div class="rooms">${d.rooms.map(r=>`<div class="room"><div class="emoji">${r[0]}</div><strong>${r[1]}</strong><span>${r[2]}</span></div>`).join('')}</div><div style="font-size:12px;font-weight:900;margin-top:13px">帶走的能力</div><div>${d.skills.map(s=>`<span class="tag">${s}</span>`).join('')}</div><div class="causal"><b>能力協作線 → 下一段</b><br>${d.carry}</div>`;document.querySelector('#skills').innerHTML=d.skills.map(s=>`<span class="tag">${s}</span>`).join('')+`<span class="tag">→ 下一段經歷</span>`;if(fly){const p=islandGroups[selected].getWorldPosition(new THREE.Vector3());focusTarget=p} }
-
-// Room details are interactive: tap a room card to expand its reflection prompt.
-document.querySelector('#detail').addEventListener('click',e=>{
- const room=e.target.closest('.room'); if(!room)return;
- document.querySelectorAll('#detail .room').forEach(x=>x.classList.remove('selected-room'));
- room.classList.add('selected-room');
- const rooms=[...document.querySelectorAll('#detail .room')],idx=rooms.indexOf(room),d=data[selected],r=d.rooms[idx];
- let detail=document.querySelector('#room-detail');
- if(!detail){detail=document.createElement('div');detail.id='room-detail';detail.className='room-detail';document.querySelector('#detail .rooms').after(detail)}
- const prompts=[
-  ['我有哪些時候很想被看見？','我可以怎麼表達感謝，而不是比較？'],
-  ['我被比較時，身體和心情有什麼反應？','我能用什麼方式安全地說出委屈？'],
-  ['如果我選擇不報復，下一句話可以怎麼說？','我能怎麼肯定別人，又不貶低自己？'],
-  ['我做這件事，是為了幫助人還是得到掌聲？','如果沒有人稱讚，我還會做嗎？'],
-  ['我需要向誰承認錯誤或尋求幫助？','我能採取哪一個具體改變？'],
-  ['我今天能用什麼能力幫助一個人？','我想把哪一個選擇練習成習慣？']
- ];
- detail.innerHTML=`<b>${r[0]} ${r[1]}｜深入想一想</b><p style="margin:6px 0">${r[2]}</p><ul style="margin:4px 0;padding-left:20px"><li>${prompts[selected][0]}</li><li>${prompts[selected][1]}</li></ul>`;
-});
-
-const list=document.querySelector('#island-list');data.forEach((d,i)=>{const b=document.createElement('button');b.className='island';b.setAttribute('aria-pressed',String(i===0));b.innerHTML=`<small>0${i+1} · ${i===5?'現在':`經歷 ${i+1}`}</small><strong>${d.name}</strong><span>${d.short} ↗</span>`;b.addEventListener('click',()=>selectIsland(i,true));list.appendChild(b)});
-document.querySelector('#minus').addEventListener('click',()=>{camera.position.sub(controls.target).multiplyScalar(1.12).add(controls.target)});document.querySelector('#plus').addEventListener('click',()=>{camera.position.sub(controls.target).multiplyScalar(.88).add(controls.target)});document.querySelector('#reset').addEventListener('click',()=>{controls.target.set(0,0,0);camera.position.set(0,10,17);controls.update();focusTarget=null;selectIsland(0,false)});document.querySelector('#next').addEventListener('click',()=>selectIsland((selected+1)%data.length,true));
-
-const rayPointer=new THREE.Vector2();
-canvas.addEventListener('pointermove',e=>{if(e.buttons)return;const r=canvas.getBoundingClientRect();rayPointer.x=((e.clientX-r.left)/r.width)*2-1;rayPointer.y=-((e.clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(rayPointer,camera);const hits=raycaster.intersectObjects(pickables,false);canvas.style.cursor=hits.length?'pointer':'grab'});
-
-
-canvas.addEventListener('dblclick',e=>{
- const r=canvas.getBoundingClientRect();pointer.x=((e.clientX-r.left)/r.width)*2-1;pointer.y=-((e.clientY-r.top)/r.height)*2+1;
- raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(pickables,false);
- if(hits.length){selectIsland(hits[0].object.userData.index,true);camera.position.sub(controls.target).multiplyScalar(.72).add(controls.target);toast('已靠近島嶼，點選房間深入探索 ✨')}
-});
-
-canvas.addEventListener('pointerup',e=>{if(e.pointerType==='touch'&&e.isPrimary===false)return;const r=canvas.getBoundingClientRect();pointer.x=((e.clientX-r.left)/r.width)*2-1;pointer.y=-((e.clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(pickables,false);if(hits.length)selectIsland(hits[0].object.userData.index,true)});
-document.querySelector('#timeline').innerHTML=data.map((d,i)=>`<div class="step"><div class="dot"></div>${d.short}</div>`).join('');
-selectIsland(0,false);
-
-const experiences = [
- {title:'第 1 站｜起點島：我看見自己',scene:'佩佩拿到新衣、新鞋，也得到一百分。大家看著她時，你最可能怎麼想？',choices:[
-  {text:'我很棒！我想讓大家知道我比別人厲害。',scores:{humility:0,empathy:0,faith:0,awareness:0},feedback:'先誠實看見自己想被肯定的心情，是反思的起點。'},
-  {text:'我可以為自己的努力開心，也不必拿來比較。',scores:{humility:2,empathy:1,faith:1,awareness:2},feedback:'你開始把成就和自我價值分開，也留意別人的感受。'},
-  {text:'我想感謝幫助我的人，也記得能力是領受的禮物。',scores:{humility:3,empathy:1,faith:3,awareness:2},feedback:'你把感恩與謙卑放在成就之前。'}]},
- {title:'第 2 站｜風雨島：受挫的選擇',scene:'你被別人比較、嘲笑，心裡很委屈。你會怎麼做？',choices:[
-  {text:'讓對方也難受一次，這樣才公平。',scores:{humility:0,empathy:0,faith:0,awareness:1},feedback:'報復的衝動很真實；下一步是看見它會帶來什麼後果。'},
-  {text:'先離開現場，等情緒平靜後再說。',scores:{humility:1,empathy:2,faith:1,awareness:3},feedback:'你選擇先停下來，讓情緒不替你做決定。'},
-  {text:'找可信任的人說出委屈，再用不傷人的方式表達。',scores:{humility:2,empathy:3,faith:1,awareness:3},feedback:'你同時照顧自己的感受，也避免把傷害傳給別人。'}]},
- {title:'第 3 站｜軍裝島：另一種回應',scene:'有人炫耀成就，讓你覺得自己被比下去。你會如何回應？',choices:[
-  {text:'故意說出對方的缺點，讓他不要太得意。',scores:{humility:0,empathy:0,faith:0,awareness:0},feedback:'這種回應可能暫時讓你覺得扳回一城，卻會讓關係更遠。'},
-  {text:'先聽完，再溫和地說出我的感受。',scores:{humility:2,empathy:3,faith:1,awareness:2},feedback:'你練習用溫和與真實取代攻擊。'},
-  {text:'真心肯定對方，也提醒自己每個人都有不同的恩賜。',scores:{humility:3,empathy:3,faith:2,awareness:2},feedback:'你能欣賞別人，而不必貶低自己。'}]},
- {title:'第 4 站｜皇冠島：分辨動機',scene:'如果你做了一件很厲害的事，你最希望得到什麼？',choices:[
-  {text:'所有人都稱讚我，讓我成為最受注目的人。',scores:{humility:0,empathy:0,faith:0,awareness:1},feedback:'想被看見是人的常見心情；可以再問自己：如果沒有人稱讚，我還願意做嗎？'},
-  {text:'希望努力被看見，也願意分享功勞。',scores:{humility:2,empathy:2,faith:1,awareness:2},feedback:'你開始兼顧肯定與分享，不把所有榮耀留給自己。'},
-  {text:'希望事情真正幫助到人，並把榮耀歸給上帝。',scores:{humility:3,empathy:3,faith:3,awareness:2},feedback:'你把焦點從個人掌聲轉向服事、感恩與信仰。'}]},
- {title:'第 5 站｜真光島：把榮耀歸主',scene:'你發現自己曾經驕傲或做錯事。你接下來會怎麼做？',choices:[
-  {text:'假裝沒事，避免別人知道。',scores:{humility:0,empathy:0,faith:0,awareness:0},feedback:'逃避能暫時減少尷尬，但問題可能還在；你可以從承認一小步開始。'},
-  {text:'承認錯誤，向受影響的人道歉並改正。',scores:{humility:3,empathy:3,faith:2,awareness:3},feedback:'你願意承擔責任，讓反思變成實際改變。'},
-  {text:'向上帝禱告、省察動機，也找成熟可信的人一起面對。',scores:{humility:3,empathy:2,faith:3,awareness:3},feedback:'你把信仰省察與具體支持連結起來。'}]}
-];
-const chosen = Array(5).fill(null);
-let activeExperience = 0;
-const stageNode = document.querySelector('#choice-stage');
-function renderExperience(){
- const e=experiences[activeExperience], answer=chosen[activeExperience];
- stageNode.innerHTML=`<div class="choice-card"><div class="kicker">經歷 ${activeExperience+1} / 5</div><h3>${e.title}</h3><p style="line-height:1.8">${e.scene}</p>${e.choices.map((c,i)=>`<label class="choice-option"><input type="radio" name="experience-choice" value="${i}" ${answer===i?'checked':''}><span>${c.text}</span></label>`).join('')}${answer!==null?`<div class="choice-note">💡 反思：${e.choices[answer].feedback}</div>`:'<div class="choice-note">選擇最接近你當下的回應，系統就會把這個選擇納入「現在的我」。</div>'}</div>`;
- stageNode.querySelectorAll('input').forEach(input=>input.addEventListener('change',()=>{chosen[activeExperience]=Number(input.value);renderExperience();updateProgress();renderNowMe(false);updateBadges();saveJourney();toast('選擇已記錄，會影響「現在的我」');}));
- document.querySelector('#prev-choice').disabled=activeExperience===0;
- document.querySelector('#next-choice').textContent=activeExperience===4?'前往第六站 →':'下一段 →';
-}
-function updateProgress(){
- const n=chosen.filter(v=>v!==null).length;
- document.querySelector('#progress-fill').style.width=(n/5*100)+'%';
- document.querySelector('#progress-label').textContent=`已完成 ${n} / 5 段經歷${n===5?' · 可以查看你的成長輪廓！':''}`;
-}
-function renderNowMe(show=true){
- const panel=document.querySelector('#now-me');
- if(show)panel.classList.add('visible');
- const answered=chosen.filter(v=>v!==null).length;
- if(!answered){panel.innerHTML='<h2>第六站｜現在的我</h2><p class="muted">先在前五段經歷中做出選擇，這裡才會出現依你答案整理的成長輪廓。</p>';return}
- const totals={humility:0,empathy:0,faith:0,awareness:0};
- chosen.forEach((a,i)=>{if(a!==null)Object.entries(experiences[i].choices[a].scores).forEach(([k,v])=>totals[k]+=v)});
- const max=answered*3;
- const level=v=>v>=answered*2.2?'已展現的優勢':v>=answered*1.2?'正在累積':'值得練習';
- const profiles=[
-  ['謙卑與感恩','humility','在有成就時不把自己放在別人之上，記得恩賜與幫助從哪裡來。'],
-  ['同理與關係','empathy','看見別人的感受，欣賞別人的成功，避免把受傷變成新的傷害。'],
-  ['信仰與歸榮耀','faith','不只追求能力或掌聲，也思考如何感恩、服事並把榮耀歸給上帝。'],
-  ['自我覺察與停看聽','awareness','留意自己情緒與動機，在反應之前停一下，選擇更合宜的行動。']
- ];
- const allDone=answered===5;
- const strongest=[...profiles].sort((a,b)=>totals[b[1]]-totals[a[1]])[0];
- const needs=[...profiles].sort((a,b)=>totals[a[1]]-totals[b[1]])[0];
- const actions={
-  humility:'下次被稱讚時，說出一個幫助過你的人，並把功勞分享出去。',
-  empathy:'下次覺得被比較時，先說「我現在有點受傷」，不要急著反擊。',
-  faith:'每天選一件你感恩的能力，想一想它可以怎樣幫助別人。',
-  awareness:'情緒上來時，先停十秒，問自己：「我真正想要的是什麼？這樣做會造成什麼結果？」'
- };
- panel.innerHTML=`<h2>第六站｜現在的我</h2><p style="line-height:1.85">${allDone?'你的五次選擇已經匯聚成一張成長地圖。':'你目前完成了 '+answered+' / 5 段經歷；以下是依照已選答案形成的暫時輪廓。完成全部五段後，輪廓會更完整。'}每個結果都不是給你貼標籤，而是幫助你看見已經在練習的能力，以及下一步可以成長的方向。</p>
- <div class="profile-grid">${profiles.map(([name,key,desc])=>`<div class="profile-item"><strong>${name} · ${level(totals[key])}</strong><span>${desc}<br><b>目前累積：${totals[key]} 分</b></span></div>`).join('')}</div>
- <div class="action-line"><b>🌟 目前較突出的成長方向：${strongest[0]}</b><br>${strongest[2]}</div>
- <div class="action-line"><b>🌱 下一步可以特別練習：${needs[0]}</b><br>${actions[needs[1]]}</div>
- <div class="action-line"><b>📌 我的成長宣言</b><br>我不需要靠比較證明自己。我願意在順境中謙卑，在受挫時停止報復，在選擇前省察動機，並用自己的能力幫助別人，把榮耀歸給上帝。</div>
- <div class="choice-nav"><button class="btn" id="edit-choices">回去修改我的選擇</button><button class="btn" id="copy-reflection">複製我的成長反思</button></div>`;
- document.querySelector('#edit-choices').addEventListener('click',()=>{panel.classList.remove('visible');activeExperience=0;renderExperience();document.querySelector('#choice-journey').scrollIntoView({behavior:'smooth',block:'start'})});
- document.querySelector('#copy-reflection').addEventListener('click',()=>{const txt=`我的學習歷程反思\n完成經歷：${answered}/5\n${profiles.map(([name,key])=>`${name}：${level(totals[key])}（${totals[key]} 分）`).join('\n')}\n較突出的成長方向：${strongest[0]}\n下一步練習：${actions[needs[1]]}\n我不需要靠比較證明自己。我願意在順境中謙卑，在受挫時停止報復，在選擇前省察動機，並用自己的能力幫助別人，把榮耀歸給上帝。`;if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(()=>alert('已複製成長反思！')).catch(()=>prompt('請複製以下文字：',txt));else prompt('請複製以下文字：',txt)});
-}
-const STORAGE_KEY='learning-archipelago-v4';
-const challengeList=[
- ['💬 溫柔說真話','今天練習用一句不傷人的話，表達自己的感受。','對話任務'],
- ['🤝 為別人高興','真心稱讚一位同學的努力，不把話題拉回自己身上。','關係任務'],
- ['🙏 感恩一件事','寫下今天一項領受的能力，並想想它能怎樣幫助別人。','感恩任務'],
- ['🛑 暫停十秒','遇到不順心時，先停十秒再回應，不急著反擊。','情緒任務'],
- ['🌱 默默幫助人','做一件不需要被稱讚的小事，留意自己的心情。','行動任務'],
- ['🪞 檢查動機','做事前問自己：我想幫助人，還是只想被看見？','省察任務']
-];
-let challengeIndex=0, challengeCompleted=false;
-function toast(message){
- let t=document.querySelector('.floating-toast');
- if(!t){t=document.createElement('div');t.className='floating-toast';document.body.appendChild(t)}
- t.textContent=message;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2200);
-}
-function saveJourney(){
- try{localStorage.setItem(STORAGE_KEY,JSON.stringify({chosen,activeExperience,challengeIndex,challengeCompleted,updatedAt:new Date().toISOString()}))}catch(e){}
-}
-function updateBadges(){
- const n=chosen.filter(v=>v!==null).length;
- const badge=(id,on)=>{const el=document.querySelector(`[data-badge="${id}"]`);if(el)el.classList.toggle('earned',on)};
- badge('first',n>=1);
- badge('reflect',n>=2&&chosen.some((v,i)=>v!==null&&experiences[i].choices[v].scores.awareness>=2));
- badge('empathy',chosen.some((v,i)=>v!==null&&experiences[i].choices[v].scores.empathy>=2));
- badge('humble',chosen.some((v,i)=>v!==null&&experiences[i].choices[v].scores.humility>=2));
- badge('complete',n===5);
-}
-function showChallenge(){
- const c=challengeList[challengeIndex];
- document.querySelector('#challenge-title').textContent=c[0];
- document.querySelector('#challenge-text').textContent=c[1];
- document.querySelector('#challenge-status').textContent=challengeCompleted?'✓ 今日已完成':'';
- document.querySelector('#complete-challenge').textContent=challengeCompleted?'✓ 已完成':'我今天做到了 ✓';
- document.querySelector('#complete-challenge').disabled=challengeCompleted;
- document.querySelector('#complete-challenge').style.opacity=challengeCompleted?'.65':'1';
- const badge=document.querySelector('#challenge-kind');
- if(badge)badge.textContent=c[2];
-}
-function loadJourney(){
- try{
-  const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
-  if(saved&&Array.isArray(saved.chosen)&&saved.chosen.length===5){
-   saved.chosen.forEach((v,i)=>{if(v===null||(Number.isInteger(v)&&v>=0&&v<3))chosen[i]=v});
-   if(Number.isInteger(saved.activeExperience))activeExperience=Math.max(0,Math.min(4,saved.activeExperience));
-   if(Number.isInteger(saved.challengeIndex))challengeIndex=((saved.challengeIndex%challengeList.length)+challengeList.length)%challengeList.length;
-   challengeCompleted=!!saved.challengeCompleted;
+function refreshIslandScalesAndMarkers() {
+  for (let i = 0; i < data.length; i++) {
+    const dynScale = getIslandDynamicScale(i);
+    const count = getIslandContentCount(i);
+    islandGroups[i].userData.targetScale = dynScale;
+    const isAct = (i === selectedIsland && drawerOpen);
+    markerNodes[i].classList.toggle('active', isAct);
+    markerNodes[i].innerHTML = `
+      <div class="marker-top">
+        <span class="check-dot">${visitedIslands.has(i) ? '✓' : `0${i + 1}`}</span>
+        <span>${data[i].name.split('｜')[0]}</span>
+      </div>
+      <span class="size-tag">規模 ${Math.round(dynScale * 100)}% · ${count} 項內容</span>
+    `;
   }
- }catch(e){}
 }
-document.querySelector('#reset-journey').addEventListener('click',()=>{
- if(!confirm('確定要清除這台裝置上的學習選擇，重新開始嗎？'))return;
- chosen.fill(null);activeExperience=0;challengeCompleted=false;
- renderExperience();updateProgress();renderNowMe(false);document.querySelector('#now-me').classList.remove('visible');
- updateBadges();showChallenge();saveJourney();toast('旅程已重新開始 🌱');
-});
-document.querySelector('#new-challenge').addEventListener('click',()=>{
- challengeIndex=(challengeIndex+1+Math.floor(Math.random()*(challengeList.length-1)))%challengeList.length;
- challengeCompleted=false;showChallenge();saveJourney();toast('換一個新任務，開始你的生活練習！');
-});
-document.querySelector('#complete-challenge').addEventListener('click',()=>{
- if(challengeCompleted)return;
- challengeCompleted=true;showChallenge();saveJourney();toast('🌟 任務完成！把善意帶進今天。');
-});
-/* Rebind choice events after restoring saved answers. */
-const originalRenderExperience=renderExperience;
-renderExperience=function(){
- originalRenderExperience();
- const card=stageNode.querySelector('.choice-card');
- if(card){
-  const old=card.querySelector('.choice-note');
-  if(old && chosen[activeExperience]!==null) old.textContent='💡 反思：'+experiences[activeExperience].choices[chosen[activeExperience]].feedback;
- }
+
+// Connecting Bridges between islands
+for (let i = 0; i < islandGroups.length - 1; i++) {
+  const a = islandGroups[i].position;
+  const b = islandGroups[i + 1].position;
+  const dist = a.distanceTo(b);
+  const mid = new THREE.Vector3((a.x + b.x) / 2, -0.22, (a.z + b.z) / 2);
+  const bridge = addMesh(world, new THREE.BoxGeometry(dist * 0.42, 0.08, 0.28), mat(0xd9b47c), mid.x, mid.y, mid.z, false);
+  bridge.rotation.y = Math.atan2(b.z - a.z, b.x - a.x);
+}
+
+// Floating Clouds
+const deco = new THREE.Group();
+world.add(deco);
+const cloudMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1, transparent: true, opacity: 0.85 });
+for (let i = 0; i < 10; i++) {
+  const cloud = new THREE.Group();
+  cloud.position.set(-18 + i * 4.0, 4.2 + (i % 3) * 0.65, -5 - (i % 2) * 3);
+  for (let j = 0; j < 3; j++) {
+    const puff = new THREE.Mesh(new THREE.SphereGeometry(0.42 + (j === 1 ? 0.14 : 0), 8, 6), cloudMat);
+    puff.position.set((j - 1) * 0.42, j === 1 ? 0.12 : 0, 0);
+    puff.scale.y = 0.7;
+    cloud.add(puff);
+  }
+  deco.add(cloud);
+  cloud.userData.cloud = true;
+  cloud.userData.speed = 0.003 + (i % 3) * 0.0012;
+}
+
+// Player's Explorer Sailboat
+const boat = new THREE.Group();
+addMesh(boat, new THREE.BoxGeometry(0.68, 0.18, 0.35), mat(0xc87d55), 0, 0, 0);
+addMesh(boat, new THREE.CylinderGeometry(0.02, 0.025, 0.68, 5), mat(0x7c5836), 0.05, 0.36, 0);
+const sail = addMesh(boat, new THREE.ConeGeometry(0.3, 0.55, 3), mat(0xffffff, 0.5, 0xfff8e7, 0.15), 0.08, 0.38, 0);
+sail.rotation.y = Math.PI / 4;
+const wakeRing = new THREE.Mesh(
+  new THREE.RingGeometry(0.26, 0.45, 20),
+  new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0.55 })
+);
+wakeRing.rotation.x = Math.PI / 2;
+wakeRing.position.y = -0.06;
+boat.add(wakeRing);
+
+const initPos = islandGroups[0].position;
+boat.position.set(initPos.x, -0.48, initPos.z + 2.6);
+world.add(boat);
+const boatTarget = new THREE.Vector3(initPos.x, -0.48, initPos.z + 2.6);
+
+/* ============================================================================
+   5. NEW MARINE & AERIAL WILDLIFE + LUXURY CRUISE SHIP
+   (Seagulls, Whales with Water Spout, Jumping Dolphins, Cruise Liner)
+============================================================================ */
+const wildlifeGroup = new THREE.Group();
+world.add(wildlifeGroup);
+
+// 5A. Flying Seagulls (海鷗群)
+const seagulls = [];
+const gullWhite = mat(0xffffff, 0.6);
+const gullGrey = mat(0x94a3b8, 0.7);
+const gullBeak = mat(0xf59e0b, 0.5);
+
+for (let i = 0; i < 10; i++) {
+  const gull = new THREE.Group();
+  const body = addMesh(gull, new THREE.ConeGeometry(0.06, 0.24, 5), gullWhite, 0, 0, 0, false);
+  body.rotation.x = Math.PI / 2;
+  const beak = addMesh(gull, new THREE.ConeGeometry(0.022, 0.08, 4), gullBeak, 0, 0, 0.14, false);
+  beak.rotation.x = Math.PI / 2;
+
+  const wingL = new THREE.Group();
+  const wMeshL = addMesh(wingL, new THREE.BoxGeometry(0.24, 0.015, 0.08), gullWhite, -0.12, 0, 0, false);
+  addMesh(wingL, new THREE.BoxGeometry(0.08, 0.016, 0.07), gullGrey, -0.22, 0, 0, false);
+  gull.add(wingL);
+
+  const wingR = new THREE.Group();
+  const wMeshR = addMesh(wingR, new THREE.BoxGeometry(0.24, 0.015, 0.08), gullWhite, 0.12, 0, 0, false);
+  addMesh(wingR, new THREE.BoxGeometry(0.08, 0.016, 0.07), gullGrey, 0.22, 0, 0, false);
+  gull.add(wingR);
+
+  gull.userData = {
+    wingL,
+    wingR,
+    centerX: -10 + (i % 5) * 5.2,
+    centerZ: (i % 2 === 0 ? -1.5 : 1.8),
+    radiusX: 2.2 + (i % 3) * 0.9,
+    radiusZ: 1.4 + (i % 2) * 0.8,
+    height: 3.1 + (i % 4) * 0.45,
+    speed: 0.0012 + (i % 3) * 0.00035,
+    phase: i * 1.3
+  };
+  wildlifeGroup.add(gull);
+  seagulls.push(gull);
+}
+
+// 5B. Swimming Whales with Blowhole Water Spout (鯨魚與噴水柱)
+const whales = [];
+const whaleMat = mat(0x2c5270, 0.55);
+const whaleBellyMat = mat(0xdbeafe, 0.7);
+const spoutMat = new THREE.MeshBasicMaterial({ color: 0xe0f2fe, transparent: true, opacity: 0.75 });
+
+for (let w = 0; w < 2; w++) {
+  const whale = new THREE.Group();
+  // Main body
+  const torso = addMesh(whale, new THREE.SphereGeometry(0.65, 10, 8), whaleMat, 0, 0, 0);
+  torso.scale.set(0.85, 0.65, 2.2);
+  const belly = addMesh(whale, new THREE.SphereGeometry(0.58, 8, 6), whaleBellyMat, 0, -0.12, 0.05, false);
+  belly.scale.set(0.75, 0.48, 1.95);
+
+  // Side flippers
+  const flipL = addMesh(whale, new THREE.BoxGeometry(0.65, 0.05, 0.26), whaleMat, -0.62, -0.1, 0.25, false);
+  flipL.rotation.z = -0.25;
+  flipL.rotation.y = 0.3;
+  const flipR = addMesh(whale, new THREE.BoxGeometry(0.65, 0.05, 0.26), whaleMat, 0.62, -0.1, 0.25, false);
+  flipR.rotation.z = 0.25;
+  flipR.rotation.y = -0.3;
+
+  // Dorsal fin
+  const dorsal = addMesh(whale, new THREE.ConeGeometry(0.14, 0.32, 4), whaleMat, 0, 0.42, -0.45, false);
+  dorsal.rotation.x = -0.35;
+
+  // Articulated Tail & Flukes
+  const tailPivot = new THREE.Group();
+  tailPivot.position.set(0, 0.02, -1.25);
+  const peduncle = addMesh(tailPivot, new THREE.ConeGeometry(0.26, 0.85, 6), whaleMat, 0, 0, -0.35, false);
+  peduncle.rotation.x = -Math.PI / 2;
+  const flukeL = addMesh(tailPivot, new THREE.BoxGeometry(0.55, 0.04, 0.25), whaleMat, -0.24, 0, -0.78, false);
+  flukeL.rotation.y = 0.35;
+  const flukeR = addMesh(tailPivot, new THREE.BoxGeometry(0.55, 0.04, 0.25), whaleMat, 0.24, 0, -0.78, false);
+  flukeR.rotation.y = -0.35;
+  whale.add(tailPivot);
+
+  // Water Spout Particles (Blowhole spray)
+  const spoutGroup = new THREE.Group();
+  spoutGroup.position.set(0, 0.45, 0.65);
+  for (let p = 0; p < 6; p++) {
+    const drop = new THREE.Mesh(new THREE.SphereGeometry(0.07 + p * 0.025, 6, 5), spoutMat);
+    drop.position.set((p % 2 === 0 ? 1 : -1) * p * 0.03, p * 0.18, (p % 3 - 1) * 0.03);
+    spoutGroup.add(drop);
+  }
+  whale.add(spoutGroup);
+
+  // Hit target so clicking the whale shows a cheerful message
+  const whaleHit = addMesh(whale, new THREE.BoxGeometry(1.8, 1.4, 3.2), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }), 0, 0.2, 0, false);
+  whaleHit.userData.wildlifeType = 'whale';
+  pickables.push(whaleHit);
+
+  whale.userData = {
+    tailPivot,
+    spoutGroup,
+    rx: w === 0 ? 17.5 : 14.0,
+    rz: w === 0 ? 7.2 : 8.8,
+    speed: w === 0 ? 0.00028 : -0.00024,
+    phase: w * Math.PI
+  };
+  wildlifeGroup.add(whale);
+  whales.push(whale);
+}
+
+// 5C. Jumping Dolphins (躍出水面海豚群)
+const dolphins = [];
+const dolphinMat = mat(0x38bdf8, 0.4);
+const dolphinBelly = mat(0xf0f9ff, 0.6);
+
+for (let d = 0; d < 5; d++) {
+  const dolphinWrap = new THREE.Group();
+  const baseX = -11 + d * 5.6;
+  const baseZ = (d % 2 === 0) ? 4.2 : -4.2;
+  dolphinWrap.position.set(baseX, -0.68, baseZ);
+
+  const dolphinMesh = new THREE.Group();
+  const dBody = addMesh(dolphinMesh, new THREE.ConeGeometry(0.16, 0.72, 7), dolphinMat, 0, 0, 0, false);
+  dBody.rotation.x = Math.PI / 2;
+  const dNose = addMesh(dolphinMesh, new THREE.ConeGeometry(0.06, 0.25, 5), dolphinMat, 0, -0.02, 0.42, false);
+  dNose.rotation.x = Math.PI / 2;
+  const dFin = addMesh(dolphinMesh, new THREE.ConeGeometry(0.06, 0.2, 4), dolphinMat, 0, 0.16, -0.05, false);
+  dFin.rotation.x = -0.35;
+  const dTail = addMesh(dolphinMesh, new THREE.BoxGeometry(0.32, 0.03, 0.12), dolphinMat, 0, 0, -0.38, false);
+  dolphinWrap.add(dolphinMesh);
+
+  // Splash ring on the sea surface
+  const splashRing = new THREE.Mesh(
+    new THREE.RingGeometry(0.18, 0.34, 18),
+    new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0 })
+  );
+  splashRing.rotation.x = Math.PI / 2;
+  splashRing.position.y = 0.03;
+  dolphinWrap.add(splashRing);
+
+  dolphinWrap.userData = {
+    dolphinMesh,
+    splashRing,
+    speed: 0.0022 + (d % 3) * 0.0004,
+    phase: d * 1.45,
+    jumpSpanZ: 1.5,
+    jumpHeight: 1.45 + (d % 2) * 0.35
+  };
+  wildlifeGroup.add(dolphinWrap);
+  dolphins.push(dolphinWrap);
+}
+
+// 5D. Large Luxury Cruise Ship (環島大型郵輪)
+const cruiseShip = new THREE.Group();
+// Lower dark navy & red waterline hull
+addMesh(cruiseShip, new THREE.BoxGeometry(1.1, 0.22, 3.6), mat(0xb91c1c, 0.7), 0, 0.05, 0);
+addMesh(cruiseShip, new THREE.BoxGeometry(1.18, 0.38, 3.8), mat(0x1e293b, 0.6), 0, 0.32, 0);
+// Pointed Bow (Front of ship along +Z)
+const bowLower = addMesh(cruiseShip, new THREE.ConeGeometry(0.62, 1.1, 4), mat(0x1e293b, 0.6), 0, 0.32, 2.35);
+bowLower.rotation.x = Math.PI / 2;
+bowLower.rotation.y = Math.PI / 4;
+
+// 3 White Passenger Decks
+addMesh(cruiseShip, new THREE.BoxGeometry(1.12, 0.28, 3.3), mat(0xffffff, 0.5), 0, 0.64, -0.05);
+addMesh(cruiseShip, new THREE.BoxGeometry(1.02, 0.26, 2.9), mat(0xf8fafc, 0.5), 0, 0.90, -0.12);
+addMesh(cruiseShip, new THREE.BoxGeometry(0.90, 0.24, 2.4), mat(0xffffff, 0.5), 0, 1.14, -0.18);
+
+// Bridge Command Deck with wide wings
+addMesh(cruiseShip, new THREE.BoxGeometry(1.28, 0.16, 0.42), mat(0xe2e8f0, 0.4), 0, 1.24, 0.85);
+addMesh(cruiseShip, new THREE.BoxGeometry(0.88, 0.14, 0.44), mat(0x38bdf8, 0.2, 0x38bdf8, 0.45), 0, 1.25, 0.86, false);
+
+// Glowing Cabin Windows along port & starboard sides
+const winMat = mat(0xfef08a, 0.2, 0xfacc15, 0.85);
+for (let row = 0; row < 3; row++) {
+  for (let col = 0; col < 7; col++) {
+    const wy = 0.64 + row * 0.25;
+    const wz = -1.15 + col * 0.36;
+    addMesh(cruiseShip, new THREE.BoxGeometry(1.16 - row * 0.08, 0.08, 0.16), winMat, 0, wy, wz, false);
+  }
+}
+
+// Twin Cruise Funnels (Chimneys) + Steam Puffs
+for (let f = 0; f < 2; f++) {
+  const fz = -0.05 - f * 0.72;
+  const funnel = addMesh(cruiseShip, new THREE.CylinderGeometry(0.14, 0.18, 0.52, 8), mat(0xf59e0b, 0.5), 0, 1.48, fz);
+  funnel.rotation.x = -0.22;
+  const funnelTop = addMesh(cruiseShip, new THREE.CylinderGeometry(0.145, 0.145, 0.12, 8), mat(0x1e293b, 0.6), 0, 1.68, fz - 0.04);
+  funnelTop.rotation.x = -0.22;
+}
+
+// Aft Swimming Pool on Top Deck
+addMesh(cruiseShip, new THREE.BoxGeometry(0.52, 0.04, 0.65), mat(0x38bdf8, 0.2, 0x0284c7, 0.35), 0, 1.27, -0.95, false);
+
+// Foaming Wake Trail behind the Cruise Ship
+const cruiseWake = new THREE.Mesh(
+  new THREE.RingGeometry(0.55, 1.15, 24),
+  new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0.5 })
+);
+cruiseWake.rotation.x = Math.PI / 2;
+cruiseWake.position.set(0, -0.02, -1.8);
+cruiseShip.add(cruiseWake);
+
+// Hit target so clicking the Cruise Ship sounds the ship horn!
+const cruiseHit = addMesh(cruiseShip, new THREE.BoxGeometry(1.8, 2.0, 4.5), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }), 0, 0.8, 0, false);
+cruiseHit.userData.wildlifeType = 'cruise';
+pickables.push(cruiseHit);
+
+cruiseShip.position.set(0, -0.58, -9.5);
+wildlifeGroup.add(cruiseShip);
+
+/* ============================================================================
+   6. ENVIRONMENT PRESETS & RENDER LOOP
+============================================================================ */
+const envPresets = {
+  day: {
+    sky: 0xa9ded8, sea: 0x7bc8cc, hemiSky: 0xffffff, hemiGround: 0x6b9b8b, hemiInt: 2.0,
+    sunColor: 0xfff2d7, sunInt: 3.0, stageBg: 'linear-gradient(180deg, #bce9e8, #8fcfda)'
+  },
+  sunset: {
+    sky: 0xf4c5b5, sea: 0x6da8b8, hemiSky: 0xffe0b5, hemiGround: 0x7c5a68, hemiInt: 1.75,
+    sunColor: 0xff9e5e, sunInt: 3.4, stageBg: 'linear-gradient(180deg, #f9d1b7, #dca6b8)'
+  },
+  night: {
+    sky: 0x1a3047, sea: 0x1e4b63, hemiSky: 0x6488b8, hemiGround: 0x182b38, hemiInt: 1.15,
+    sunColor: 0x9ec5ff, sunInt: 1.6, stageBg: 'linear-gradient(180deg, #16293d, #244861)'
+  }
 };
+
+document.querySelectorAll('.env-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.env-btn').forEach(b => {
+      const on = b === btn;
+      b.className = on
+        ? 'env-btn px-2 py-1 rounded-full text-[11px] font-extrabold bg-teal-700 text-white cursor-pointer border-0'
+        : 'env-btn px-2 py-1 rounded-full text-[11px] font-extrabold text-slate-600 bg-transparent cursor-pointer border-0';
+    });
+    const p = envPresets[btn.dataset.env];
+    if (!p) return;
+    scene.background.setHex(p.sky);
+    scene.fog.color.setHex(p.sky);
+    seaMat.color.setHex(p.sea);
+    hemiLight.color.setHex(p.hemiSky);
+    hemiLight.groundColor.setHex(p.hemiGround);
+    hemiLight.intensity = p.hemiInt;
+    sun.color.setHex(p.sunColor);
+    sun.intensity = p.sunInt;
+    stage.style.background = p.stageBg;
+    sfx.click();
+    toast(`已切換至「${btn.textContent.trim()}」天色氛圍`);
+  });
+});
+
+let focusTarget = null;
+let followMode = null; // null | 'cruise' | 'whale'
+let autoTour = false;
+let autoTourTimer = 0;
+
+function resize() {
+  const r = stage.getBoundingClientRect();
+  renderer.setSize(r.width, r.height, false);
+  camera.aspect = r.width / r.height;
+  camera.updateProjectionMatrix();
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+}
+new ResizeObserver(resize).observe(stage);
+resize();
+
+const tempVec = new THREE.Vector3();
+function updateMarkers() {
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  for (let i = 0; i < islandGroups.length; i++) {
+    const g = islandGroups[i];
+    const s = g.scale.y;
+    tempVec.set(g.position.x, g.position.y + 2.35 * s, g.position.z);
+    tempVec.project(camera);
+    const x = (tempVec.x * 0.5 + 0.5) * width;
+    const y = (-(tempVec.y * 0.5) + 0.5) * height;
+    const marker = markerNodes[i];
+    if (tempVec.z > 1 || x < -60 || x > width + 60 || y < 55 || y > height - 60) {
+      marker.style.opacity = '0';
+      marker.style.pointerEvents = 'none';
+    } else {
+      marker.style.opacity = '1';
+      marker.style.pointerEvents = 'auto';
+      marker.style.left = `${x}px`;
+      marker.style.top = `${y}px`;
+    }
+  }
+}
+
+const seaPosAttr = seaGeo.attributes.position;
+const seaBaseZ = new Float32Array(seaPosAttr.count);
+for (let i = 0; i < seaPosAttr.count; i++) {
+  seaBaseZ[i] = seaPosAttr.getZ(i);
+}
+
+function render() {
+  requestAnimationFrame(render);
+  const t = performance.now();
+
+  // 1. Ocean Waves
+  for (let i = 0; i < seaPosAttr.count; i++) {
+    const vx = seaPosAttr.getX(i);
+    const vy = seaPosAttr.getY(i);
+    const wave = Math.sin(vx * 0.32 + t * 0.002) * 0.065 + Math.cos(vy * 0.32 + t * 0.0018) * 0.055;
+    seaPosAttr.setZ(i, seaBaseZ[i] + wave);
+  }
+  seaPosAttr.needsUpdate = true;
+
+  // 2. Smoothly animate island dynamic scales based on content
+  islandGroups.forEach(g => {
+    const ts = g.userData.targetScale || 1;
+    g.scale.x = THREE.MathUtils.lerp(g.scale.x, ts, 0.06);
+    g.scale.y = THREE.MathUtils.lerp(g.scale.y, ts, 0.06);
+    g.scale.z = THREE.MathUtils.lerp(g.scale.z, ts, 0.06);
+  });
+
+  // 3. Clouds & Island Landmarks
+  deco.children.forEach(o => {
+    if (o.userData.cloud) {
+      o.position.x += o.userData.speed;
+      if (o.position.x > 22) o.position.x = -22;
+    }
+  });
+  rainDrops.forEach(drop => {
+    drop.position.y -= 0.025;
+    if (drop.position.y < 0.45) drop.position.y = 1.95;
+  });
+  if (landmarkShieldRing) landmarkShieldRing.rotation.z = t * 0.0012;
+  if (landmarkCrownGroup) landmarkCrownGroup.rotation.y = t * 0.0015;
+
+  // 4. Seagulls Flapping & Circling
+  seagulls.forEach(gull => {
+    const u = gull.userData;
+    const angle = t * u.speed + u.phase;
+    const nx = u.centerX + Math.cos(angle) * u.radiusX;
+    const nz = u.centerZ + Math.sin(angle) * u.radiusZ;
+    const ny = u.height + Math.sin(t * 0.003 + u.phase) * 0.22;
+    const dx = nx - gull.position.x;
+    const dz = nz - gull.position.z;
+    gull.position.set(nx, ny, nz);
+    if (Math.hypot(dx, dz) > 0.0001) {
+      gull.rotation.y = Math.atan2(dx, dz);
+    }
+    const flap = Math.sin(t * 0.012 + u.phase * 2) * 0.55;
+    u.wingL.rotation.z = flap;
+    u.wingR.rotation.z = -flap;
+  });
+
+  // 5. Whales Swimming & Surfacing with Water Spout
+  whales.forEach(whale => {
+    const u = whale.userData;
+    const angle = t * u.speed + u.phase;
+    const nx = Math.cos(angle) * u.rx;
+    const nz = Math.sin(angle) * u.rz;
+    const surfCycle = Math.sin(t * 0.0014 + u.phase);
+    const ny = -0.68 + surfCycle * 0.22;
+    const dx = nx - whale.position.x;
+    const dz = nz - whale.position.z;
+    whale.position.set(nx, ny, nz);
+    if (Math.hypot(dx, dz) > 0.0001) {
+      whale.rotation.y = Math.atan2(dx, dz);
+    }
+    u.tailPivot.rotation.x = Math.sin(t * 0.005 + u.phase) * 0.28;
+    // Blowhole water spout active when whale surfaces near peak
+    const spoutActive = surfCycle > 0.45;
+    u.spoutGroup.visible = spoutActive;
+    if (spoutActive) {
+      const sScale = 0.6 + ((t * 0.004) % 0.8);
+      u.spoutGroup.scale.set(1, sScale, 1);
+    }
+  });
+
+  // 6. Dolphins Leaping in Parabolic Arcs
+  dolphins.forEach(dWrap => {
+    const u = dWrap.userData;
+    const cycle = (t * u.speed + u.phase) % (Math.PI * 2);
+    const s = Math.sin(cycle);
+    if (s > 0) {
+      // Airborne leap!
+      u.dolphinMesh.visible = true;
+      const progress = (cycle / Math.PI) - 0.5; // -0.5 to +0.5
+      u.dolphinMesh.position.y = s * u.jumpHeight;
+      u.dolphinMesh.position.z = progress * u.jumpSpanZ * 2;
+      // Pitch nose tangent to arc
+      u.dolphinMesh.rotation.x = -Math.cos(cycle) * 0.85;
+      // Splash ring appears near water entry/exit
+      if (s < 0.35) {
+        u.splashRing.material.opacity = (0.35 - s) * 1.8;
+        const rScale = 1 + (0.35 - s) * 2.5;
+        u.splashRing.scale.set(rScale, rScale, 1);
+        u.splashRing.position.z = u.dolphinMesh.position.z;
+      } else {
+        u.splashRing.material.opacity = 0;
+      }
+    } else {
+      u.dolphinMesh.visible = false;
+      u.splashRing.material.opacity = 0;
+    }
+  });
+
+  // 7. Luxury Cruise Ship Sailing Grand Loop around Archipelago
+  const cruiseAngle = t * 0.00018;
+  const cx = Math.cos(cruiseAngle) * 19.5;
+  const cz = Math.sin(cruiseAngle) * 6.8;
+  const cdx = cx - cruiseShip.position.x;
+  const cdz = cz - cruiseShip.position.z;
+  cruiseShip.position.set(cx, -0.56 + Math.sin(t * 0.0025) * 0.03, cz);
+  if (Math.hypot(cdx, cdz) > 0.0001) {
+    cruiseShip.rotation.y = Math.atan2(cdx, cdz);
+  }
+  cruiseShip.rotation.z = Math.sin(t * 0.002) * 0.025;
+
+  // 8. Explorer Sailboat Moving to Selected Island
+  const bdx = boatTarget.x - boat.position.x;
+  const bdz = boatTarget.z - boat.position.z;
+  if (Math.hypot(bdx, bdz) > 0.02) {
+    boat.position.x += bdx * 0.05;
+    boat.position.z += bdz * 0.05;
+    const targetAngle = Math.atan2(-bdz, bdx);
+    boat.rotation.y = THREE.MathUtils.lerp(boat.rotation.y, targetAngle, 0.1);
+  }
+  boat.position.y = -0.48 + Math.sin(t * 0.004) * 0.04;
+  boat.rotation.z = Math.sin(t * 0.003) * 0.06;
+
+  // 9. Camera Follow or Focus
+  if (followMode === 'cruise') {
+    controls.target.lerp(cruiseShip.position, 0.06);
+  } else if (followMode === 'whale') {
+    controls.target.lerp(whales[0].position, 0.06);
+  } else if (focusTarget) {
+    controls.target.lerp(focusTarget, 0.08);
+    // Offset camera slightly to the left when drawer is open on desktop so island is centered in the visible left area
+    const xOffset = (drawerOpen && window.innerWidth > 760) ? 2.4 : 0;
+    const camGoal = new THREE.Vector3(focusTarget.x + xOffset, focusTarget.y + 5.2, focusTarget.z + 7.2);
+    camera.position.lerp(camGoal, 0.07);
+    if (camera.position.distanceTo(camGoal) < 0.15) focusTarget = null;
+  }
+
+  if (autoTour) {
+    autoTourTimer += 1;
+    if (autoTourTimer > 380) {
+      autoTourTimer = 0;
+      selectIsland((selectedIsland + 1) % data.length, true, true);
+    }
+  }
+
+  controls.update();
+  updateMarkers();
+  renderer.render(scene, camera);
+}
+
+/* ============================================================================
+   7. ISLAND INTERACTIVE DRAWER (Story, Choices, and Labs per Island)
+============================================================================ */
+const drawerEl = document.querySelector('#island-drawer');
+const drawerBody = document.querySelector('#drawer-body');
+const dockContainer = document.querySelector('#island-dock');
+
+// Build Bottom Island Dock
+function renderIslandDock() {
+  dockContainer.innerHTML = data.map((d, i) => `
+    <button type="button" class="dock-island-btn ${i === selectedIsland && drawerOpen ? 'active' : ''}" data-dock-idx="${i}">
+      <span>0${i + 1}</span>
+      <span>${d.name.split('｜')[0]}</span>
+    </button>
+  `).join('');
+
+  dockContainer.querySelectorAll('.dock-island-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = Number(btn.dataset.dockIdx);
+      selectIsland(idx, true, true);
+    });
+  });
+}
+
+function getEarnedBadgesInfo() {
+  const n = chosen.filter(v => v !== null).length;
+  const hasNotes = Object.values(roomNotes).some(txt => txt && txt.trim().length > 0);
+  const labDoneCount = (storyState.balloonTouched ? 1 : 0) + (storyState.response ? 1 : 0) + (storyState.motive ? 1 : 0);
+
+  const badgeList = [
+    { id: 'first', icon: '🌱', name: '初次探索', desc: '完成第 1 個情境選擇', earned: n >= 1 },
+    { id: 'reflect', icon: '🪞', name: '誠實省察', desc: '在自我覺察向度獲得高分', earned: n >= 2 && chosen.some((v, i) => v !== null && experiences[i].choices[v].scores.awareness >= 2) },
+    { id: 'empathy', icon: '💗', name: '同理之心', desc: '展現同理與溫和回應', earned: chosen.some((v, i) => v !== null && experiences[i].choices[v].scores.empathy >= 2) },
+    { id: 'humble', icon: '✨', name: '謙卑前行', desc: '練習謙卑與感恩分享', earned: chosen.some((v, i) => v !== null && experiences[i].choices[v].scores.humility >= 2) },
+    { id: 'complete', icon: '🏝️', name: '群島旅人', desc: '完成全部 5 站抉擇', earned: n === 5 },
+    { id: 'journal', icon: '📝', name: '深刻省思', desc: '寫下至少 1 則島嶼房間筆記', earned: hasNotes },
+    { id: 'scientist', icon: '🧪', name: '故事實驗家', desc: '完成氣球、回應與皇冠實驗', earned: labDoneCount === 3 },
+    { id: 'quest', icon: '🌟', name: '生活實踐家', desc: '完成一項今日生活小任務', earned: challengeCompleted || questCount > 0 }
+  ];
+
+  const earnedCount = badgeList.filter(b => b.earned).length;
+  document.querySelector('#badge-count-label').textContent = `${earnedCount}/8`;
+  return { badgeList, earnedCount };
+}
+
+function updateDrawerHeader() {
+  const d = data[selectedIsland];
+  const dynScale = getIslandDynamicScale(selectedIsland);
+  const contentCount = getIslandContentCount(selectedIsland);
+  const answeredCount = chosen.filter(v => v !== null).length;
+
+  document.querySelector('#drawer-kicker').textContent = `ISLAND 0${selectedIsland + 1} · ${d.short}`;
+  document.querySelector('#drawer-title').textContent = d.name;
+  document.querySelector('#drawer-scale-pill').textContent = `📐 規模 ${Math.round(dynScale * 100)}%（${contentCount} 項內容）`;
+  document.querySelector('#drawer-scale-desc').textContent =
+    `💡 島嶼面積與內容豐盛度成正比：目前包含 ${d.rooms.length} 間故事房、${d.skills.length} 項能力與「${d.labTitle}」。寫筆記或完成互動會讓島嶼繼續長大！`;
+
+  document.querySelector('#tab-btn-choice').textContent =
+    selectedIsland === 5 ? '📊 成長雷達圖' : `🧭 第 ${selectedIsland + 1} 站抉擇 ${chosen[selectedIsland] !== null ? '✓' : ''}`;
+  document.querySelector('#tab-btn-lab').textContent = d.labTitle;
+  document.querySelector('#drawer-progress-hint').textContent =
+    `已探索 ${visitedIslands.size}/6 島 · 抉擇 ${answeredCount}/5 站`;
+
+  document.querySelectorAll('.drawer-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === activeDrawerTab);
+  });
+}
+
+function renderStoryTab() {
+  const d = data[selectedIsland];
+  const r = d.rooms[selectedRoomIdx];
+  const p = d.prompts[selectedRoomIdx];
+  const noteKey = `${selectedIsland}-${selectedRoomIdx}`;
+  const existingNote = roomNotes[noteKey] || '';
+
+  drawerBody.innerHTML = `
+    <p class="text-sm text-slate-700 leading-relaxed m-0">${d.summary}</p>
+    <div class="causal-box"><b>🔍 事件因果鏈</b><br>${d.cause}</div>
+
+    <div class="mt-3">
+      <div class="text-xs font-black text-slate-700">🏠 點選三個故事房間，展開「深入想一想」與省思筆記：</div>
+      <div class="rooms-grid">
+        ${d.rooms.map((rm, idx) => {
+          const hasNote = !!(roomNotes[`${selectedIsland}-${idx}`] && roomNotes[`${selectedIsland}-${idx}`].trim());
+          return `
+            <div class="room-card ${idx === selectedRoomIdx ? 'selected-room' : ''}" data-room-idx="${idx}" tabindex="0" role="button">
+              ${hasNote ? '<span class="room-note-indicator">✎ 已筆記</span>' : ''}
+              <div class="emoji">${rm[0]}</div>
+              <strong>${rm[1]}</strong>
+              <span>${rm[2]}</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+
+    <div class="room-detail-drawer">
+      <div class="flex items-center justify-between flex-wrap gap-1">
+        <b class="text-sm text-teal-900">${r[0]} ${r[1]}｜深入想一想</b>
+        <span class="text-[11px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full">房間 ${selectedRoomIdx + 1} / 3</span>
+      </div>
+      <p class="text-xs text-slate-600 my-1.5">${r[2]}</p>
+      <ul class="my-2 pl-5 text-xs text-slate-700 font-medium space-y-1">
+        <li>${p[0]}</li>
+        <li>${p[1]}</li>
+      </ul>
+      <div class="mt-2.5 pt-2.5 border-t border-slate-200/80">
+        <label for="room-note-input" class="block text-xs font-extrabold text-slate-700 mb-1">
+          ✍️ 我的房間省思筆記（輸入後會自動儲存並擴大本島 3D 規模！）：
+        </label>
+        <div class="flex flex-wrap gap-1 mb-1.5">
+          ${quickTags.map(tag => `<button type="button" class="quick-tag-btn text-[11px] font-bold px-2 py-0.5 rounded-full bg-white hover:bg-teal-100 text-slate-600 hover:text-teal-800 border border-slate-200 transition cursor-pointer" data-tag="${tag}">${tag}</button>`).join('')}
+        </div>
+        <textarea id="room-note-input" rows="2" placeholder="寫下你在這個房間想到的經驗、心情或決定..." class="w-full p-2.5 text-xs rounded-xl border border-teal-200 bg-white focus:outline-none focus:border-teal-500 text-slate-700 leading-relaxed">${existingNote}</textarea>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <div class="text-xs font-black text-slate-700">🎒 本島帶走的能力與協作線</div>
+      <div>${d.skills.map(s => `<span class="tag">✦ ${s}</span>`).join('')}</div>
+      <div class="causal-box"><b>🚀 銜接下一段旅程</b><br>${d.carry}</div>
+    </div>
+
+    <div class="mt-4 flex justify-end">
+      <button type="button" class="btn btn-primary text-xs" id="go-to-choice-tab">
+        前往下一步：${selectedIsland === 5 ? '📊 查看成長雷達圖' : `🧭 完成第 ${selectedIsland + 1} 站抉擇`} →
+      </button>
+    </div>
+  `;
+
+  drawerBody.querySelectorAll('.room-card').forEach(card => {
+    card.addEventListener('click', () => {
+      selectedRoomIdx = Number(card.dataset.roomIdx) || 0;
+      sfx.click();
+      renderStoryTab();
+    });
+  });
+
+  const textarea = drawerBody.querySelector('#room-note-input');
+  textarea.addEventListener('input', () => {
+    const val = textarea.value.trim();
+    const hadNote = !!(roomNotes[noteKey] && roomNotes[noteKey].trim());
+    if (val) roomNotes[noteKey] = textarea.value;
+    else delete roomNotes[noteKey];
+    saveJourney();
+    getEarnedBadgesInfo();
+    refreshIslandScalesAndMarkers();
+    updateDrawerHeader();
+    if (!hadNote && val) {
+      toast('🌱 已寫下房間筆記，這座島嶼的規模隨內容擴展了！');
+    }
+  });
+
+  drawerBody.querySelectorAll('.quick-tag-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tag = btn.dataset.tag;
+      textarea.value = textarea.value ? `${textarea.value} ${tag}` : `${tag} `;
+      textarea.dispatchEvent(new Event('input'));
+      textarea.focus();
+      sfx.click();
+    });
+  });
+
+  drawerBody.querySelector('#go-to-choice-tab').addEventListener('click', () => {
+    activeDrawerTab = 'choice';
+    sfx.click();
+    renderDrawerContent();
+  });
+}
+
+function drawRadarChart(canvasEl, totals, maxScore = 12) {
+  if (!canvasEl) return;
+  const ctx = canvasEl.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const size = 240;
+  canvasEl.width = size * dpr;
+  canvasEl.height = size * dpr;
+  canvasEl.style.width = `${size}px`;
+  canvasEl.style.height = `${size}px`;
+  ctx.scale(dpr, dpr);
+
+  const cx = size / 2;
+  const cy = size / 2;
+  const radius = 76;
+  const axes = [
+    { key: 'humility', label: '謙卑感恩', angle: -Math.PI / 2 },
+    { key: 'empathy', label: '同理關係', angle: 0 },
+    { key: 'faith', label: '歸榮耀與神', angle: Math.PI / 2 },
+    { key: 'awareness', label: '自我覺察', angle: Math.PI }
+  ];
+
+  ctx.clearRect(0, 0, size, size);
+
+  for (let ring = 1; ring <= 4; ring++) {
+    const r = (radius / 4) * ring;
+    ctx.beginPath();
+    axes.forEach((ax, i) => {
+      const x = cx + Math.cos(ax.angle) * r;
+      const y = cy + Math.sin(ax.angle) * r;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+    ctx.fillStyle = ring % 2 === 0 ? 'rgba(255,255,255,0.6)' : 'rgba(225,244,236,0.5)';
+    ctx.fill();
+    ctx.strokeStyle = '#bddcd2';
+    ctx.stroke();
+  }
+
+  axes.forEach(ax => {
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + Math.cos(ax.angle) * radius, cy + Math.sin(ax.angle) * radius);
+    ctx.strokeStyle = '#9ec8bb';
+    ctx.stroke();
+  });
+
+  ctx.beginPath();
+  axes.forEach((ax, i) => {
+    const val = Math.min(maxScore, Math.max(1.5, totals[ax.key] || 0));
+    const r = (val / maxScore) * radius;
+    const x = cx + Math.cos(ax.angle) * r;
+    const y = cy + Math.sin(ax.angle) * r;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(45, 138, 120, 0.34)';
+  ctx.fill();
+  ctx.strokeStyle = '#247564';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  axes.forEach(ax => {
+    const val = Math.min(maxScore, Math.max(1.5, totals[ax.key] || 0));
+    const r = (val / maxScore) * radius;
+    const x = cx + Math.cos(ax.angle) * r;
+    const y = cy + Math.sin(ax.angle) * r;
+    ctx.beginPath();
+    ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#e6ad45';
+    ctx.fill();
+
+    const lx = cx + Math.cos(ax.angle) * (radius + 26);
+    const ly = cy + Math.sin(ax.angle) * (radius + 18);
+    ctx.fillStyle = '#1f4252';
+    ctx.font = 'bold 11.5px "Noto Sans TC", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`${ax.label}(${totals[ax.key]})`, lx, ly);
+  });
+}
+
+function buildFullReflectionReport() {
+  const answered = chosen.filter(v => v !== null).length;
+  const totals = { humility: 0, empathy: 0, faith: 0, awareness: 0 };
+  chosen.forEach((a, i) => {
+    if (a !== null) {
+      Object.entries(experiences[i].choices[a].scores).forEach(([k, v]) => totals[k] += v);
+    }
+  });
+  const level = v => v >= answered * 2.2 ? '已展現的優勢' : v >= answered * 1.2 ? '正在累積' : '值得練習';
+  const profiles = [
+    ['謙卑與感恩', 'humility'],
+    ['同理與關係', 'empathy'],
+    ['信仰與歸榮耀', 'faith'],
+    ['自我覺察與停看聽', 'awareness']
+  ];
+  const noteEntries = Object.entries(roomNotes).filter(([, txt]) => txt && txt.trim());
+  const notesText = noteEntries.length
+    ? '\n\n【我的島嶼房間省思筆記】\n' + noteEntries.map(([k, txt]) => {
+        const [iIdx, rIdx] = k.split('-').map(Number);
+        return `・${data[iIdx].name}（${data[iIdx].rooms[rIdx][1]}）：${txt.trim()}`;
+      }).join('\n')
+    : '';
+
+  return `【學習歷程群島｜氣球大頭症 成長反思報告】
+旅人暱稱：${travelerName || '正在成長的旅人'}
+完成抉擇經歷：${answered} / 5 站
+已探索島嶼：${visitedIslands.size} / 6 座島
+${profiles.map(([name, key]) => `・${name}：${level(totals[key])}（${totals[key]} 分）`).join('\n')}${notesText}
+
+【我的成長宣言】
+「${travelerMotto}」
+我不需要靠比較證明自己。我願意在順境中謙卑，在受挫時停止報復，在選擇前省察動機，並用自己的能力幫助別人，把榮耀歸給上帝。`;
+}
+
+function renderChoiceTab() {
+  // Islands 0..4 have Station 1..5 choices; Island 5 has Station 6 Radar Chart!
+  if (selectedIsland < 5) {
+    const e = experiences[selectedIsland];
+    const answer = chosen[selectedIsland];
+    drawerBody.innerHTML = `
+      <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-50/70 to-sky-50/70 border border-teal-200/80">
+        <div class="kicker">STATION 0${selectedIsland + 1} · 島嶼情境抉擇</div>
+        <h3 class="text-lg font-black text-slate-800 my-1">${e.title}</h3>
+        <p class="text-sm text-slate-700 leading-relaxed m-0">${e.scene}</p>
+        <div class="mt-2.5">
+          ${e.choices.map((c, i) => `
+            <label class="choice-option">
+              <input type="radio" name="island-choice" value="${i}" ${answer === i ? 'checked' : ''}>
+              <span>${c.text}</span>
+            </label>
+          `).join('')}
+        </div>
+        ${answer !== null
+          ? `<div class="causal-box !border-teal-600 !bg-teal-50/90 !text-teal-900 mt-3">💡 <b>成長省思：</b>${e.choices[answer].feedback}</div>`
+          : `<div class="causal-box mt-3">👆 選擇最接近你當下的回應，完成後會擴大本島規模並計入第 6 島「成長雷達圖」！</div>`}
+      </div>
+
+      <div class="mt-4 flex justify-between items-center">
+        <span class="text-xs font-bold text-slate-500">目前總完成進度：${chosen.filter(v => v !== null).length} / 5 站</span>
+        <button type="button" class="btn btn-primary text-xs" id="go-to-lab-tab">
+          前往本島實驗室：${data[selectedIsland].labTitle} →
+        </button>
+      </div>
+    `;
+
+    drawerBody.querySelectorAll('input[name="island-choice"]').forEach(input => {
+      input.addEventListener('change', () => {
+        const hadAnswer = chosen[selectedIsland] !== null;
+        chosen[selectedIsland] = Number(input.value);
+        sfx.fanfare();
+        saveJourney();
+        getEarnedBadgesInfo();
+        refreshIslandScalesAndMarkers();
+        updateDrawerHeader();
+        renderChoiceTab();
+        toast(hadAnswer ? '✨ 已更新你的本島抉擇！' : '🎉 完成本島抉擇！島嶼規模隨你的探索成長擴大！');
+      });
+    });
+
+    drawerBody.querySelector('#go-to-lab-tab').addEventListener('click', () => {
+      activeDrawerTab = 'lab';
+      sfx.click();
+      renderDrawerContent();
+    });
+  } else {
+    // Island 6: Station 6 Growth Radar Chart
+    const answered = chosen.filter(v => v !== null).length;
+    const totals = { humility: 0, empathy: 0, faith: 0, awareness: 0 };
+    chosen.forEach((a, i) => {
+      if (a !== null) {
+        Object.entries(experiences[i].choices[a].scores).forEach(([k, v]) => totals[k] += v);
+      }
+    });
+    const profiles = [
+      ['謙卑與感恩', 'humility', '在有成就時不把自己放在別人之上，記得恩賜與幫助從哪裡來。'],
+      ['同理與關係', 'empathy', '看見別人的感受，欣賞別人的成功，避免把受傷變成新的傷害。'],
+      ['信仰與歸榮耀', 'faith', '不只追求能力或掌聲，也思考如何感恩、服事並把榮耀歸給上帝。'],
+      ['自我覺察與停看聽', 'awareness', '留意自己情緒與動機，在反應之前停一下，選擇更合宜的行動。']
+    ];
+    const level = v => !answered ? '待探索' : v >= answered * 2.2 ? '🌟 優勢' : v >= answered * 1.2 ? '🌱 累積中' : '🧭 可練習';
+
+    drawerBody.innerHTML = `
+      <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-50 to-amber-50 border border-teal-200">
+        <div class="flex items-center justify-between flex-wrap gap-1">
+          <h3 class="text-lg font-black text-teal-950 m-0">📊 第六站｜現在的我（四向度成長雷達圖）</h3>
+          <span class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-white text-teal-800 border border-teal-200">
+            已納入 ${answered} / 5 站抉擇
+          </span>
+        </div>
+        <p class="text-xs text-slate-600 mt-1 mb-3 leading-relaxed">
+          ${answered === 0 ? '你還沒有在前五座島進行抉擇喔！可以點選前五座島的「🧭 本島抉擇」累積數據。' : '這是根據你在前五座島的選擇即時繪製的四向度能力雷達圖：'}
+        </p>
+
+        <div class="flex flex-col items-center justify-center bg-white/90 rounded-2xl p-3 border border-teal-200/80 mb-3">
+          <canvas id="growth-radar-canvas"></canvas>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          ${profiles.map(([name, key, desc]) => `
+            <div class="bg-white/90 p-2.5 rounded-xl border border-teal-100">
+              <strong class="text-xs text-slate-800 block">${name} · ${level(totals[key])}（${totals[key]}分）</strong>
+              <span class="text-[11px] text-slate-600 leading-snug block mt-0.5">${desc}</span>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="flex flex-wrap gap-2 mt-3">
+          <button type="button" class="btn btn-primary text-xs flex-1" id="copy-full-report">📋 複製完整學習歷程與筆記報告</button>
+          <button type="button" class="btn text-xs" id="go-card-lab">🪪 製作角色卡 →</button>
+        </div>
+      </div>
+    `;
+
+    drawRadarChart(drawerBody.querySelector('#growth-radar-canvas'), totals, Math.max(6, answered * 3));
+    drawerBody.querySelector('#copy-full-report').addEventListener('click', () => {
+      copyTextSafe(buildFullReflectionReport(), '📋 已複製完整學習歷程與房間省思筆記！');
+    });
+    drawerBody.querySelector('#go-card-lab').addEventListener('click', () => {
+      activeDrawerTab = 'lab';
+      sfx.click();
+      renderDrawerContent();
+    });
+  }
+}
+
+function makeGrowthCardData() {
+  const choicesCount = chosen.filter(v => v !== null).length;
+  const response = responseFeedback[storyState.response || 'pause'];
+  const motive = motiveData[storyState.motive || 'share'];
+
+  let title, avatar, desc;
+  if (storyState.balloon >= 70 || storyState.response === 'revenge' || storyState.motive === 'applause') {
+    title = '勇敢省察的旅人';
+    avatar = '🌱';
+    desc = '我正在學習不讓掌聲或一時的委屈替我做決定。我願意隨時停下來，重新做出合乎中道的選擇。';
+  } else if (response.score >= 3 && motive.score >= 3 && storyState.balloon <= 35) {
+    title = '謙卑發光的旅人';
+    avatar = '🌟';
+    desc = '我願意欣賞別人的優點、用愛心溫和說真話，並把領受的能力用來祝福人，把榮耀歸給上帝。';
+  } else {
+    title = '穩步成長的旅人';
+    avatar = '🧭';
+    desc = '我可以為自己的努力感到開心，也持續練習換位思考、檢視動機，讓每一個選擇更有愛與平安。';
+  }
+
+  const displayName = travelerName ? `${travelerName}｜${title}` : title;
+  const stats = [
+    `謙卑 ${storyState.balloon <= 35 ? '🌟 展現中' : '🌱 練習中'}`,
+    `同理 ${response.score >= 2 ? '🌟 展現中' : '🌱 可加強'}`,
+    `省察 ${motive.score >= 2 ? '🌟 展現中' : '🌱 練習中'}`,
+    `歷程 ${choicesCount}/5 站`
+  ];
+  return { avatar, displayName, desc, stats, motto: travelerMotto };
+}
+
+function renderLabTab() {
+  // Each island has its own signature interactive laboratory!
+  if (selectedIsland === 0) {
+    // Island 1: Peipei's Balloon Lab
+    const px = 54 + storyState.balloon * 1.12;
+    const face = storyState.balloon >= 75 ? '😵' : storyState.balloon >= 50 ? '😎' : storyState.balloon <= 25 ? '😊' : '🙂';
+    const label = storyState.balloon >= 75 ? '快爆裂啦！' : storyState.balloon >= 50 ? '我最厲害！' : storyState.balloon <= 25 ? '感恩分享' : '合宜自信';
+    const thought = storyState.balloon >= 75
+      ? '💭 「大家都要聽我的！我比所有人都強！」'
+      : storyState.balloon >= 50
+      ? '💭 「哼，阿德一定沒有新鞋跟 100 分！」'
+      : '💭 「謝謝老師跟爸媽，我也想幫同學加油！」';
+
+    drawerBody.innerHTML = `
+      <div class="kicker">ISLAND 01 LAB · 與 3D 起點島氣球即時連動</div>
+      <h3 class="text-lg font-black text-slate-800 my-1">🎈 佩佩的氣球：掌聲越多，氣球越大？</h3>
+      <p class="text-xs text-slate-600 leading-relaxed mb-2">
+        點擊「再多一點掌聲」觀察佩佩的氣球膨脹（仔細看左方 3D 起點島上的粉紅氣球也會跟著變大！）；再按「感恩與分享」讓心回到合乎中道的大小。
+      </p>
+      <div class="balloon-stage">
+        <div class="balloon-thought">${thought}</div>
+        <div class="balloon-string"></div>
+        <div class="interactive-balloon ${storyState.balloon >= 75 ? 'danger-wobble' : ''}" style="--balloon-size:${px}px;transform:translateY(${(25 - storyState.balloon) * 0.3}px)">
+          <div class="balloon-face">${face}</div>
+          <span class="balloon-label">${label}</span>
+        </div>
+        <div class="balloon-shadow" style="width:${50 + storyState.balloon * 0.6}px"></div>
+      </div>
+      <div class="flex justify-between text-[11px] font-extrabold text-slate-500">
+        <span>🌱 謙卑合宜 (10%)</span>
+        <span class="text-pink-700">目前膨脹度：${storyState.balloon}%</span>
+        <span>💥 驕傲膨脹 (100%)</span>
+      </div>
+      <div class="meter"><span style="width:${storyState.balloon}%"></span></div>
+      <div class="flex flex-wrap gap-2 mt-3">
+        <button type="button" class="btn flex-1 text-xs" id="btn-inflate">🎈 再多一點掌聲 (+15%)</button>
+        <button type="button" class="btn btn-primary flex-1 text-xs" id="btn-deflate">🌱 感恩與分享 (-20%)</button>
+        <button type="button" class="btn text-xs" id="btn-reset-balloon">🔄 25%</button>
+      </div>
+    `;
+
+    const updateBalloon = (newVal) => {
+      storyState.balloon = Math.max(10, Math.min(100, newVal));
+      storyState.balloonTouched = true;
+      if (landmarkBalloonMesh) {
+        const s = 0.65 + (storyState.balloon / 100) * 1.15;
+        landmarkBalloonMesh.scale.set(s, s * 1.18, s);
+      }
+      saveJourney();
+      getEarnedBadgesInfo();
+      refreshIslandScalesAndMarkers();
+      updateDrawerHeader();
+      renderLabTab();
+    };
+
+    drawerBody.querySelector('#btn-inflate').addEventListener('click', () => {
+      sfx.inflate();
+      updateBalloon(storyState.balloon + 15);
+      toast('🎈 氣球變大了！3D 起點島上的氣球也同步膨脹囉！');
+    });
+    drawerBody.querySelector('#btn-deflate').addEventListener('click', () => {
+      sfx.deflate();
+      updateBalloon(storyState.balloon - 20);
+      toast('🌱 感恩與分享，讓氣球回到合乎中道的大小！');
+    });
+    drawerBody.querySelector('#btn-reset-balloon').addEventListener('click', () => {
+      sfx.click();
+      updateBalloon(25);
+    });
+
+  } else if (selectedIsland === 1) {
+    // Island 2: Ah-De's Response Simulator
+    const curKey = storyState.response;
+    const r = curKey ? responseFeedback[curKey] : null;
+
+    drawerBody.innerHTML = `
+      <div class="kicker">ISLAND 02 LAB · 風雨島人際回應模擬器</div>
+      <h3 class="text-lg font-black text-slate-800 my-1">🛡️ 受傷時，阿德可以怎麼選？</h3>
+      <div class="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-xl p-2.5 text-xs my-2">
+        <span class="text-2xl">👧🏻</span>
+        <div>
+          <b class="text-slate-800 block">佩佩（炫耀中）：</b>
+          <span class="text-slate-600">「你看！我聽寫又考一百分，還有新鞋子，比你厲害多了！」</span>
+        </div>
+      </div>
+
+      <div class="response-options my-2.5">
+        <button type="button" class="response-option ${curKey === 'revenge' ? 'chosen' : ''}" data-resp="revenge">
+          <span class="icon">💥</span><b>報復回去</b><small>踩泥坑濺髒她</small>
+        </button>
+        <button type="button" class="response-option ${curKey === 'pause' ? 'chosen' : ''}" data-resp="pause">
+          <span class="icon">🛡️</span><b>先停下來</b><small>穿軍裝整理情緒</small>
+        </button>
+        <button type="button" class="response-option ${curKey === 'kind' ? 'chosen' : ''}" data-resp="kind">
+          <span class="icon">💬</span><b>溫和說真話</b><small>表達感受與祝福</small>
+        </button>
+      </div>
+
+      <div class="flex justify-between text-[11px] font-extrabold text-slate-500">
+        <span>關係與內心平安指數</span>
+        <span class="text-teal-700">${r ? r.peaceLabel : '等待選擇...'}</span>
+      </div>
+      <div class="meter"><span style="width:${r ? r.peace : 50}%"></span></div>
+
+      <div class="p-3 rounded-xl bg-emerald-50/70 border border-teal-200 text-xs leading-relaxed mt-2">
+        ${r ? `
+          <div class="font-extrabold text-teal-900 mb-1">${r.title}</div>
+          <div class="bg-white p-2 rounded-lg border border-teal-100 mb-1.5 text-slate-700">
+            <b>🧒🏻 阿德的行動：</b>${r.deReply}
+          </div>
+          <div class="text-teal-800 font-medium">${r.teacherReply}</div>
+        ` : '👆 點選上方三種回應之一，模擬阿德的行動與恩慈老師的溫柔引導。'}
+      </div>
+    `;
+
+    drawerBody.querySelectorAll('[data-resp]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        storyState.response = btn.dataset.resp;
+        sfx.click();
+        saveJourney();
+        getEarnedBadgesInfo();
+        refreshIslandScalesAndMarkers();
+        updateDrawerHeader();
+        renderLabTab();
+        toast('🛡️ 已記錄阿德的回應模擬！');
+      });
+    });
+
+  } else if (selectedIsland === 2) {
+    // Island 3: Spiritual Armor & Daily Mini Quest
+    const c = challengeList[challengeIndex];
+    drawerBody.innerHTML = `
+      <div class="kicker">ISLAND 03 LAB · 屬靈軍裝與今日生活小任務</div>
+      <h3 class="text-lg font-black text-slate-800 my-1">🌿 把軍裝島的練習帶進今天的生活</h3>
+      <p class="text-xs text-slate-600 leading-relaxed mb-3">
+        穿上屬靈的全副軍裝不只是口號，而是每天練習一個溫和、謙卑、不報復的小行動。每完成一次任務，軍裝島的規模也會隨之成長！
+      </p>
+
+      <div class="p-4 rounded-2xl bg-gradient-to-br from-purple-50 to-amber-50 border border-purple-200">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <span class="tag !m-0">${c[2]}</span>
+          <span class="text-xs font-extrabold text-purple-800">🔥 已累積實踐 ${questCount} 次</span>
+        </div>
+        <h4 class="text-base font-black text-slate-800 mt-2 mb-1">${c[0]}</h4>
+        <p class="text-xs text-slate-700 leading-relaxed m-0">${c[1]}</p>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <button type="button" class="btn text-xs" id="btn-next-quest">換一個生活任務 ↻</button>
+          <button type="button" class="btn btn-primary text-xs" id="btn-done-quest" ${challengeCompleted ? 'disabled' : ''}>
+            ${challengeCompleted ? '✓ 今日已完成實踐' : '我今天做到了 ✓'}
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-3 p-3 rounded-xl bg-teal-50/80 border border-teal-200 text-xs text-slate-700 leading-relaxed">
+        <b>📖 羅馬書 12:3 核心提醒：</b><br>
+        「我憑著所賜我的恩對你們各人說：不要看自己過於所當看的；要照著上帝所分給各人信心的大小，看得合乎中道。」
+      </div>
+    `;
+
+    drawerBody.querySelector('#btn-next-quest').addEventListener('click', () => {
+      challengeIndex = (challengeIndex + 1) % challengeList.length;
+      challengeCompleted = false;
+      sfx.click();
+      saveJourney();
+      renderLabTab();
+      toast('🎲 已切換新的今日生活小任務！');
+    });
+    drawerBody.querySelector('#btn-done-quest').addEventListener('click', () => {
+      if (challengeCompleted) return;
+      challengeCompleted = true;
+      questCount += 1;
+      sfx.fanfare();
+      saveJourney();
+      getEarnedBadgesInfo();
+      refreshIslandScalesAndMarkers();
+      updateDrawerHeader();
+      renderLabTab();
+      toast('🌟 太棒了！你完成了一項生活實踐，軍裝島也跟著擴大了！');
+    });
+
+  } else if (selectedIsland === 3) {
+    // Island 4: Simon's Crown Motive Lab
+    const curM = storyState.motive;
+    const m = curM ? motiveData[curM] : { scale: 25, icon: '👑', pill: '🔍 點選下方動機進行省察', text: '選擇一種動機，觀察皇冠的變化。這不是貼標籤，而是練習誠實面對內心。' };
+
+    drawerBody.innerHTML = `
+      <div class="kicker">ISLAND 04 LAB · 與 3D 皇冠島地標連動</div>
+      <h3 class="text-lg font-black text-slate-800 my-1">👑 西門的皇冠：我做這件事，最想得到什麼？</h3>
+      <div class="crown-stage">
+        <div class="interactive-crown" style="transform:scale(${1 + (m.scale / 100) * 0.35}) rotate(${m.scale > 70 ? -8 : 0}deg)">${m.icon}</div>
+        <div class="crown-crack" style="opacity:${m.scale > 70 ? 1 : 0};transform:${m.scale > 70 ? 'scale(1.1)' : 'scale(0.3)'}">⚡</div>
+        <div class="text-xs font-extrabold px-3 py-1 rounded-full bg-white/90 text-amber-900 mt-1">${m.pill}</div>
+      </div>
+
+      <div class="flex justify-between text-[11px] font-extrabold text-slate-500">
+        <span>✨ 謙卑歸榮耀</span>
+        <span>自我中心指數：${m.scale}%</span>
+        <span>⚡ 追求掌聲權柄</span>
+      </div>
+      <div class="meter"><span style="width:${m.scale}%"></span></div>
+
+      <div class="response-options mt-2.5">
+        <button type="button" class="response-option ${curM === 'applause' ? 'chosen' : ''}" data-mot="applause">
+          <span class="icon">👏</span><b>想被稱讚</b><small>希望大家都注目我</small>
+        </button>
+        <button type="button" class="response-option ${curM === 'share' ? 'chosen' : ''}" data-mot="share">
+          <span class="icon">🤝</span><b>分享功勞</b><small>肯定同伴的付出</small>
+        </button>
+        <button type="button" class="response-option ${curM === 'serve' ? 'chosen' : ''}" data-mot="serve">
+          <span class="icon">🙏</span><b>服事幫人</b><small>感恩並歸榮耀與神</small>
+        </button>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed mt-2.5 mb-0">${m.text}</p>
+    `;
+
+    drawerBody.querySelectorAll('[data-mot]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        storyState.motive = btn.dataset.mot;
+        const md = motiveData[storyState.motive];
+        if (landmarkCrownGroup) {
+          const s = md.scale > 70 ? 1.38 : 1.0;
+          landmarkCrownGroup.scale.set(s, s, s);
+        }
+        sfx.click();
+        saveJourney();
+        getEarnedBadgesInfo();
+        refreshIslandScalesAndMarkers();
+        updateDrawerHeader();
+        renderLabTab();
+        toast('👑 已記錄西門的動機省察！');
+      });
+    });
+
+  } else if (selectedIsland === 4) {
+    // Island 5: 8 Achievement Badges Hall
+    const { badgeList, earnedCount } = getEarnedBadgesInfo();
+    drawerBody.innerHTML = `
+      <div class="kicker">ISLAND 05 LAB · 真光島成長徽章館</div>
+      <div class="flex items-center justify-between flex-wrap gap-1 my-1">
+        <h3 class="text-lg font-black text-slate-800 m-0">🏅 我的 8 枚品格成長徽章</h3>
+        <span class="text-xs font-extrabold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+          已解鎖 ${earnedCount} / 8 枚
+        </span>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed mb-2">
+        當你在各座島嶼撰寫房間省思筆記、完成五站抉擇、操作實驗室與完成日常小任務時，對應的品格徽章就會自動點亮！
+      </p>
+      <div class="badge-shelf">
+        ${badgeList.map(b => `
+          <div class="reward-badge ${b.earned ? 'earned' : ''}">
+            <span class="text-xl">${b.icon}</span>
+            <div>
+              <div class="font-black text-xs">${b.name} ${b.earned ? '✓' : ''}</div>
+              <div class="text-[10.5px] opacity-80">${b.desc}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+
+  } else {
+    // Island 6: 3D Holographic Character Card Maker + PNG/SVG Download
+    const info = makeGrowthCardData();
+    drawerBody.innerHTML = `
+      <div class="kicker">ISLAND 06 LAB · 專屬成長角色卡工坊</div>
+      <h3 class="text-lg font-black text-slate-800 my-1">🪪 我的專屬 3D 炫光成長角色卡</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 my-2">
+        <div>
+          <label class="text-[11px] font-bold text-slate-600 block mb-0.5">旅人暱稱：</label>
+          <input id="card-name-in" type="text" maxlength="16" value="${travelerName}" placeholder="例如：小恩 / 謙卑旅人" class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-teal-200 bg-white font-bold text-slate-700">
+        </div>
+        <div>
+          <label class="text-[11px] font-bold text-slate-600 block mb-0.5">選擇卡片格言：</label>
+          <select id="card-motto-sel" class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-teal-200 bg-white font-bold text-slate-700">
+            <option value="在順境中謙卑，在受挫時選擇愛" ${travelerMotto === '在順境中謙卑，在受挫時選擇愛' ? 'selected' : ''}>在順境中謙卑，在受挫時選擇愛</option>
+            <option value="能力是領受的禮物，用來祝福別人" ${travelerMotto === '能力是領受的禮物，用來祝福別人' ? 'selected' : ''}>能力是領受的禮物，用來祝福別人</option>
+            <option value="不必靠比較證明自己，把榮耀歸給神" ${travelerMotto === '不必靠比較證明自己，把榮耀歸給神' ? 'selected' : ''}>不必靠比較證明自己，把榮耀歸給神</option>
+            <option value="先停下來穿戴軍裝，溫和說出真心話" ${travelerMotto === '先停下來穿戴軍裝，溫和說出真心話' ? 'selected' : ''}>先停下來穿戴軍裝，溫和說出真心話</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="character-card-wrap">
+        <div class="character-card" id="character-card">
+          <div class="text-xs tracking-[10px] text-amber-600 font-black">✦ ✧ ✦</div>
+          <div class="character-avatar" id="char-avatar">${info.avatar}</div>
+          <div class="text-[10px] tracking-[2px] font-black text-teal-700">MY GROWTH CARD · 學習歷程卡</div>
+          <h3 id="char-title" class="text-lg font-black text-teal-900 my-1">${info.displayName}</h3>
+          <p id="char-desc" class="text-xs text-slate-600 leading-relaxed max-w-[92%] mx-auto my-1">${info.desc}</p>
+          <div class="character-stats" id="char-stats">${info.stats.map(s => `<span>${s}</span>`).join('')}</div>
+          <div id="char-motto" class="mt-2.5 pt-2 border-t border-teal-200/70 text-[11px] font-extrabold text-teal-800">「${info.motto}」</div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-2 mt-2">
+        <button type="button" class="btn btn-primary text-xs flex-1" id="btn-dl-png">🖼️ 下載高畫質 PNG 角色卡</button>
+        <button type="button" class="btn text-xs" id="btn-dl-svg">⬇ 下載 SVG</button>
+      </div>
+    `;
+
+    const cardNode = drawerBody.querySelector('#character-card');
+    cardNode.addEventListener('pointermove', e => {
+      const r = cardNode.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      cardNode.style.transform = `rotateY(${x * 14}deg) rotateX(${-y * 14}deg) scale(1.01)`;
+    });
+    cardNode.addEventListener('pointerleave', () => {
+      cardNode.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
+    });
+
+    drawerBody.querySelector('#card-name-in').addEventListener('input', (e) => {
+      travelerName = e.target.value.trim();
+      saveJourney();
+      const updated = makeGrowthCardData();
+      drawerBody.querySelector('#char-title').textContent = updated.displayName;
+    });
+    drawerBody.querySelector('#card-motto-sel').addEventListener('change', (e) => {
+      travelerMotto = e.target.value;
+      saveJourney();
+      drawerBody.querySelector('#char-motto').textContent = `「${travelerMotto}」`;
+    });
+
+    drawerBody.querySelector('#btn-dl-png').addEventListener('click', downloadCharacterPNG);
+    drawerBody.querySelector('#btn-dl-svg').addEventListener('click', downloadCharacterSVG);
+  }
+}
+
+function downloadCharacterPNG() {
+  const info = makeGrowthCardData();
+  const c = document.createElement('canvas');
+  c.width = 900;
+  c.height = 1160;
+  const ctx = c.getContext('2d');
+
+  const grad = ctx.createLinearGradient(0, 0, 900, 1160);
+  grad.addColorStop(0, '#d8f4e6');
+  grad.addColorStop(0.55, '#e8ecff');
+  grad.addColorStop(1, '#fff2d6');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(0, 0, 900, 1160, 48);
+  ctx.fill();
+
+  ctx.strokeStyle = '#b8dfd1';
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.roundRect(24, 24, 852, 1112, 36);
+  ctx.stroke();
+
+  ctx.fillStyle = 'rgba(255, 248, 220, 0.85)';
+  ctx.beginPath();
+  ctx.arc(450, 230, 125, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#387d6e';
+  ctx.font = 'bold 24px "Noto Sans TC", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('MY GROWTH CARD · 學習歷程群島角色卡', 450, 88);
+
+  ctx.font = '110px sans-serif';
+  ctx.fillText(info.avatar, 450, 265);
+
+  ctx.fillStyle = '#1d4c43';
+  ctx.font = 'bold 44px "Noto Sans TC", sans-serif';
+  ctx.fillText(info.displayName, 450, 400);
+
+  ctx.fillStyle = '#47626e';
+  ctx.font = '26px "Noto Sans TC", sans-serif';
+  const maxWidth = 700;
+  let line = '';
+  let y = 465;
+  for (const ch of info.desc) {
+    const testLine = line + ch;
+    if (ctx.measureText(testLine).width > maxWidth) {
+      ctx.fillText(line, 450, y);
+      line = ch;
+      y += 42;
+    } else {
+      line = testLine;
+    }
+  }
+  if (line) ctx.fillText(line, 450, y);
+
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.82)';
+  ctx.beginPath();
+  ctx.roundRect(90, 565, 720, 340, 28);
+  ctx.fill();
+
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#245249';
+  ctx.font = 'bold 26px "Noto Sans TC", sans-serif';
+  const detailLines = [
+    `✦ 四向度狀態：${info.stats.join(' ｜ ')}`,
+    `✦ 佩佩氣球狀態：膨脹度 ${storyState.balloon}%`,
+    `✦ 阿德回應選擇：${storyState.response ? responseFeedback[storyState.response].title : '穿上軍裝先停下來'}`,
+    `✦ 西門動機省察：${storyState.motive ? motiveData[storyState.motive].title : '願意分享與服事'}`,
+    `✦ 群島探索紀錄：已踏足 ${visitedIslands.size}/6 座島嶼`
+  ];
+  detailLines.forEach((t, idx) => {
+    ctx.fillText(t, 130, 628 + idx * 58);
+  });
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#26695b';
+  ctx.font = 'bold 30px "Noto Sans TC", sans-serif';
+  ctx.fillText(`「${info.motto}」`, 450, 995);
+
+  ctx.fillStyle = '#6c858e';
+  ctx.font = '22px "Noto Sans TC", sans-serif';
+  ctx.fillText('羅馬書 12:3 — 不要看自己過於所當看的，要看得合乎中道', 450, 1065);
+
+  c.toBlob(blob => {
+    if (!blob) return;
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${travelerName || '我的'}成長角色卡.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    sfx.fanfare();
+    toast('🖼️ 已下載高畫質 PNG 成長角色卡！');
+  }, 'image/png');
+}
+
+function escapeXml(s) {
+  return String(s).replace(/[<>&'"]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' }[c]));
+}
+
+function downloadCharacterSVG() {
+  const info = makeGrowthCardData();
+  const textLines = [
+    '我的成長角色卡',
+    info.displayName,
+    info.desc,
+    ...info.stats,
+    `氣球狀態：${storyState.balloon}%`,
+    `格言：「${info.motto}」`
+  ];
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1100" viewBox="0 0 900 1100"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dff5e9"/><stop offset="1" stop-color="#e8e9ff"/></linearGradient></defs><rect width="900" height="1100" rx="48" fill="url(#bg)"/><circle cx="450" cy="210" r="130" fill="#fff6d9" opacity=".8"/><text x="450" y="90" text-anchor="middle" font-size="25" font-family="sans-serif" fill="#588b7b" letter-spacing="5">MY GROWTH CARD</text><text x="450" y="255" text-anchor="middle" font-size="110">${info.avatar}</text><text x="450" y="360" text-anchor="middle" font-size="43" font-weight="bold" font-family="sans-serif" fill="#2b6256">${escapeXml(textLines[1])}</text><foreignObject x="100" y="405" width="700" height="150"><div xmlns="http://www.w3.org/1999/xhtml" style="font:26px/1.8 sans-serif;color:#526c75;text-align:center">${escapeXml(textLines[2])}</div></foreignObject>${textLines.slice(3).map((t, i) => `<text x="115" y="${600 + i * 56}" font-size="24" font-family="sans-serif" fill="#365b56">✦ ${escapeXml(t)}</text>`).join('')}<text x="450" y="1040" text-anchor="middle" font-size="24" font-family="sans-serif" fill="#588b7b">羅馬書 12:3 · 看得合乎中道</text></svg>`;
+  const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${travelerName || '我的'}成長角色卡.svg`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  sfx.fanfare();
+  toast('⬇ 已下載成長角色卡 SVG 向量檔！');
+}
+
+function renderDrawerContent() {
+  updateDrawerHeader();
+  if (activeDrawerTab === 'story') renderStoryTab();
+  else if (activeDrawerTab === 'choice') renderChoiceTab();
+  else renderLabTab();
+}
+
+function selectIsland(i, fly = true, openPanel = true, preferredTab = null) {
+  followMode = null;
+  selectedIsland = (i + data.length) % data.length;
+  selectedRoomIdx = 0;
+  if (preferredTab) activeDrawerTab = preferredTab;
+  visitedIslands.add(selectedIsland);
+  drawerOpen = openPanel;
+  drawerEl.classList.toggle('open', drawerOpen);
+
+  saveJourney();
+  getEarnedBadgesInfo();
+  refreshIslandScalesAndMarkers();
+  renderIslandDock();
+  if (drawerOpen) renderDrawerContent();
+
+  const pos = islandGroups[selectedIsland].position;
+  const s = islandGroups[selectedIsland].userData.targetScale || 1;
+  boatTarget.set(pos.x, -0.48, pos.z + 2.3 * s);
+
+  if (fly) {
+    sfx.islandSelect(selectedIsland);
+    focusTarget = islandGroups[selectedIsland].getWorldPosition(new THREE.Vector3());
+  }
+}
+
+document.querySelectorAll('.drawer-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeDrawerTab = btn.dataset.tab;
+    sfx.click();
+    renderDrawerContent();
+  });
+});
+
+document.querySelector('#close-drawer').addEventListener('click', () => {
+  drawerOpen = false;
+  drawerEl.classList.remove('open');
+  sfx.click();
+  refreshIslandScalesAndMarkers();
+  renderIslandDock();
+});
+
+document.querySelector('#drawer-prev-island').addEventListener('click', () => {
+  selectIsland(selectedIsland - 1, true, true);
+});
+document.querySelector('#drawer-next-island').addEventListener('click', () => {
+  selectIsland(selectedIsland + 1, true, true);
+});
+
+// Top Quick Jump Chips
+document.querySelector('#quick-badges').addEventListener('click', () => {
+  selectIsland(4, true, true, 'lab');
+  toast('🏅 已航行至「真光島」徽章館！');
+});
+document.querySelector('#quick-radar').addEventListener('click', () => {
+  selectIsland(5, true, true, 'choice');
+  toast('📊 已航行至「現在的我」查看四向度成長雷達圖！');
+});
+document.querySelector('#quick-card').addEventListener('click', () => {
+  selectIsland(5, true, true, 'lab');
+  toast('🪪 已航行至「現在的我」開啟 3D 成長角色卡工坊！');
+});
+
+// Bottom Camera & Wildlife Controls
+document.querySelector('#reset-cam').addEventListener('click', () => {
+  autoTour = false;
+  followMode = null;
+  drawerOpen = false;
+  drawerEl.classList.remove('open');
+  controls.target.set(0, 0, 0);
+  camera.position.set(0, 12.5, 22);
+  focusTarget = null;
+  sfx.click();
+  refreshIslandScalesAndMarkers();
+  renderIslandDock();
+  toast('🗺️ 已回到群島全景俯瞰！點選任一島嶼即可開啟互動艙');
+});
+
+document.querySelector('#focus-cruise').addEventListener('click', () => {
+  drawerOpen = false;
+  drawerEl.classList.remove('open');
+  followMode = 'cruise';
+  sfx.horn();
+  toast('🛳️ 鏡頭正在追蹤環島大型郵輪！（拖曳畫面可隨時自由旋轉）');
+});
+
+document.querySelector('#focus-whale').addEventListener('click', () => {
+  drawerOpen = false;
+  drawerEl.classList.remove('open');
+  followMode = 'whale';
+  sfx.click();
+  toast('🐋 鏡頭正在追蹤海洋藍鯨！觀察牠浮出水面噴水換氣✨');
+});
+
+document.querySelector('#auto-tour').addEventListener('click', (e) => {
+  autoTour = !autoTour;
+  autoTourTimer = 0;
+  e.currentTarget.classList.toggle('btn-primary', autoTour);
+  e.currentTarget.textContent = autoTour ? '⏸️ 停止導覽' : '✈️ 環島導覽';
+  sfx.click();
+  if (autoTour) selectIsland(selectedIsland, true, true);
+  toast(autoTour ? '✈️ 已開啟自動環島導覽' : '已暫停自動導覽');
+});
+
+// Reset Modal
+const modal = document.querySelector('#custom-modal');
+document.querySelector('#reset-journey').addEventListener('click', () => {
+  sfx.click();
+  modal.classList.add('open');
+});
+document.querySelector('#modal-cancel').addEventListener('click', () => {
+  modal.classList.remove('open');
+});
+document.querySelector('#modal-confirm').addEventListener('click', () => {
+  modal.classList.remove('open');
+  chosen.fill(null);
+  challengeCompleted = false;
+  questCount = 0;
+  roomNotes = {};
+  storyState.balloon = 25;
+  storyState.balloonTouched = false;
+  storyState.response = null;
+  storyState.motive = null;
+  saveJourney();
+  getEarnedBadgesInfo();
+  refreshIslandScalesAndMarkers();
+  if (drawerOpen) renderDrawerContent();
+  toast('🌱 旅程與島嶼規模已重置，點擊任一島嶼開始全新探索吧！');
+});
+
+// Raycasting on 3D Islands, Cruise Ship & Whales
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+let downPos = { x: 0, y: 0 };
+
+canvas.addEventListener('pointerdown', e => {
+  downPos = { x: e.clientX, y: e.clientY };
+});
+
+canvas.addEventListener('pointermove', e => {
+  if (e.buttons) return;
+  const r = canvas.getBoundingClientRect();
+  pointer.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+  pointer.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(pickables, false);
+  canvas.style.cursor = hits.length ? 'pointer' : 'grab';
+});
+
+canvas.addEventListener('pointerup', e => {
+  if (Math.hypot(e.clientX - downPos.x, e.clientY - downPos.y) > 8) return;
+  const r = canvas.getBoundingClientRect();
+  pointer.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+  pointer.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(pickables, false);
+  if (!hits.length) return;
+  const obj = hits[0].object;
+  if (obj.userData.wildlifeType === 'cruise') {
+    sfx.horn();
+    followMode = 'cruise';
+    toast('🛳️ 嗚——！豪華郵輪向你鳴笛致意！');
+  } else if (obj.userData.wildlifeType === 'whale') {
+    sfx.inflate();
+    followMode = 'whale';
+    toast('🐋 藍鯨噴出高高的水柱向你打招呼！');
+  } else if (obj.userData.index !== undefined) {
+    selectIsland(obj.userData.index, true, true);
+  }
+});
+
+/* ============================================================================
+   8. INITIALIZE ON LOAD
+============================================================================ */
 loadJourney();
-renderExperience();updateProgress();renderNowMe(false);updateBadges();showChallenge();
-document.querySelector('#prev-choice').addEventListener('click',()=>{activeExperience=Math.max(0,activeExperience-1);renderExperience();saveJourney()});
-document.querySelector('#next-choice').addEventListener('click',()=>{
- if(chosen[activeExperience]===null){toast('先選一個回應，再繼續探索喔！');return}
- if(activeExperience<4){activeExperience++;renderExperience();saveJourney()}
- else{renderNowMe(true);document.querySelector('#now-me').scrollIntoView({behavior:'smooth',block:'start'})}
-});
-document.querySelector('#show-now').addEventListener('click',()=>{renderNowMe(true);document.querySelector('#now-me').scrollIntoView({behavior:'smooth',block:'start'})});
-/* Fix original choice-change handler so each answer persists and refreshes badges. */
-stageNode.addEventListener('change',e=>{
- if(e.target.matches('input[name="experience-choice"]')){
-  chosen[activeExperience]=Number(e.target.value);updateProgress();updateBadges();saveJourney();
- }
-});
-
-
-
-// Story game: choices alter the balloon, relationship outcome, crown and personalized card.
-const storyState={balloon:25,response:null,motive:null};
-const balloon=document.querySelector('#interactive-balloon');
-function setBalloon(value){
- storyState.balloon=Math.max(10,Math.min(100,value));
- const px=52+storyState.balloon*1.15;
- balloon.style.setProperty('--balloon-size',px+'px');
- balloon.style.transform=`translateY(${(25-storyState.balloon)*.35}px) rotate(${(storyState.balloon-25)*.12}deg)`;
- document.querySelector('#balloon-meter').style.width=storyState.balloon+'%';
- document.querySelector('#balloon-feedback').textContent=storyState.balloon>=75?
- '氣球已經很大了！當我一直想證明自己比別人強，可能會忽略別人的感受。試著用感恩與分享讓它回到合宜的大小。':
- storyState.balloon<=25?'氣球回到合宜的大小。成就仍值得開心，但我不必靠比較證明自己。':
- '氣球大小：'+storyState.balloon+'%。我可以欣賞自己的努力，也留意別人的感受。';
-}
-document.querySelector('#inflate-balloon').addEventListener('click',()=>{setBalloon(storyState.balloon+15);toast('氣球變大了！想想自己是否太在意掌聲。');});
-document.querySelector('#deflate-balloon').addEventListener('click',()=>{setBalloon(storyState.balloon-20);toast('感恩與分享，讓心回到合宜的位置。');});
-const responseFeedback={
- revenge:{title:'💥 報復會讓泥水濺得更遠',text:'你可能短暫覺得扳回一城，但對方也會受傷，衝突可能加深。下一次可以先停一下，找更安全的方式說出委屈。',score:0,avatar:'😣'},
- pause:{title:'🛡️ 暫停，讓情緒先降下來',text:'你沒有讓第一個衝動替你決定。等心情平靜後，再找合適的時間表達感受，會更容易被聽見。',score:2,avatar:'🛡️'},
- kind:{title:'💬 溫和說真話，關係有機會修復',text:'你可以說：「你一直比較時，我覺得受傷。我希望我們可以互相鼓勵。」這既誠實，也沒有用羞辱回擊。',score:3,avatar:'🤝'}
-};
-document.querySelectorAll('[data-response]').forEach(btn=>btn.addEventListener('click',()=>{
- document.querySelectorAll('[data-response]').forEach(b=>b.classList.toggle('chosen',b===btn));
- storyState.response=btn.dataset.response;const r=responseFeedback[storyState.response];
- document.querySelector('#response-result').innerHTML=`<b>${r.title}</b><br>${r.text}`;
- toast('阿德的選擇已記錄，可以生成你的成長角色卡。');
-}));
-const motiveData={
- applause:{score:0,scale:100,icon:'👑',title:'正在學習省察的旅人',text:'你注意到自己很希望被看見。這不是要責備自己，而是邀請你問：如果沒有人稱讚，我還願意做這件事嗎？'},
- share:{score:2,scale:58,icon:'✨',title:'願意分享的同行者',text:'你希望努力被看見，也願意肯定別人的付出。下一步是練習分享功勞，讓團隊一起成長。'},
- serve:{score:3,scale:28,icon:'🌟',title:'把光帶給別人的旅人',text:'你把焦點放在幫助人、感恩與歸榮耀給上帝。繼續用謙卑的態度運用自己的能力。'}
-};
-document.querySelectorAll('[data-motive]').forEach(btn=>btn.addEventListener('click',()=>{
- document.querySelectorAll('[data-motive]').forEach(b=>b.classList.toggle('chosen',b===btn));
- storyState.motive=btn.dataset.motive;const m=motiveData[storyState.motive];
- document.querySelector('#interactive-crown').style.transform=`scale(${1+(m.scale/100)*.35}) rotate(${m.scale>70?-8:m.scale<40?4:0}deg)`;
- document.querySelector('#interactive-crown').style.filter=m.scale>70?'drop-shadow(0 8px 5px #c75d5d66) saturate(1.4)':'drop-shadow(0 8px 4px #8c743533)';
- document.querySelector('#crown-meter').style.width=m.scale+'%';
- document.querySelector('#crown-crack').style.opacity=m.scale>70?'1':'0';
- document.querySelector('#crown-crack').style.transform=m.scale>70?'scale(1) rotate(0deg)':'scale(.3) rotate(-20deg)';
- document.querySelector('#crown-feedback').textContent=m.text;
- toast('動機已記錄。誠實省察是成長的開始。');
-}));
-function makeGrowthCard(){
- const choices=chosen.filter(v=>v!==null).length;
- const response=responseFeedback[storyState.response||'pause'];
- const motive=motiveData[storyState.motive||'share'];
- const humility=(storyState.balloon<=35?2:0)+response.score+motive.score;
- let title,avatar,desc;
- if(storyState.balloon>=70||storyState.response==='revenge'||storyState.motive==='applause'){
-  title='勇敢省察的旅人';avatar='🌱';desc='我正在學習不讓掌聲或受傷替我做決定。我願意停下來，重新選擇。';
- }else if(response.score>=3&&motive.score>=3&&storyState.balloon<=35){
-  title='謙卑同行的旅人';avatar='🌟';desc='我願意欣賞別人、溫和說真話，並把能力用來幫助人，把榮耀歸給上帝。';
- }else{
-  title='正在成長的旅人';avatar='🧭';desc='我可以為自己的努力感到開心，也練習理解別人、檢視動機，讓下一個選擇更有愛。';
- }
- const stats=[
-  `謙卑 ${storyState.balloon<=35?'正在練習':'值得留意'}`,
-  `同理 ${response.score>=2?'正在展現':'可以加強'}`,
-  `省察 ${motive.score>=2?'正在展現':'可以練習'}`,
-  `歷程 ${choices}/5 站`
- ];
- document.querySelector('#character-avatar').textContent=avatar;
- document.querySelector('#character-title').textContent=title;
- document.querySelector('#character-description').textContent=desc;
- document.querySelector('#character-stats').innerHTML=stats.map(s=>`<span>${s}</span>`).join('');
- document.querySelector('#character-feedback').textContent='角色卡已更新。這不是對你的評分，而是提醒你下一步可以練習什麼。';
- document.querySelector('#character-card').classList.add('card-ready');
-}
-document.querySelector('#make-character').addEventListener('click',()=>{makeGrowthCard();toast('你的成長角色卡已生成！');});
-document.querySelector('#download-character').addEventListener('click',()=>{
- makeGrowthCard();
- const card=document.querySelector('#character-card');
- const textLines=[
-  '我的成長角色卡',
-  document.querySelector('#character-title').textContent,
-  document.querySelector('#character-description').textContent,
-  ...[...document.querySelectorAll('#character-stats span')].map(s=>s.textContent),
-  `氣球狀態：${storyState.balloon}%`,
-  `阿德的回應：${storyState.response?responseFeedback[storyState.response].title:'尚未選擇'}`,
-  `西門的動機：${storyState.motive?motiveData[storyState.motive].title:'尚未選擇'}`,
-  '我願意在順境中謙卑，在受挫時不報復，並用能力幫助別人。'
- ];
- const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1100" viewBox="0 0 900 1100"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dff5e9"/><stop offset="1" stop-color="#e8e9ff"/></linearGradient></defs><rect width="900" height="1100" rx="48" fill="url(#bg)"/><circle cx="450" cy="210" r="130" fill="#fff6d9" opacity=".8"/><text x="450" y="90" text-anchor="middle" font-size="25" font-family="sans-serif" fill="#588b7b" letter-spacing="5">MY GROWTH CARD</text><text x="450" y="255" text-anchor="middle" font-size="110">${document.querySelector('#character-avatar').textContent}</text><text x="450" y="360" text-anchor="middle" font-size="43" font-weight="bold" font-family="sans-serif" fill="#2b6256">${escapeXml(textLines[1])}</text><foreignObject x="100" y="405" width="700" height="150"><div xmlns="http://www.w3.org/1999/xhtml" style="font:26px/1.8 sans-serif;color:#526c75;text-align:center">${escapeXml(textLines[2])}</div></foreignObject>${textLines.slice(3).map((t,i)=>`<text x="115" y="${610+i*62}" font-size="25" font-family="sans-serif" fill="#365b56">${escapeXml(t)}</text>`).join('')}<text x="450" y="1030" text-anchor="middle" font-size="24" font-family="sans-serif" fill="#588b7b">在順境中謙卑，在受挫時選擇愛</text></svg>`;
- const blob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='我的成長角色卡.svg';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);toast('已下載成長角色卡 SVG！');
-});
-function escapeXml(s){return String(s).replace(/[<>&'"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;',"'":'&apos;','"':'&quot;'}[c]));}
-
+getEarnedBadgesInfo();
+refreshIslandScalesAndMarkers();
+renderIslandDock();
+render();
+setTimeout(() => {
+  toast('🏝️ 歡迎來到學習歷程群島！點選任一座島嶼即可航行並開啟互動探索艙✨');
+}, 600);
 </script>
-</body></html>
+</body>
+</html>
